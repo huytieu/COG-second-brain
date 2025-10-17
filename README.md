@@ -35,16 +35,15 @@ COG is a personal productivity and knowledge management system that:
 2. **Copy COG structure to your vault:**
    ```bash
    cp -r COG-second-brain/.claude .
-   cp -r COG-second-brain/templates ./06-templates
    ```
 
-3. **Open Claude Code in your vault and test:**
+3. **Open Claude Code in your vault and run onboarding:**
    ```bash
    code .
-   # In Claude Code, type: /braindump
+   # In Claude Code, type: /onboarding
    ```
 
-That's it! Your second brain is running.
+That's it! The onboarding will personalize COG for your needs in 3-5 minutes.
 
 ### Alternative: Manual Setup
 
@@ -52,7 +51,10 @@ See [SETUP.md](SETUP.md) for detailed step-by-step instructions.
 
 ## What You Get
 
-### 15 Custom Slash Commands
+### 16 Custom Slash Commands
+
+**Setup:**
+- `/onboarding` - Personalize COG for your workflow (run this first!)
 
 **Daily Operations:**
 - `/daily-brief` - Personalized news intelligence (verified sources only)
@@ -69,13 +71,17 @@ See [SETUP.md](SETUP.md) for detailed step-by-step instructions.
 - `/project-story` - Generate compelling narratives about project evolution
 - `/newsletter-research` - Research and develop thought leadership content
 
-### 5 Specialized AI Agents
+### 2 Core Specialized Subagents
 
-- **Brain Dump Analyst**: Transforms stream-of-consciousness into structured insights
-- **News Curator**: Finds verified news with strict 7-day freshness requirement
-- **Meeting Processor**: Filters noise, extracts decisions and action items
-- **Project Analyst**: Tracks competitive intelligence and project evolution
-- **Knowledge Consolidator**: Builds frameworks from scattered learnings
+- **Brain Dump Analyst** (`.claude/subagents/brain-dump-analyst.md`): Transforms stream-of-consciousness into structured insights with domain classification and competitive intelligence extraction
+- **News Curator** (`.claude/subagents/news-curator.md`): Finds verified news with strict 7-day freshness requirement, cross-references sources, and generates personalized briefings
+
+**How Subagents Work:**
+Commands are thin orchestration layers that delegate specialized work to subagents. For example:
+- `/braindump` collects your thoughts, then delegates analysis to brain-dump-analyst
+- `/daily-brief` reads your profile, then delegates news curation to news-curator
+
+This architecture keeps commands simple while subagents handle complex, specialized processing.
 
 ## Key Features
 
@@ -124,10 +130,15 @@ Friday: Run /consolidate-knowledge
 ```
 your-obsidian-vault/
 ├── .claude/
-│   ├── commands/              # 15 custom slash commands
-│   ├── subagents/             # 5 specialized AI agents
-│   └── settings.local.json    # Agent configuration
+│   ├── commands/              # 16 custom slash commands (thin orchestrators)
+│   ├── subagents/             # 2 specialized AI subagents (complex processors)
+│   │   ├── brain-dump-analyst.md
+│   │   └── news-curator.md
+│   └── settings.local.json    # Agent configuration (optional)
 ├── 00-inbox/                  # Temporary processing area
+│   ├── MY-PROFILE.md          # Your profile (created by onboarding)
+│   ├── MY-INTERESTS.md        # Your topics & news sources
+│   └── WELCOME-TO-COG.md      # Getting started guide
 ├── 01-daily/                  # Daily briefs and check-ins
 │   ├── briefs/
 │   └── checkins/
@@ -136,22 +147,50 @@ your-obsidian-vault/
 │   ├── development/
 │   └── wellness/
 ├── 03-professional/           # Professional domain
+│   ├── braindumps/
 │   ├── leadership/
 │   ├── strategy/
-│   └── skills/
+│   ├── skills/
+│   └── COMPETITIVE-WATCHLIST.md  # Companies/people to track
 ├── 04-projects/               # Project-specific tracking
 │   └── [your-project]/
 │       ├── braindumps/
 │       ├── competitive/       # Auto-updated intel
 │       └── content/
-├── 05-knowledge/              # Consolidated insights
-│   ├── consolidated/
-│   ├── patterns/
-│   └── timeline/
-└── 06-templates/              # Obsidian templates
+└── 05-knowledge/              # Consolidated insights
+    ├── consolidated/
+    ├── patterns/
+    └── timeline/
 ```
 
 ## Example Workflows
+
+### First Time Setup
+
+```bash
+/onboarding
+```
+
+The onboarding command will ask:
+- Your name
+- What you do (your job/role)
+- Topics you're interested in (3-5 main areas)
+- Where you get your news (preferred sources)
+- Active projects you're working on (optional)
+- Companies/people you want to track (optional)
+
+**Takes 2 minutes. Everything is stored as readable markdown files in your vault.**
+
+It creates:
+- `MY-PROFILE.md` - Your basic info and projects
+- `MY-INTERESTS.md` - Your topics and news sources
+- `COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
+- Project folders for each active project
+
+After onboarding, COG will:
+- Personalize daily briefs to your topics
+- Offer your projects in braindumps
+- Auto-extract competitive intel you care about
 
 ### Daily Intelligence Briefing
 

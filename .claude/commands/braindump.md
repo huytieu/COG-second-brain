@@ -5,264 +5,170 @@ Quick capture and initial processing of stream-of-consciousness thoughts, ideas,
 
 ## Command: `/braindump`
 
+## Pre-Flight Check
+
+**Before executing, check for user profile:**
+
+1. Look for `00-inbox/MY-PROFILE.md` in the vault
+2. If NOT found:
+   ```
+   Welcome to COG! It looks like this is your first time.
+
+   Before we start, let's quickly set up your profile (takes 2 minutes).
+
+   Type '/onboarding' to get started, or I can proceed with default settings.
+   ```
+3. If found:
+   - Read the profile to get user's name and active projects
+   - If user has active projects listed, offer them as domain options
+   - Use user's name for friendly communication
+
 ## Process Flow
 
-### 1. Rapid Capture
-- Accept any format: voice, text, scattered thoughts
-- No judgment or filtering during initial capture
-- Preserve original voice and spontaneity
-- Capture timestamp and context
+This command orchestrates the brain dump capture process by delegating to the specialized **brain-dump-analyst** subagent.
 
-### 2. Initial Processing
-- Basic cleanup and structure without losing authenticity
-- Identify main themes and concepts
-- Extract obvious action items or decisions
-- Note emotional tone and energy level
+### 1. User Interaction & Input Collection
+**Your role (Claude Code):**
+- Greet user warmly (use their name from MY-PROFILE.md if available)
+- Ask: "What's on your mind?" or "Ready for a brain dump?"
+- Collect their stream-of-consciousness input (can be long, rambling, voice-to-text, etc.)
+- Accept any format - no judgment, no filtering
 
-### 3. Quick Domain Classification
+### 2. Domain Classification
+**Your role (Claude Code):**
+Ask user to classify or auto-detect based on content:
+
+**If user profile exists with projects:**
 - **Personal:** Individual growth, relationships, wellness
 - **Professional:** Work, leadership, career development
-- **Project-Specific:** Related to specific projects or initiatives
-- **Mixed/Unclear:** Requires further analysis
+- **Project-Specific:** Related to specific projects
+  - If MY-PROFILE.md lists projects, offer: "Which project? [list project names]"
+  - Example: "Which project? (1) SaaS Product, (2) Book Writing, (3) Health App"
+- **Mixed/Unclear:** Spans multiple areas
 
-### 4. Competitive Intelligence Detection (Optional)
-**If user has projects with competitive tracking, automatically extract and update:**
-- **Trigger Keywords**: User-defined competitor names, funding rounds, product launches
-- **Action**: Extract competitor information to `04-projects/[project-name]/competitive/[competitor-name].md`
-- **Update**: Add dated entry to existing competitor file or create new one
-- **Cross-reference**: Link back to original braindump source
+**If no profile:** Use standard personal/professional/mixed classification
 
-### 5. Immediate Structuring
-- Separate different topics or themes
-- Identify questions vs. statements vs. ideas
-- Flag urgent items requiring immediate attention
-- Note connections to existing knowledge
+### 3. Delegate to Brain Dump Analyst Subagent
+**Your role (Claude Code):**
 
-### 6. Output Generation
-- Save to appropriate domain braindump folder
-- Tag for later analysis by brain-dump-analysis command
-- Create quick summary for immediate reference
+Once you have the raw braindump content and domain classification, **delegate ALL analysis and processing to the brain-dump-analyst subagent**:
 
-## Metadata Template
-```yaml
+```markdown
+I'm passing this to the brain-dump-analyst subagent for processing...
+
+**To brain-dump-analyst subagent:**
+
+Process this braindump according to your analysis framework:
+
+**Raw Content:**
+[User's unfiltered braindump content]
+
+**Domain:** [personal|professional|project-specific]
+**Project:** [project-name if applicable]
+**Date:** [current date]
+**User Name:** [from MY-PROFILE.md if available]
+
+**Competitive Watchlist:** [Read from 03-professional/COMPETITIVE-WATCHLIST.md if exists]
+
+**Instructions:**
+- Perform full braindump analysis per your protocol
+- Check for competitive intelligence mentions (if watchlist exists)
+- Generate structured output with metadata
+- Save to appropriate domain folder:
+  - Personal: `02-personal/braindumps/braindump-YYYY-MM-DD-HHMM-<title>.md`
+  - Professional: `03-professional/braindumps/braindump-YYYY-MM-DD-HHMM-<title>.md`
+  - Project: `04-projects/[project-slug]/braindumps/braindump-YYYY-MM-DD-HHMM-<title>.md`
+  - Mixed: `00-inbox/braindump-YYYY-MM-DD-HHMM-<title>.md`
+
+- If competitive intel detected, also update: `04-projects/[project]/competitive/[company-name].md`
+
+- Use proper YAML frontmatter with quoted strings
+- Include all analysis sections per your template
+- Provide confidence assessment
+
+Return the file path where you saved the braindump.
+```
+
+### 4. Confirm Completion
+**Your role (Claude Code):**
+- Wait for subagent to complete processing
+- Confirm file was created
+- Show user: "Braindump saved to [file path]"
+- Optionally show quick summary of themes identified
+- Ask: "Would you like me to run deeper analysis? (Type `/brain-dump-analysis`)"
+
+## What NOT to Do
+
+**Do NOT:**
+- Process or analyze the content yourself
+- Create the output file yourself
+- Perform theme extraction yourself
+- Do competitive intelligence detection yourself
+
+**Instead:**
+- Collect input from user
+- Determine domain/project
+- Delegate to brain-dump-analyst subagent
+- Confirm completion
+
+## Competitive Intelligence Detection
+
+The brain-dump-analyst subagent will automatically:
+- Read `03-professional/COMPETITIVE-WATCHLIST.md` if it exists
+- Scan braindump content for mentions of tracked companies/people
+- Extract competitive intel to `04-projects/[project]/competitive/[company].md`
+- Cross-reference back to the original braindump
+
+## Output File Structure
+
+The brain-dump-analyst subagent creates files with this structure:
+
+```markdown
 ---
 type: "braindump"
 domain: "[personal|professional|project-specific|mixed]"
 project: "[project-name]" # Only if project-specific
 date: "YYYY-MM-DD"
 created: "YYYY-MM-DD HH:MM"
-capture_method: "[voice|text|mixed]"
-energy_level: "[high|medium|low]"
-emotional_tone: "[excited|frustrated|curious|concerned|neutral]"
 themes: ["theme1", "theme2", "theme3"]
-urgency: "[immediate|soon|eventual|none]"
-analysis_needed: [true|false]
 tags: ["#braindump", "#raw-thoughts", "#domain-tag"]
-status: "[captured|needs-analysis|processed]"
+status: "captured"
 ---
-```
 
-## Capture Guidelines
+# Braindump: [Auto-generated title]
 
-### What to Include
-- **Stream of Consciousness:** Raw, unfiltered thoughts
-- **Ideas and Insights:** Creative thoughts and realizations
-- **Problems and Challenges:** Issues you're wrestling with
-- **Questions:** Things you're wondering about
-- **Decisions:** Choices you're considering
-- **Observations:** Things you've noticed or learned
-- **Emotions:** How you're feeling about situations
-- **Connections:** Links between different concepts
-
-### What NOT to Filter
-- **Incomplete Thoughts:** Half-formed ideas are valuable
-- **Contradictions:** Conflicting thoughts show thinking process
-- **Repetition:** Recurring themes indicate importance
-- **Tangents:** Side thoughts often contain insights
-- **Emotions:** Feelings provide important context
-- **Questions:** Uncertainty is part of the process
-
-## Domain Classification Quick Guide
-
-### Personal Domain Indicators
-- Family, relationships, personal health
-- Individual goals and aspirations
-- Personal learning and growth
-- Life balance and satisfaction
-- Personal values and beliefs
-
-### Professional Domain Indicators
-- Work projects and responsibilities
-- Team dynamics and leadership
-- Career development and skills
-- Professional relationships
-- Industry trends and opportunities
-
-### Project-Specific Indicators
-- Specific product or initiative names
-- Technical implementation details
-- Project timelines and milestones
-- Project team members
-- Project-specific metrics or goals
-
-### Mixed Domain Indicators
-- Cross-cutting themes affecting multiple areas
-- Life philosophy and principles
-- Time management and productivity
-- Learning and skill development
-- Strategic thinking and planning
-
-## Processing Levels
-
-### Level 1: Raw Capture (This Command)
-- Immediate capture with minimal processing
-- Basic domain classification
-- Simple structuring and cleanup
-- Quick metadata tagging
-
-### Level 2: Analysis Processing (brain-dump-analysis command)
-- Deep thematic analysis
-- Strategic insight extraction
-- Knowledge base integration
-- Actionable recommendation generation
-
-### Level 3: Knowledge Integration (consolidation command)
-- Pattern recognition across multiple braindumps
-- Framework development from insights
-- Timeline narrative creation
-- Single source of truth updates
-
-## Output Structure
-
-### 1. Original Capture
-```markdown
 ## Raw Thoughts
-[Preserve original voice and flow]
-```
+[Original user content preserved]
 
-### 2. Quick Structure
-```markdown
 ## Main Themes
-- Theme 1: Brief description
-- Theme 2: Brief description
-- Theme 3: Brief description
+[Identified by subagent]
 
 ## Action Items
-- [ ] Urgent item requiring immediate attention
-- [ ] Important item for this week
-- [ ] Future consideration
+[Extracted by subagent]
 
 ## Questions
-- Question 1 requiring research or thought
-- Question 2 needing discussion with others
-- Question 3 for future exploration
+[Identified by subagent]
 
 ## Connections
-- Link to existing project or knowledge
-- Relationship to previous braindumps
-- Connection to current priorities
-```
+[Identified by subagent]
 
-### 3. Processing Notes
-```markdown
 ## Processing Notes
-- Domain: [Classification reasoning]
-- Energy: [Energy level during capture]
-- Context: [Situational context if relevant]
-- Next Steps: [Immediate follow-up needed]
+[Subagent's analysis notes]
 ```
-
-## File Naming Convention
-- **Personal:** `02-personal/braindumps/braindump-YYYY-MM-DD-HHMM-<title>.md`
-- **Professional:** `03-professional/braindumps/braindump-YYYY-MM-DD-HHMM-<title>.md`
-- **Project-Specific:** `04-projects/[project]/braindumps/braindump-YYYY-MM-DD-HHMM-<title>.md`
-- **Mixed:** `00-inbox/braindump-YYYY-MM-DD-HHMM-<title>.md` (for later classification)
-
-## Quality Guidelines
-
-### Authenticity Preservation
-- Maintain original voice and tone
-- Preserve emotional context and energy
-- Keep incomplete thoughts and questions
-- Don't over-structure or sanitize
-
-### Useful Structure
-- Separate clearly different topics
-- Identify actionable items
-- Note time-sensitive elements
-- Flag items needing follow-up
-
-### Context Capture
-- Note situational context if relevant
-- Capture emotional state and energy level
-- Record any triggering events or conversations
-- Include relevant background information
 
 ## Integration with Other Commands
 
 ### Immediate Follow-up
-- Use `/brain-dump-analysis` for deeper processing
-- Use `/daily-checkin` to reflect on themes
-- Use `/project-analysis` if project-specific insights emerge
+- `/brain-dump-analysis` - Deep analysis via brain-dump-analyst subagent
+- `/daily-checkin` - Reflect on themes
+- `/scout-project-analysis` - Project-specific insights (if applicable)
 
-### Scheduled Processing
-- Weekly review of accumulated braindumps
-- Monthly pattern analysis across braindumps
-- Quarterly integration into knowledge consolidation
-
-### Cross-Reference Creation
-- Link to related previous braindumps
-- Connect to relevant project documents
-- Reference related insights and frameworks
-
-## Common Use Cases
-
-### Problem-Solving Sessions
-- Capture all aspects of a complex problem
-- Record different solution approaches
-- Note pros and cons of various options
-- Document decision-making process
-
-### Creative Ideation
-- Capture creative ideas without judgment
-- Record inspiration sources and triggers
-- Note connections between different concepts
-- Preserve creative energy and enthusiasm
-
-### Strategic Thinking
-- Process complex strategic decisions
-- Explore different scenarios and implications
-- Consider stakeholder perspectives
-- Work through strategic trade-offs
-
-### Learning Integration
-- Process new information and insights
-- Connect learning to existing knowledge
-- Identify application opportunities
-- Note questions for further exploration
-
-### Emotional Processing
-- Work through challenging situations
-- Process feedback or difficult conversations
-- Explore personal reactions and responses
-- Identify patterns in emotional responses
+### Competitive Intelligence
+If competitive mentions detected, the brain-dump-analyst will automatically update competitive files and mention this in the output.
 
 ## Success Metrics
-
-### Capture Effectiveness
-- Speed of capture (minimize friction)
-- Completeness of thought capture
-- Preservation of original voice and energy
-- Useful structure without over-processing
-
-### Processing Value
-- Actionable items identified
-- Useful connections made
-- Appropriate domain classification
-- Effective preparation for deeper analysis
-
-### Integration Success
-- Successful handoff to analysis commands
-- Useful input for knowledge consolidation
-- Effective cross-referencing with existing content
-- Valuable contribution to overall system learning
+- Speed of capture (minimize user friction)
+- Successful delegation to subagent
+- File saved to correct location
+- User feels heard and understood
+- Competitive intel auto-extracted when relevant

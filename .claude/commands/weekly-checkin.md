@@ -5,192 +5,167 @@ Comprehensive weekly review and analysis integrating insights across all domains
 
 ## Command: `/weekly-checkin`
 
+## Pre-Flight Check
+
+**Check for user profile (optional but enhances experience):**
+
+1. Look for `00-inbox/MY-PROFILE.md` in the vault
+2. If found:
+   - Read user's name for personalization
+   - Read active projects to review project-specific progress
+   - Tailor reflection questions to user's role and projects
+
 ## Process Flow
 
-### 1. Data Collection
-- Gather all content from the past week:
-  - Daily briefs and check-ins
-  - Braindumps and analyses
-  - Project updates and milestones
-  - Meeting notes and transcripts
+This command helps you reflect on your week through guided conversation and structured output.
 
-### 2. Cross-Domain Analysis
-- **Personal Domain Review**
-  - Wellness and energy patterns
-  - Personal goal progress
-  - Relationship dynamics
-  - Learning and growth areas
+### 1. Gather Context
+**Your role (Claude Code):**
 
-- **Professional Domain Review**
-  - Work accomplishments and challenges
-  - Team dynamics and leadership insights
-  - Career development progress
-  - Professional relationships
+- Read `00-inbox/MY-PROFILE.md` if available for personalization
+- Scan recent files from the past week:
+  - Daily briefs in `01-daily/briefs/`
+  - Braindumps in `02-personal/braindumps/`, `03-professional/braindumps/`, `04-projects/*/braindumps/`
+  - Check-ins in `01-daily/checkins/`
 
-- **Project Domain Review**
-  - Project progress and blockers
-  - Competitive intelligence updates
-  - Metric tracking and trends
-  - Strategic pivots or decisions
+### 2. Guided Reflection
+**Your role (Claude Code):**
 
-### 3. Pattern Recognition
-- Identify recurring themes across domains
-- Detect emotional or energy patterns
-- Recognize productivity cycles
-- Spot cross-domain correlations
-  - How personal wellness affects professional performance
-  - How professional stress impacts personal well-being
-  - How project excitement drives overall energy
+Lead user through reflection questions:
 
-### 4. Strategic Insights
-- Synthesize learnings into actionable insights
-- Identify opportunities for improvement
-- Highlight wins and celebrate progress
-- Flag areas requiring attention or intervention
+**Overall Week Assessment**
+- "How would you rate this week on a 1-5 scale? Why?"
+- "What were your biggest wins?"
+- "What were your main challenges?"
 
-### 5. Forward Planning
-- Set priorities for upcoming week
-- Carry forward unresolved items
-- Schedule follow-up actions
-- Adjust strategies based on learnings
+**Domain Reviews**
+- **Personal:** "How did you take care of yourself this week?"
+- **Professional:** "What did you accomplish at work? Any standout moments?"
+- **Projects:** [If they have projects] "How did [project name] progress?"
 
-### 6. Output Generation
-- Save to `01-daily/checkins/weekly-checkin-YYYY-MM-DD.md`
-- Include comprehensive metadata
-- Structure for reflection and action
+**Pattern Recognition**
+- "Did you notice any recurring themes in your braindumps?"
+- "How did your energy levels vary throughout the week?"
+- "Any connections between different areas of your life?"
 
-## Metadata Template
-```yaml
----
-type: weekly-checkin
-domain: integrated
-date: YYYY-MM-DD
-week_of: YYYY-MM-DD
-created: YYYY-MM-DD HH:MM
-confidence: high
-tags: ["#weekly-checkin", "#reflection", "#strategic-planning"]
-domains_analyzed: ["personal", "professional", "projects"]
-braindumps_reviewed: [number]
-patterns_identified: [pattern1, pattern2, pattern3]
----
-```
+**Forward Planning**
+- "What are your top 3 priorities for next week?"
+- "Anything from this week you want to carry forward?"
+- "What do you want to do differently?"
 
-## Content Structure
+### 3. Generate Weekly Check-in Document
+**Your role (Claude Code):**
 
-### 1. Week in Review
+Based on the conversation, create a structured check-in document:
+
 ```markdown
-## Executive Summary
-- Overall week assessment (1-5 scale with reasoning)
-- Key highlights and wins
-- Major challenges encountered
-- Dominant emotional/energy patterns
+---
+type: "weekly-checkin"
+domain: "integrated"
+date: "YYYY-MM-DD"
+week_of: "YYYY-MM-DD"
+created: "YYYY-MM-DD HH:MM"
+tags: ["#weekly-checkin", "#reflection", "#planning"]
+domains_analyzed: ["personal", "professional", "projects"]
+rating: [1-5]
+---
 
-## Domain Summaries
+# Weekly Check-in - Week of [Date]
+
+## Executive Summary
+**Week Rating:** [1-5] - [User's reasoning]
+
+**Key Highlights:**
+- [Win 1]
+- [Win 2]
+
+**Main Challenges:**
+- [Challenge 1]
+- [Challenge 2]
+
+## Domain Reviews
+
 ### Personal
-- Wellness and self-care
-- Relationships and connections
-- Personal goals progress
-- Learning and growth
+- [User's reflection on personal wellness, relationships, growth]
 
 ### Professional
-- Work accomplishments
-- Team dynamics
-- Leadership actions
-- Career development
+- [User's reflection on work accomplishments, challenges, team dynamics]
 
 ### Projects
-- [Project Name 1]: Progress, blockers, next steps
-- [Project Name 2]: Progress, blockers, next steps
-```
+[If applicable, for each project:]
+#### [Project Name]
+- **Progress:** [What moved forward]
+- **Blockers:** [What's in the way]
+- **Next Steps:** [What's coming]
 
-### 2. Pattern Analysis
-```markdown
-## Recurring Themes
-- Theme 1: Description and significance
-- Theme 2: Description and significance
-- Theme 3: Description and significance
+## Pattern Recognition
 
-## Cross-Domain Insights
-- How personal wellness correlated with professional productivity
-- How project challenges affected overall energy
-- How learning in one domain applied to others
+### Recurring Themes
+- [Theme 1 identified]
+- [Theme 2 identified]
 
-## Productivity Patterns
-- Most productive days/times
-- Energy level variations
-- Factors that enhanced focus
-- Factors that decreased effectiveness
-```
+### Energy Patterns
+- [Observations about energy levels, productive times]
 
-### 3. Strategic Insights
-```markdown
-## What Worked Well
-- Strategy/approach 1 and why it worked
-- Strategy/approach 2 and why it worked
+### Cross-Domain Insights
+- [Connections between personal/professional/projects]
 
-## What Needs Adjustment
-- Area 1 requiring change and proposed approach
-- Area 2 requiring change and proposed approach
+## Forward Planning
 
-## Opportunities Identified
-- Opportunity 1 and potential action
-- Opportunity 2 and potential action
+### Priorities for Next Week
+1. [Priority 1]
+2. [Priority 2]
+3. [Priority 3]
 
-## Risks/Threats
-- Risk 1 and mitigation strategy
-- Risk 2 and mitigation strategy
-```
+### Carry Forward Items
+- [ ] [Unresolved item from this week]
+- [ ] [Ongoing task]
 
-### 4. Forward Planning
-```markdown
-## Priorities for Next Week
-1. Priority 1 (domain: [personal|professional|project])
-2. Priority 2 (domain: [personal|professional|project])
-3. Priority 3 (domain: [personal|professional|project])
-
-## Carry Forward Items
-- [ ] Unresolved item 1 from this week
-- [ ] Unresolved item 2 from this week
-
-## Experiments to Try
-- Experiment 1: Hypothesis and measurement approach
-- Experiment 2: Hypothesis and measurement approach
+### What to Change
+- [Experiment or adjustment to try next week]
 
 ## Success Criteria for Next Week
-- Measurable outcome 1
-- Measurable outcome 2
-- Measurable outcome 3
+- [Measurable outcome 1]
+- [Measurable outcome 2]
 ```
 
-## Analysis Guidelines
+Save to: `01-daily/checkins/weekly-checkin-YYYY-MM-DD.md`
 
-### Honesty and Objectivity
-- Be brutally honest about what worked and what didn't
-- Avoid sugar-coating challenges or failures
-- Celebrate wins genuinely without exaggeration
-- Acknowledge emotional states without judgment
+### 4. Confirm Completion
+**Your role (Claude Code):**
+- Confirm file was created
+- Show user: "Weekly check-in saved to [file path]"
+- Offer to review any patterns spotted across recent weeks
 
-### Cross-Domain Connections
-- Actively look for correlations between domains
-- Note how actions in one area affect others
-- Identify holistic patterns in thinking and behavior
-- Connect insights to create comprehensive understanding
+## What to Focus On
 
-### Actionability Focus
-- Every insight should lead to potential action
-- Prioritize high-impact, achievable changes
-- Set realistic expectations and goals
-- Define clear success criteria
+**Do:**
+- Have a warm, conversational tone
+- Ask follow-up questions based on user's answers
+- Help identify patterns they might not see themselves
+- Be honest and objective in summarizing their reflections
+- Celebrate wins genuinely
+- Acknowledge challenges without sugar-coating
 
-## Quality Metrics
-- Completeness: All domains thoroughly reviewed
-- Depth: Insights go beyond surface observations
-- Actionability: Clear next steps identified
-- Honesty: Authentic assessment without bias
+**Don't:**
+- Rush through the questions
+- Make assumptions about what matters to them
+- Judge their answers or week rating
+- Over-structure their free-form reflections
 
-## Common Use Cases
-- Weekly reflection and planning ritual
-- Monthly pattern identification (review 4 weekly check-ins)
-- Quarterly strategic assessment
-- Annual review compilation
-- Personal growth tracking over time
+## Integration with Other Commands
+
+### Pattern Analysis
+- Review multiple weekly check-ins monthly to spot long-term patterns
+- Use `/knowledge-consolidation` to extract frameworks from check-ins
+
+### Project Tracking
+- Weekly check-ins provide historical record of project progress
+- Useful for `/scout-project-analysis` to understand evolution
+
+## Success Metrics
+- User completes meaningful reflection
+- Patterns identified and documented
+- Clear priorities set for next week
+- User feels heard and understood
+- File saved with complete information
