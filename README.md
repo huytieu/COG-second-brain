@@ -373,6 +373,10 @@ Built with:
 - [Obsidian](https://obsidian.md/) for markdown management
 - Inspiration from Zettelkasten, Building a Second Brain, and GTD methodologies
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=huytieu/COG-second-brain&type=date&legend=top-left)](https://www.star-history.com/#huytieu/COG-second-brain&type=date&legend=top-left)
+
 ---
 
 **TL;DR:** COG is a self-evolving second brain using Claude Code + Obsidian + Git. Just `.md` files that sync via iCloud and learn your patterns. Setup in 3 steps, zero maintenance required.
