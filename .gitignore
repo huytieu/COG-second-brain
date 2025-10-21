@@ -40,3 +40,8 @@ Thumbs.db
 # Backup files
 *.bak
 *~
+
+# Submission and marketplace tracking (keep private)
+.github/SUBMISSION-CHECKLIST.md
+.github/SUBMISSION-TEMPLATES.md
+.github/MARKETPLACE.md
