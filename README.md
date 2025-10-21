@@ -385,11 +385,17 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 Feel free to use COG for personal or commercial projects. If you build something cool with it, I'd love to hear about it!
 
-## Support
+## Support COG's Development
 
+If COG has helped you build a better second brain, consider supporting its continued development:
+
+- ⭐ Star this repo to increase visibility
+- 💝 [Sponsor on GitHub](https://github.com/sponsors/huytieu) - Help maintain and improve COG
 - 🐛 [Report bugs](https://github.com/huytieu/COG-second-brain/issues)
-- 💬 [Discussions](https://github.com/huytieu/COG-second-brain/discussions)
-- 📖 [Documentation](https://github.com/huytieu/COG-second-brain/wiki)
+- 💬 [Share ideas](https://github.com/huytieu/COG-second-brain/discussions)
+- 📖 [Contribute](CONTRIBUTING.md)
+
+COG is free and open-source (MIT license). Your support helps keep it that way while enabling new features and better documentation.
 
 ## Acknowledgments
 
