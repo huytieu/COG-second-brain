@@ -1,0 +1,11 @@
+{
+  "name": "cog-second-brain",
+  "source": "https://github.com/huytieu/COG-second-brain",
+  "owner": {
+    "name": "Huy Tieu",
+    "email": "tqhuy1991@gmail.com",
+    "url": "https://github.com/huytieu"
+  },
+  "description": "Self-evolving second brain with AI agents for knowledge management",
+  "version": "1.0.0"
+}

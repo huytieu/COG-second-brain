@@ -1,0 +1,105 @@
+{
+  "name": "cog-second-brain",
+  "version": "1.0.0",
+  "description": "A self-evolving second brain system using Claude Code, Obsidian markdown files, and Git version control. Features specialized AI agents for knowledge management, daily intelligence briefings, and strategic insights extraction.",
+  "author": {
+    "name": "Huy Tieu",
+    "url": "https://github.com/huytieu"
+  },
+  "homepage": "https://github.com/huytieu/COG-second-brain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huytieu/COG-second-brain"
+  },
+  "license": "MIT",
+  "keywords": [
+    "second-brain",
+    "knowledge-management",
+    "obsidian",
+    "productivity",
+    "ai-agents",
+    "personal-intelligence",
+    "note-taking",
+    "self-evolving",
+    "braindump",
+    "daily-brief"
+  ],
+  "category": "productivity",
+  "tags": [
+    "knowledge-management",
+    "obsidian",
+    "second-brain",
+    "ai-agents",
+    "productivity",
+    "note-taking"
+  ],
+  "commands": [
+    {
+      "name": "onboarding",
+      "path": ".claude/commands/onboarding.md",
+      "description": "Personalize COG for your workflow - creates profile, interests, and watchlist files (run this first!)"
+    },
+    {
+      "name": "daily-brief",
+      "path": ".claude/commands/daily-brief.md",
+      "description": "Generate personalized news intelligence with verified sources (7-day freshness requirement)"
+    },
+    {
+      "name": "braindump",
+      "path": ".claude/commands/braindump.md",
+      "description": "Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction"
+    },
+    {
+      "name": "weekly-checkin",
+      "path": ".claude/commands/weekly-checkin.md",
+      "description": "Cross-domain pattern analysis and strategic reflection for weekly review"
+    },
+    {
+      "name": "knowledge-consolidation",
+      "path": ".claude/commands/knowledge-consolidation.md",
+      "description": "Build frameworks from scattered insights across all braindumps and notes"
+    }
+  ],
+  "agents": [
+    {
+      "name": "brain-dump-analyst",
+      "path": ".claude/subagents/brain-dump-analyst.md",
+      "description": "Transforms stream-of-consciousness into structured insights with domain classification and competitive intelligence extraction"
+    },
+    {
+      "name": "news-curator",
+      "path": ".claude/subagents/news-curator.md",
+      "description": "Finds verified news with strict 7-day freshness requirement, cross-references sources, and generates personalized briefings"
+    }
+  ],
+  "metadata": {
+    "pluginRoot": ".",
+    "features": [
+      "Self-evolving intelligence with pattern recognition",
+      "Self-healing system with auto-updating cross-references",
+      "Verification-first approach (no AI hallucinations)",
+      "Privacy-first architecture with strict domain separation",
+      "Plain text markdown files (no database, no vendor lock-in)",
+      "Multi-device sync via iCloud (iPhone, iPad, Mac)",
+      "Git version control for tracking thinking evolution"
+    ],
+    "requirements": {
+      "obsidian": "Recommended for markdown file management",
+      "git": "Optional but recommended for version control",
+      "claudeCode": "Required for AI agent functionality"
+    },
+    "installation": {
+      "quickStart": "Clone repo into Obsidian vault, copy .claude directory, run /onboarding",
+      "setupTime": "3-5 minutes",
+      "onboardingTime": "2 minutes"
+    },
+    "directoryStructure": {
+      "00-inbox": "Temporary processing area with profile and interests files",
+      "01-daily": "Daily briefs and check-ins",
+      "02-personal": "Personal domain (strict privacy)",
+      "03-professional": "Professional domain with competitive watchlist",
+      "04-projects": "Project-specific tracking",
+      "05-knowledge": "Consolidated insights and patterns"
+    }
+  }
+}

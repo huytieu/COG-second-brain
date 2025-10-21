@@ -24,7 +24,31 @@ COG is a personal productivity and knowledge management system that:
 - [Claude Code](https://claude.ai/download) (or VSCode with Claude extension)
 - Git (optional but recommended)
 
-### Installation (3 Steps)
+### Installation
+
+#### Option 1: Install from Claude Code Plugin Marketplace (Recommended)
+
+Once COG is published to a marketplace, you can install it directly in Claude Code:
+
+1. **Open Claude Code in your Obsidian vault:**
+   ```bash
+   cd /path/to/your/obsidian-vault
+   code .
+   ```
+
+2. **Install the plugin:**
+   - Use the Claude Code plugin marketplace interface
+   - Search for "cog-second-brain"
+   - Click install
+
+3. **Run onboarding:**
+   ```
+   /onboarding
+   ```
+
+That's it! The onboarding will personalize COG for your needs in 3-5 minutes.
+
+#### Option 2: Manual Installation (3 Steps)
 
 1. **Clone this repo into your Obsidian vault:**
    ```bash
@@ -35,6 +59,7 @@ COG is a personal productivity and knowledge management system that:
 2. **Copy COG structure to your vault:**
    ```bash
    cp -r COG-second-brain/.claude .
+   cp COG-second-brain/plugin.json .
    ```
 
 3. **Open Claude Code in your vault and run onboarding:**
@@ -45,7 +70,7 @@ COG is a personal productivity and knowledge management system that:
 
 That's it! The onboarding will personalize COG for your needs in 3-5 minutes.
 
-### Alternative: Manual Setup
+### Alternative: Detailed Manual Setup
 
 See [SETUP.md](SETUP.md) for detailed step-by-step instructions.
 
