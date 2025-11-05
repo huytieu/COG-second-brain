@@ -20,70 +20,71 @@ COG is a personal productivity and knowledge management system that:
 
 ### Prerequisites
 
-- [Obsidian](https://obsidian.md/) installed
-- [Claude Code](https://claude.ai/download) (or VSCode with Claude extension)
-- Git (optional but recommended)
+- [Claude Code](https://claude.ai/download) - Required
+- [Obsidian](https://obsidian.md/) - Recommended for viewing/editing your notes
+- Git - Already on your system if you can run the clone command below
 
-### Installation (3 Steps)
+### Installation (2 Steps)
 
-1. **Clone this repo into your Obsidian vault:**
+1. **Clone this repo to where you want your second brain:**
    ```bash
-   cd /path/to/your/obsidian-vault
    git clone https://github.com/huytieu/COG-second-brain.git
+   cd COG-second-brain
    ```
 
-2. **Copy COG structure to your vault:**
-   ```bash
-   cp -r COG-second-brain/.claude .
-   ```
-
-3. **Open Claude Code in your vault and run onboarding:**
+2. **Open Claude Code and run onboarding:**
    ```bash
    code .
-   # In Claude Code, type: /onboarding
+   # In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
    ```
 
-That's it! The onboarding will personalize COG for your needs in 3-5 minutes.
+That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
 
-> **Note:** COG is also available in community plugin marketplaces. Once official Claude Code plugin support is released, marketplace installation will be the recommended method.
+**What just happened?**
+- The cloned repo IS your second brain - all files are ready to use
+- `.claude/skills/` contains 5 AI skills ready to invoke
+- Directory structure is already set up for your notes
+- Just run onboarding to personalize it
+
+**Want Obsidian integration?**
+- Open Obsidian → "Open folder as vault" → Select the `COG-second-brain` folder
+- Now you can view/edit notes in Obsidian while using Claude Code for AI features
 
 ### Detailed Setup Guide
 
-See [SETUP.md](SETUP.md) for step-by-step instructions with screenshots.
+See [SETUP.md](SETUP.md) for optional configurations (Git sync, iCloud, etc.).
 
 ## What You Get
 
-### 16 Custom Slash Commands
+### 5 Powerful Skills
 
-**Setup:**
-- `/onboarding` - Personalize COG for your workflow (run this first!)
+COG uses Claude's Agent Skills architecture - specialized capabilities that Claude automatically invokes when relevant to your request.
+
+**Setup & Personalization:**
+- **onboarding** - Personalize COG for your workflow (run this first!)
 
 **Daily Operations:**
-- `/daily-brief` - Personalized news intelligence (verified sources only)
-- `/daily-checkin` - Structured daily reflection
-- `/braindump` - Quick capture of raw thoughts
-- `/brain-dump-analysis` - Transform thoughts into strategic insights
+- **braindump** - Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction
+- **daily-brief** - Personalized news intelligence with verified sources (7-day freshness requirement)
 
 **Weekly & Strategic:**
-- `/weekly-checkin` - Cross-domain pattern analysis
-- `/consolidate-knowledge` - Build frameworks from scattered insights
-- `/meeting-transcript` - Process meeting recordings with noise filtering
+- **weekly-checkin** - Cross-domain pattern analysis and strategic reflection
+- **knowledge-consolidation** - Build frameworks from scattered insights across all your notes
 
-**Project & Content:**
-- `/project-story` - Generate compelling narratives about project evolution
-- `/newsletter-research` - Research and develop thought leadership content
+**How Skills Work:**
 
-### 2 Core Specialized Subagents
+Skills are self-contained AI capabilities that combine orchestration and specialized processing. Unlike the old command/subagent split, each skill now:
+- Automatically activates when Claude detects relevant user intent
+- Handles the complete workflow from user interaction to file creation
+- Contains all necessary instructions, analysis frameworks, and verification protocols
+- Uses progressive disclosure to load information only as needed
 
-- **Brain Dump Analyst** (`.claude/subagents/brain-dump-analyst.md`): Transforms stream-of-consciousness into structured insights with domain classification and competitive intelligence extraction
-- **News Curator** (`.claude/subagents/news-curator.md`): Finds verified news with strict 7-day freshness requirement, cross-references sources, and generates personalized briefings
+For example:
+- Ask "What's on my mind?" → Claude invokes the **braindump** skill
+- Say "Give me my daily brief" → Claude invokes the **daily-brief** skill
+- Request "Weekly review" → Claude invokes the **weekly-checkin** skill
 
-**How Subagents Work:**
-Commands are thin orchestration layers that delegate specialized work to subagents. For example:
-- `/braindump` collects your thoughts, then delegates analysis to brain-dump-analyst
-- `/daily-brief` reads your profile, then delegates news curation to news-curator
-
-This architecture keeps commands simple while subagents handle complex, specialized processing.
+This architecture leverages Claude Code's native skill system for better performance and simpler maintenance.
 
 ## Key Features
 
@@ -98,8 +99,8 @@ COG doesn't just store notes—it actively learns:
 
 **Weekly Evolution Cycle:**
 ```
-Monday-Friday: Capture thoughts via /braindump
-Friday: Run /consolidate-knowledge
+Monday-Friday: Capture thoughts via braindump skill
+Friday: Run knowledge-consolidation skill
 → COG analyzes ALL your notes
 → Builds frameworks you didn't explicitly create
 → Updates "single source of truth" files
@@ -132,11 +133,17 @@ Friday: Run /consolidate-knowledge
 ```
 your-obsidian-vault/
 ├── .claude/
-│   ├── commands/              # 16 custom slash commands (thin orchestrators)
-│   ├── subagents/             # 2 specialized AI subagents (complex processors)
-│   │   ├── brain-dump-analyst.md
-│   │   └── news-curator.md
-│   └── settings.local.json    # Agent configuration (optional)
+│   └── skills/                # 5 specialized skills
+│       ├── onboarding/
+│       │   └── SKILL.md
+│       ├── braindump/
+│       │   └── SKILL.md
+│       ├── daily-brief/
+│       │   └── SKILL.md
+│       ├── weekly-checkin/
+│       │   └── SKILL.md
+│       └── knowledge-consolidation/
+│           └── SKILL.md
 ├── 00-inbox/                  # Temporary processing area
 │   ├── MY-PROFILE.md          # Your profile (created by onboarding)
 │   ├── MY-INTERESTS.md        # Your topics & news sources
@@ -167,13 +174,11 @@ your-obsidian-vault/
 
 ## Example Workflows
 
-### First Time Setup
+### First Time Setup (After Cloning)
 
-```bash
-/onboarding
-```
+In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
 
-The onboarding command will ask:
+The onboarding skill will ask:
 - Your name
 - What you do (your job/role)
 - Topics you're interested in (3-5 main areas)
@@ -181,24 +186,22 @@ The onboarding command will ask:
 - Active projects you're working on (optional)
 - Companies/people you want to track (optional)
 
-**Takes 2 minutes. Everything is stored as readable markdown files in your vault.**
+**Takes 2 minutes. Everything is stored as readable markdown files.**
 
-It creates:
-- `MY-PROFILE.md` - Your basic info and projects
-- `MY-INTERESTS.md` - Your topics and news sources
-- `COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
-- Project folders for each active project
+Onboarding creates:
+- `00-inbox/MY-PROFILE.md` - Your basic info and projects
+- `00-inbox/MY-INTERESTS.md` - Your topics and news sources
+- `03-professional/COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
+- `04-projects/[project-name]/` folders for each active project
 
 After onboarding, COG will:
 - Personalize daily briefs to your topics
-- Offer your projects in braindumps
+- Offer your projects when you braindump
 - Auto-extract competitive intel you care about
 
 ### Daily Intelligence Briefing
 
-```bash
-/daily-brief
-```
+Ask Claude: "Give me my daily brief" or "What's the news today?"
 
 Generates a personalized briefing with:
 - Verified news from the last 7 days
@@ -208,14 +211,11 @@ Generates a personalized briefing with:
 
 ### Brain Dump → Strategic Insights
 
-```bash
-/braindump    # Capture raw thoughts (no judgment)
-/brain-dump-analysis    # Transform into insights
-```
+Ask Claude: "I need to braindump" or "What's on my mind?"
 
-Two-stage process:
+Single integrated workflow:
 1. **Quick capture**: Preserves spontaneity, no filtering
-2. **Intelligent processing**: Extracts themes, actions, connections
+2. **Intelligent processing**: Automatically extracts themes, actions, connections
 
 The system automatically:
 - Classifies by domain
@@ -225,9 +225,7 @@ The system automatically:
 
 ### Knowledge Consolidation
 
-```bash
-/consolidate-knowledge
-```
+Ask Claude: "Consolidate my knowledge" or "Build frameworks from my notes"
 
 Weekly or monthly:
 - Analyzes patterns across all braindumps
@@ -238,10 +236,10 @@ Weekly or monthly:
 ## Why COG Works
 
 ### What Works
-- ✅ **Setup is trivial**: Drop files in, done. No complex configuration.
+- ✅ **Setup is trivial**: Clone repo, run onboarding. Done in 2 minutes.
 - ✅ **Maintenance-free**: Self-heals and auto-organizes
 - ✅ **Actually portable**: Works on iPhone, iPad, Mac via iCloud
-- ✅ **Custom agents >> generic AI**: Specialized beats ChatGPT for repeated tasks
+- ✅ **Custom skills >> generic AI**: Specialized beats ChatGPT for repeated tasks
 - ✅ **Git for thoughts**: Version control shows thinking evolution
 
 ### What Doesn't Work
@@ -257,27 +255,43 @@ Weekly or monthly:
 
 ## Advanced Configuration
 
-### Customizing Commands
+### Customizing Skills
 
-Edit `.claude/commands/*.md` to customize workflows:
+Edit `.claude/skills/[skill-name]/SKILL.md` to customize workflows:
 ```markdown
-# Custom Command Example
-/my-workflow
+---
+name: my-custom-skill
+description: What this skill does
+---
 
-Your custom prompt here...
+# My Custom Skill
+
+## When to Invoke
+[When Claude should use this skill]
+
+## Process Flow
+[How it works]
 ```
 
-### Adding New Agents
+### Adding New Skills
 
-Create `.claude/subagents/my-agent.md`:
+Create `.claude/skills/my-skill/SKILL.md`:
 ```markdown
-# My Custom Agent
+---
+name: my-skill
+description: Brief description for Claude to know when to invoke this
+---
+
+# My Custom Skill
 
 ## Purpose
-[What this agent does]
+[What this skill does]
 
-## Process
-[How it works]
+## When to Invoke
+[User intent patterns that should trigger this]
+
+## Process Flow
+[Detailed instructions]
 ```
 
 ### Template Customization
