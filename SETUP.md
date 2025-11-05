@@ -225,6 +225,42 @@ Update `00-inbox/MY-PROFILE.md` to include the new project in your active projec
 
 Want to customize how COG works?
 
+### The Easy Way: Just Ask Claude
+
+The simplest way to enhance or customize your skills is to ask Claude directly. Claude can update skill files for you based on your preferences.
+
+**Examples:**
+
+```
+"Update the daily-brief skill to prioritize arXiv as a research source"
+
+"Adjust the braindump skill to use a more casual, conversational tone"
+
+"Modify the weekly-checkin skill to include health and fitness reflection"
+
+"Add competitive intelligence extraction to the knowledge-consolidation skill"
+
+"Update the daily-brief skill to include crypto market analysis"
+
+"Change the braindump skill to ask about energy levels and focus state"
+```
+
+Claude will:
+1. Read the current skill configuration
+2. Understand your customization request
+3. Update the SKILL.md file with your preferences
+4. Preserve the core functionality while adding your enhancements
+
+**This approach is recommended because:**
+- No need to understand the skill file structure
+- Claude ensures consistency with the existing format
+- Changes are immediate and tested
+- You can iterate quickly with natural language
+
+### Manual Skill Editing
+
+If you prefer to edit skills yourself:
+
 **Edit existing skills:**
 ```bash
 # Example: Customize the braindump skill

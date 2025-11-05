@@ -259,7 +259,41 @@ Weekly or monthly:
 
 ### Customizing Skills
 
-Edit `.claude/skills/[skill-name]/SKILL.md` to customize workflows:
+**The Easy Way: Just Ask Claude**
+
+The simplest way to enhance or customize your skills is to ask Claude directly in your conversation. Claude can update skill files for you based on your preferences.
+
+**Examples:**
+
+```
+"Update the daily-brief skill to prioritize arXiv as a research source"
+
+"Adjust the braindump skill to use a more casual, conversational tone"
+
+"Modify the weekly-checkin skill to include health and fitness reflection"
+
+"Add competitive intelligence extraction to the knowledge-consolidation skill"
+
+"Update the daily-brief skill to include crypto market analysis"
+
+"Change the braindump skill to ask about energy levels and focus state"
+```
+
+Claude will:
+1. Read the current skill configuration
+2. Understand your customization request
+3. Update the SKILL.md file with your preferences
+4. Preserve the core functionality while adding your enhancements
+
+**This approach is recommended because:**
+- No need to understand the skill file structure
+- Claude ensures consistency with the existing format
+- Changes are immediate and tested
+- You can iterate quickly with natural language
+
+### Manual Skill Editing
+
+If you prefer to edit skills yourself, you can modify `.claude/skills/[skill-name]/SKILL.md` directly:
 ```markdown
 ---
 name: my-custom-skill
