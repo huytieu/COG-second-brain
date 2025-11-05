@@ -21,15 +21,6 @@ Thumbs.db
 # 04-projects/*
 # 05-knowledge/*
 
-# Keep directory structure
-!00-inbox/.gitkeep
-!01-daily/briefs/.gitkeep
-!01-daily/checkins/.gitkeep
-!02-personal/braindumps/.gitkeep
-!03-professional/braindumps/.gitkeep
-!04-projects/.gitkeep
-!05-knowledge/consolidated/.gitkeep
-
 # IDE
 .vscode/
 .idea/
