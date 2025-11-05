@@ -2,358 +2,373 @@
 
 Complete step-by-step instructions for setting up your COG (Claude + Obsidian + Git) second brain system.
 
-## Prerequisites
+## Quick Start (Easiest Way)
 
-Before you begin, ensure you have:
+### What You Need
 
-1. **Obsidian** installed ([Download here](https://obsidian.md/))
-2. **Claude Code** or VSCode with Claude extension ([Download here](https://claude.ai/download))
-3. **Git** (optional but recommended) - Check if installed: `git --version`
-4. **iCloud Drive** (optional, for multi-device sync on Apple devices)
+1. **Claude Code** ([Download here](https://claude.ai/download)) - Required
+2. **Obsidian** ([Download here](https://obsidian.md/)) - Recommended (optional)
+3. **Git** - Already on your system if you can run clone commands
 
-## Installation Methods
+### Installation (2 Steps)
 
-### Method 1: Quick Setup (Recommended)
-
-1. **Clone COG into your Obsidian vault:**
-   ```bash
-   cd /path/to/your/obsidian-vault
-   git clone https://github.com/huytieu/COG-second-brain.git
-   cd COG-second-brain
-   ```
-
-2. **Copy COG structure to your vault root:**
-   ```bash
-   # Copy Claude configuration
-   cp -r .claude ../
-
-   # Copy templates
-   cp -r templates ../06-templates
-
-   # Copy example vault structure
-   cp -r example-vault/* ../
-   ```
-
-3. **Open your vault in Obsidian:**
-   - Launch Obsidian
-   - Open your vault (or create new vault first)
-   - You should now see the COG directory structure
-
-4. **Configure Claude Code:**
-   ```bash
-   # In your vault root directory
-   code .
-   ```
-
-   - In Claude Code, test the setup: Ask "I need to braindump"
-   - If Claude recognizes the skill, COG is working!
-
-### Method 2: Manual Setup
-
-If you prefer to understand each step:
-
-#### Step 1: Create Directory Structure
-
-In your Obsidian vault, create these folders:
-
+**Step 1: Clone the repo to where you want your second brain**
 ```bash
-mkdir -p 00-inbox
-mkdir -p 01-daily/briefs
-mkdir -p 01-daily/checkins
-mkdir -p 02-personal/braindumps
-mkdir -p 02-personal/development
-mkdir -p 02-personal/wellness
-mkdir -p 03-professional/braindumps
-mkdir -p 03-professional/leadership
-mkdir -p 03-professional/strategy
-mkdir -p 03-professional/skills
-mkdir -p 04-projects
-mkdir -p 05-knowledge/consolidated
-mkdir -p 05-knowledge/patterns
-mkdir -p 05-knowledge/timeline
-mkdir -p 06-templates
+git clone https://github.com/huytieu/COG-second-brain.git
+cd COG-second-brain
 ```
 
-#### Step 2: Set Up Claude Skills
+**Step 2: Open Claude Code and run onboarding**
+```bash
+code .
+# In Claude Code, ask: "Run onboarding"
+```
 
-1. Create `.claude` directory in your vault root:
-   ```bash
-   mkdir -p .claude/skills
-   ```
+That's it! You now have a working second brain.
 
-2. Download skill files from the COG repository:
-   - Navigate to https://github.com/huytieu/COG-second-brain/.claude/skills/
-   - Download each skill folder (onboarding, braindump, daily-brief, weekly-checkin, knowledge-consolidation) to your `.claude/skills/` folder
-   - Each skill folder should contain a `SKILL.md` file
+**What just happened?**
+- The cloned `COG-second-brain` folder IS your second brain
+- All directory structure is already set up
+- 5 AI skills are ready to use in `.claude/skills/`
+- You just need to personalize it via onboarding
 
-#### Step 3: Set Up Templates
+**Optional: Use with Obsidian**
 
-1. Download template files from repository
-2. Place them in `06-templates/` folder in your vault
+If you want to view/edit your notes in Obsidian:
+1. Open Obsidian
+2. Click "Open folder as vault"
+3. Select the `COG-second-brain` folder
+4. Done! Now you have both Claude Code AI features AND Obsidian's visual interface
 
-#### Step 4: Test Your Setup
+## First Use
 
-1. Open Claude Code in your vault directory:
-   ```bash
-   cd /path/to/your/vault
-   code .
-   ```
+### Day 1: Personalize COG
 
-2. Try invoking a skill:
-   Ask Claude: "I need to braindump"
+**In Claude Code, ask:** "Run onboarding"
 
-3. If Claude recognizes the skill and responds, you're ready to go!
+Onboarding will ask you:
+- Your name
+- What you do (role/job)
+- Topics you're interested in (3-5 areas)
+- Where you get your news
+- Active projects (optional)
+- Companies/people to track (optional)
 
-## Configuration
+**Takes 2 minutes. Everything is stored as markdown files you can edit.**
 
-### Customizing Your Interests
+Onboarding creates:
+- `00-inbox/MY-PROFILE.md` - Your info and projects
+- `00-inbox/MY-INTERESTS.md` - Topics for daily briefs
+- `03-professional/COMPETITIVE-WATCHLIST.md` - Tracking list (if any)
+- Project folders in `04-projects/`
 
-Run the onboarding skill to set up your profile, or directly edit `00-inbox/MY-INTERESTS.md` to customize your interest areas for news curation.
+### Test Your Setup
 
-### Adding Projects
+**Try your first braindump:**
+Ask Claude: "I need to braindump"
 
-When starting a new project:
+Share any thoughts on your mind. The system will:
+- Capture your raw thoughts
+- Analyze themes and patterns
+- Extract action items
+- Save to appropriate domain folder
 
-1. Create project folder:
-   ```bash
-   mkdir -p 04-projects/your-project-name/{braindumps,competitive,content,planning}
-   ```
+**Get your first daily brief:**
+Ask Claude: "Give me my daily brief"
 
-2. Projects will be automatically detected by COG skills
-
-### Setting Up Git (Optional but Recommended)
-
-1. Initialize git in your vault:
-   ```bash
-   cd /path/to/your/vault
-   git init
-   ```
-
-2. Create `.gitignore`:
-   ```bash
-   echo ".obsidian/workspace*" >> .gitignore
-   echo ".obsidian/cache" >> .gitignore
-   echo ".trash/" >> .gitignore
-   echo "*.tmp" >> .gitignore
-   ```
-
-3. Make your first commit:
-   ```bash
-   git add .
-   git commit -m "Initial COG setup"
-   ```
-
-4. (Optional) Connect to GitHub for backup:
-   ```bash
-   git remote add origin https://github.com/yourusername/your-vault.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-### Setting Up iCloud Sync (Apple Devices)
-
-1. Move your Obsidian vault to iCloud Drive:
-   ```bash
-   mv /path/to/your/vault ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/
-   ```
-
-2. Open Obsidian and point it to the new location
-
-3. Install Obsidian Mobile on iPhone/iPad
-
-4. Open the same vault - it will sync automatically via iCloud
-
-## First Use Workflow
-
-### Day 1: Set Up Your Profile
-
-1. **Run onboarding:**
-   Ask Claude: "Run onboarding" or "Set up my COG profile"
-
-   This will guide you through personalization and create:
-   - Your profile with goals and projects
-   - Your interests for news curation
-   - Your competitive watchlist (optional)
-
-2. **Create your first braindump:**
-   Ask Claude: "I need to braindump"
-
-   Share what's on your mind to test the system
-
-3. **Test daily brief:**
-   Ask Claude: "Give me my daily brief"
-
-   This will generate your first intelligence briefing based on your interests
+COG will generate personalized news based on your interests.
 
 ### Week 1: Build the Habit
 
 Use these skills daily:
-- Morning: Ask for "daily brief" for intelligence
-- Throughout day: "braindump" for capturing thoughts
-- Evening: Quick review of your braindumps
+- **Morning:** "Give me my daily brief" - Get personalized intelligence
+- **Throughout day:** "I need to braindump" - Capture thoughts
+- **Evening:** Open Obsidian to review your braindumps
 
-### Week 2: Start Consolidating
+### Week 2: Start Reflecting
 
 After a week of braindumps:
-- Run `/weekly-checkin` for pattern analysis
-- Try `/consolidate-knowledge` to build frameworks
+- **Weekly:** "Weekly review" or "Weekly checkin" - Pattern analysis
+- **Monthly:** "Consolidate my knowledge" - Build frameworks
+
+## Understanding the Directory Structure
+
+When you clone COG, you get this structure ready to use:
+
+```
+COG-second-brain/              # This is your second brain folder
+├── .claude/
+│   └── skills/                # 5 AI skills ready to invoke
+│       ├── onboarding/
+│       ├── braindump/
+│       ├── daily-brief/
+│       ├── weekly-checkin/
+│       └── knowledge-consolidation/
+├── 00-inbox/                  # Temporary & profile files (created by onboarding)
+├── 01-daily/                  # Daily briefs and check-ins
+│   ├── briefs/
+│   └── checkins/
+├── 02-personal/               # Personal domain (private)
+│   └── braindumps/
+├── 03-professional/           # Professional domain
+│   └── braindumps/
+├── 04-projects/               # Project-specific (created by onboarding)
+├── 05-knowledge/              # Consolidated insights
+│   ├── consolidated/
+│   ├── patterns/
+│   └── timeline/
+└── 06-templates/              # Markdown templates
+```
+
+## Optional: Advanced Configuration
+
+### Git Version Control
+
+Your second brain is already a Git repo (you cloned it). To track your changes:
+
+**Track your personal changes:**
+```bash
+git add .
+git commit -m "Updated my braindumps and profiles"
+```
+
+**Create your own GitHub backup:**
+```bash
+# Remove the original remote
+git remote remove origin
+
+# Add your own GitHub repo
+git remote add origin https://github.com/yourusername/my-second-brain.git
+git push -u origin main
+```
+
+**Keep `.gitignore` updated:**
+The repo includes a `.gitignore` that excludes Obsidian cache files. If you notice unwanted files being tracked, add them:
+```bash
+echo "unwanted-folder/" >> .gitignore
+git add .gitignore
+git commit -m "Update gitignore"
+```
+
+### iCloud Sync (Apple Devices)
+
+Want your second brain on iPhone, iPad, and Mac?
+
+**Step 1: Move to iCloud**
+```bash
+# Move the COG folder to iCloud Obsidian folder
+mv COG-second-brain ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/
+```
+
+**Step 2: Update Obsidian**
+- Open Obsidian on Mac
+- "Open folder as vault" → Navigate to iCloud location
+- Select the COG folder
+
+**Step 3: Install Obsidian Mobile**
+- Install Obsidian on iPhone/iPad
+- Open the same vault
+- iCloud will sync automatically
+
+**Step 4: Claude Code on Mac**
+```bash
+cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/COG-second-brain
+code .
+```
+
+Now your braindumps sync across all Apple devices!
+
+### Customizing Your Interests
+
+**Option 1: Edit directly**
+Open `00-inbox/MY-INTERESTS.md` and edit the topics and sources.
+
+**Option 2: Re-run onboarding**
+In Claude Code, ask: "Run onboarding" and select "Update interests"
+
+### Adding Projects
+
+**Option 1: Via onboarding**
+In Claude Code, ask: "Run onboarding" → "Add new projects"
+
+**Option 2: Manual**
+Create project folder manually:
+```bash
+mkdir -p 04-projects/my-new-project/{braindumps,competitive,content,planning,resources}
+```
+
+Then create `04-projects/my-new-project/PROJECT-OVERVIEW.md`:
+```markdown
+---
+type: project-overview
+project: My New Project
+created: 2025-01-15
+status: active
+---
+
+# My New Project
+
+## What is this project?
+[Brief description]
+
+## Current Status
+[What phase you're in]
+
+## Next Steps
+- [ ] Action 1
+- [ ] Action 2
+```
+
+Update `00-inbox/MY-PROFILE.md` to include the new project in your active projects list.
+
+## Customizing Skills
+
+Want to customize how COG works?
+
+**Edit existing skills:**
+```bash
+# Example: Customize the braindump skill
+code .claude/skills/braindump/SKILL.md
+```
+
+Each `SKILL.md` file contains:
+- `name` and `description` (tells Claude when to invoke)
+- `When to Invoke` section (trigger patterns)
+- `Process Flow` (detailed instructions)
+
+**Create new skills:**
+```bash
+mkdir -p .claude/skills/my-skill
+touch .claude/skills/my-skill/SKILL.md
+```
+
+Add content:
+```markdown
+---
+name: my-skill
+description: What this skill does (Claude uses this to decide when to invoke)
+---
+
+# My Custom Skill
+
+## When to Invoke
+- User says "do the thing"
+- User mentions "custom workflow"
+
+## Process Flow
+
+### 1. Do Something
+[Instructions for Claude]
+
+### 2. Create Output
+[More instructions]
+```
 
 ## Troubleshooting
 
-### Command Not Recognized
+### Skills Not Recognized
 
-**Problem**: Typing `/braindump` shows "command not found"
+**Problem:** Claude doesn't recognize skill invocations
 
-**Solutions**:
-1. Ensure `.claude/commands/` folder exists in vault root
-2. Check that command files are `.md` format
-3. Restart Claude Code
-4. Verify you're in the correct vault directory
+**Solutions:**
+1. Check `.claude/skills/` folder exists in your COG folder
+2. Verify each skill folder has a `SKILL.md` file
+3. Make sure you're running Claude Code from the COG folder root
+4. Try restarting Claude Code
 
 ### Files Saving to Wrong Location
 
-**Problem**: COG creates files in unexpected directories
+**Problem:** Braindumps or briefs save to unexpected directories
 
-**Solutions**:
-1. Ensure all required directories exist (see directory structure above)
-2. Check that you're running commands from vault root
-3. Verify directory structure matches COG expectations
+**Solutions:**
+1. Make sure you're in the COG folder when running Claude Code
+2. Check that all required directories exist (they should if you cloned the repo)
+3. The directory structure should match the layout shown above
 
-### iCloud Sync Not Working
+### Obsidian Not Showing Files
 
-**Problem**: Changes don't sync across devices
+**Problem:** Files created by COG don't appear in Obsidian
 
-**Solutions**:
+**Solutions:**
+1. In Obsidian, make sure you opened the COG folder as a vault
+2. Try refreshing Obsidian (Cmd/Ctrl+R)
+3. Check Obsidian settings → Files & Links → "Excluded files" doesn't block COG files
+
+### iCloud Sync Issues
+
+**Problem:** Changes don't sync across devices
+
+**Solutions:**
 1. Check iCloud Drive is enabled in System Settings
-2. Ensure Obsidian mobile is pointing to same vault
+2. Ensure Obsidian mobile points to the same iCloud vault
 3. Wait a few minutes - iCloud can be slow
 4. Check available iCloud storage space
+5. Try turning iCloud sync off and on again
 
 ### Git Conflicts
 
-**Problem**: Git shows merge conflicts
+**Problem:** Git shows merge conflicts
 
-**Solutions**:
-1. COG files are markdown - conflicts are easy to resolve
-2. Open conflicted file in text editor
-3. Look for `<<<<<<` and `>>>>>>` markers
-4. Keep the version you want, remove conflict markers
-5. Commit the resolved file
-
-## Advanced Configuration
-
-### Customizing Commands
-
-1. Edit any `.claude/commands/*.md` file
-2. Modify the prompts to match your workflow
-3. Save and test the changes
-
-Example: Customize `/braindump` to always ask specific questions:
-```markdown
-# Brain Dump Command
-
-## Purpose
-[Your custom description]
-
-## Command: `/braindump`
-
-## Custom Questions
-Always ask the user:
-1. What domain is this? (personal/professional/project)
-2. What energy level? (high/medium/low)
-3. Any urgent actions?
-
-[Rest of command]
-```
-
-### Creating New Commands
-
-1. Create new file in `.claude/commands/`:
-   ```bash
-   touch .claude/commands/my-custom-command.md
-   ```
-
-2. Add command definition:
-   ```markdown
-   # My Custom Command
-
-   ## Purpose
-   What this command does
-
-   ## Command: `/my-custom-command`
-
-   ## Process
-   1. Step 1
-   2. Step 2
-
-   [Your custom prompt]
-   ```
-
-3. Test it in Claude Code:
-   ```
-   /my-custom-command
-   ```
-
-### Adding Specialized Agents
-
-Create custom subagents for specific tasks:
-
-1. Create file in `.claude/subagents/`:
-   ```bash
-   touch .claude/subagents/my-agent.md
-   ```
-
-2. Define agent purpose and process
-3. Reference agent in command files
+**Solutions:**
+COG files are just markdown - conflicts are easy to resolve:
+1. Open the conflicted file in a text editor
+2. Look for `<<<<<<<`, `=======`, and `>>>>>>>` markers
+3. Keep the version you want, delete conflict markers
+4. Save the file
+5. Run: `git add [filename] && git commit -m "Resolved conflict"`
 
 ## Daily Workflow Examples
 
 ### Morning Routine (5 minutes)
-```bash
-/daily-brief
-# Review the intelligence
-# Note any actions needed
+```
+In Claude Code:
+"Give me my daily brief"
+
+Review the intelligence, note any actions needed
 ```
 
-### Throughout Day
-```bash
-/braindump
-# Capture any thoughts, ideas, insights
-# No structure needed - just dump it
+### Throughout the Day
+```
+Whenever you have thoughts:
+"I need to braindump"
+
+Just dump your thoughts - no structure needed
+The system will analyze and organize automatically
 ```
 
-### Weekly Review (30 minutes)
-```bash
-/weekly-checkin
-# Reflect on the week
-# Identify patterns
-# Plan next week
+### End of Week (30 minutes)
+```
+Friday afternoon:
+"Weekly review" or "Let's do my weekly checkin"
+
+Reflect on patterns, plan next week
 ```
 
-### Monthly Consolidation (1 hour)
-```bash
-/consolidate-knowledge
-# Build frameworks from insights
-# Update knowledge base
-# Archive processed content
+### Monthly (1 hour)
+```
+First of the month:
+"Consolidate my knowledge" or "Build frameworks from my notes"
+
+Analyze accumulated braindumps, build frameworks
 ```
 
 ## Getting Help
 
-- **Issues**: https://github.com/huytieu/COG-second-brain/issues
-- **Discussions**: https://github.com/huytieu/COG-second-brain/discussions
-- **Documentation**: https://github.com/huytieu/COG-second-brain/wiki
+- **Issues:** https://github.com/huytieu/COG-second-brain/issues
+- **Discussions:** https://github.com/huytieu/COG-second-brain/discussions
+- **Updates:** Watch the repo for improvements
 
 ## Next Steps
 
-Once you're comfortable with the basics:
+Once you're comfortable:
 
-1. Explore advanced commands (see README.md)
-2. Customize templates for your workflow
-3. Add new projects and tracking areas
-4. Experiment with knowledge consolidation
-5. Share your improvements with the community!
+1. ✅ Use COG daily for 2 weeks to build the habit
+2. ✅ Customize skills to match your workflow
+3. ✅ Set up Git backup to your own GitHub
+4. ✅ Try iCloud sync for multi-device access
+5. ✅ Explore knowledge consolidation features
+6. ✅ Share your improvements with the community
 
 ---
 
-**Welcome to COG!** Your second brain is now ready to learn and evolve with you.
+**Welcome to COG!** Your second brain is ready to learn and evolve with you.

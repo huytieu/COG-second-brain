@@ -20,36 +20,39 @@ COG is a personal productivity and knowledge management system that:
 
 ### Prerequisites
 
-- [Obsidian](https://obsidian.md/) installed
-- [Claude Code](https://claude.ai/download) (or VSCode with Claude extension)
-- Git (optional but recommended)
+- [Claude Code](https://claude.ai/download) - Required
+- [Obsidian](https://obsidian.md/) - Recommended for viewing/editing your notes
+- Git - Already on your system if you can run the clone command below
 
-### Installation (3 Steps)
+### Installation (2 Steps)
 
-1. **Clone this repo into your Obsidian vault:**
+1. **Clone this repo to where you want your second brain:**
    ```bash
-   cd /path/to/your/obsidian-vault
    git clone https://github.com/huytieu/COG-second-brain.git
+   cd COG-second-brain
    ```
 
-2. **Copy COG structure to your vault:**
-   ```bash
-   cp -r COG-second-brain/.claude .
-   ```
-
-3. **Open Claude Code in your vault and invoke onboarding:**
+2. **Open Claude Code and run onboarding:**
    ```bash
    code .
    # In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
    ```
 
-That's it! The onboarding will personalize COG for your needs in 3-5 minutes.
+That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
 
-> **Note:** COG is also available in community plugin marketplaces. Once official Claude Code plugin support is released, marketplace installation will be the recommended method.
+**What just happened?**
+- The cloned repo IS your second brain - all files are ready to use
+- `.claude/skills/` contains 5 AI skills ready to invoke
+- Directory structure is already set up for your notes
+- Just run onboarding to personalize it
+
+**Want Obsidian integration?**
+- Open Obsidian → "Open folder as vault" → Select the `COG-second-brain` folder
+- Now you can view/edit notes in Obsidian while using Claude Code for AI features
 
 ### Detailed Setup Guide
 
-See [SETUP.md](SETUP.md) for step-by-step instructions with screenshots.
+See [SETUP.md](SETUP.md) for optional configurations (Git sync, iCloud, etc.).
 
 ## What You Get
 
@@ -171,9 +174,9 @@ your-obsidian-vault/
 
 ## Example Workflows
 
-### First Time Setup
+### First Time Setup (After Cloning)
 
-Ask Claude: "Run onboarding" or "Set up my COG profile"
+In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
 
 The onboarding skill will ask:
 - Your name
@@ -183,17 +186,17 @@ The onboarding skill will ask:
 - Active projects you're working on (optional)
 - Companies/people you want to track (optional)
 
-**Takes 2 minutes. Everything is stored as readable markdown files in your vault.**
+**Takes 2 minutes. Everything is stored as readable markdown files.**
 
-It creates:
-- `MY-PROFILE.md` - Your basic info and projects
-- `MY-INTERESTS.md` - Your topics and news sources
-- `COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
-- Project folders for each active project
+Onboarding creates:
+- `00-inbox/MY-PROFILE.md` - Your basic info and projects
+- `00-inbox/MY-INTERESTS.md` - Your topics and news sources
+- `03-professional/COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
+- `04-projects/[project-name]/` folders for each active project
 
 After onboarding, COG will:
 - Personalize daily briefs to your topics
-- Offer your projects in braindumps
+- Offer your projects when you braindump
 - Auto-extract competitive intel you care about
 
 ### Daily Intelligence Briefing
@@ -233,10 +236,10 @@ Weekly or monthly:
 ## Why COG Works
 
 ### What Works
-- ✅ **Setup is trivial**: Drop files in, done. No complex configuration.
+- ✅ **Setup is trivial**: Clone repo, run onboarding. Done in 2 minutes.
 - ✅ **Maintenance-free**: Self-heals and auto-organizes
 - ✅ **Actually portable**: Works on iPhone, iPad, Mac via iCloud
-- ✅ **Custom agents >> generic AI**: Specialized beats ChatGPT for repeated tasks
+- ✅ **Custom skills >> generic AI**: Specialized beats ChatGPT for repeated tasks
 - ✅ **Git for thoughts**: Version control shows thinking evolution
 
 ### What Doesn't Work
@@ -252,27 +255,43 @@ Weekly or monthly:
 
 ## Advanced Configuration
 
-### Customizing Commands
+### Customizing Skills
 
-Edit `.claude/commands/*.md` to customize workflows:
+Edit `.claude/skills/[skill-name]/SKILL.md` to customize workflows:
 ```markdown
-# Custom Command Example
-/my-workflow
+---
+name: my-custom-skill
+description: What this skill does
+---
 
-Your custom prompt here...
+# My Custom Skill
+
+## When to Invoke
+[When Claude should use this skill]
+
+## Process Flow
+[How it works]
 ```
 
-### Adding New Agents
+### Adding New Skills
 
-Create `.claude/subagents/my-agent.md`:
+Create `.claude/skills/my-skill/SKILL.md`:
 ```markdown
-# My Custom Agent
+---
+name: my-skill
+description: Brief description for Claude to know when to invoke this
+---
+
+# My Custom Skill
 
 ## Purpose
-[What this agent does]
+[What this skill does]
 
-## Process
-[How it works]
+## When to Invoke
+[User intent patterns that should trigger this]
+
+## Process Flow
+[Detailed instructions]
 ```
 
 ### Template Customization
