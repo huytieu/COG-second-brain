@@ -43,8 +43,8 @@ That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
 **What just happened?**
 - The cloned repo IS your second brain - all files are ready to use
 - `.claude/skills/` contains 5 AI skills ready to invoke
-- Directory structure is already set up for your notes
-- Just run onboarding to personalize it
+- Onboarding will create your personalized directory structure
+- Just run onboarding to set up and personalize COG
 
 **Want Obsidian integration?**
 - Open Obsidian → "Open folder as vault" → Select the `COG-second-brain` folder
@@ -129,6 +129,8 @@ Friday: Run knowledge-consolidation skill
 - **Version controlled**: Full history with Git
 
 ## Directory Structure
+
+*This structure is created automatically when you run onboarding.*
 
 ```
 your-obsidian-vault/

@@ -28,9 +28,9 @@ That's it! You now have a working second brain.
 
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
-- All directory structure is already set up
 - 5 AI skills are ready to use in `.claude/skills/`
-- You just need to personalize it via onboarding
+- Onboarding will create your personalized directory structure
+- Just run onboarding to set up and personalize COG
 
 **Optional: Use with Obsidian**
 
@@ -93,7 +93,7 @@ After a week of braindumps:
 
 ## Understanding the Directory Structure
 
-When you clone COG, you get this structure ready to use:
+After running onboarding, you'll have this structure:
 
 ```
 COG-second-brain/              # This is your second brain folder
@@ -282,7 +282,7 @@ description: What this skill does (Claude uses this to decide when to invoke)
 
 **Solutions:**
 1. Make sure you're in the COG folder when running Claude Code
-2. Check that all required directories exist (they should if you cloned the repo)
+2. Check that all required directories exist (run onboarding if you haven't yet)
 3. The directory structure should match the layout shown above
 
 ### Obsidian Not Showing Files
