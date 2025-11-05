@@ -1,9 +1,18 @@
-# COG Onboarding Command
+---
+name: onboarding
+description: Personalize COG for your workflow - creates profile, interests, and watchlist files with guided setup (run this first!)
+---
+
+# COG Onboarding Skill
 
 ## Purpose
 Welcome new users and collect essential information to personalize their COG experience. All configuration is stored as natural markdown files within the vault structure, following COG's philosophy of transparent, editable knowledge.
 
-## Command: `/onboarding`
+## When to Invoke
+- User explicitly requests `/onboarding` or mentions "onboarding" or "setup COG"
+- User is new and hasn't completed onboarding yet
+- User wants to update their profile or add new projects
+- Any time profile customization is needed
 
 ## Process Flow
 
@@ -99,7 +108,7 @@ tags: ["#profile", "#config", "#cog"]
 - [[04-projects/[slug]/PROJECT-OVERVIEW|Project Name 2]]
 
 [If no projects:]
-*No active projects yet. Add them anytime by editing this file or running `/onboarding` again.*
+*No active projects yet. Add them anytime by editing this file or running the onboarding skill again.*
 
 ## Related
 - [[MY-INTERESTS|My Interests & News Sources]]
@@ -110,7 +119,7 @@ tags: ["#profile", "#config", "#cog"]
 
 ---
 
-*Edit this file anytime to update your profile. COG reads it when you use commands.*
+*Edit this file anytime to update your profile. COG reads it when you use skills.*
 ```
 
 #### `00-inbox/MY-INTERESTS.md`
@@ -146,7 +155,7 @@ tags: ["#interests", "#daily-brief", "#config"]
 *Update this file anytime as your interests evolve. Just edit and save—COG will pick up the changes.*
 ```
 
-#### `03-professional/COMPETITIVE-WATCHLIST.md`
+#### `03-professional/COMPETITIVE-WATCHLIST.md` (if applicable)
 ```markdown
 ---
 type: competitive-intelligence
@@ -242,17 +251,6 @@ Based on configuration, create personalized structure:
   resources/
 ```
 
-**Custom Domain Folders (Based on focus_domains):**
-If user selected "Entrepreneurship":
-```
-03-professional/entrepreneurship/
-```
-
-If user selected "Creative":
-```
-02-personal/creative/
-```
-
 ### 6. Create Welcome Guide
 
 Generate: `00-inbox/WELCOME-TO-COG.md`
@@ -273,36 +271,26 @@ Your COG is now personalized and ready to use. Here's how to get started:
 I've created these documents to store your preferences:
 
 - **[[MY-PROFILE]]** - Your basic info and workflow preferences
-- **[[MY-GOALS]]** - Your goals and priorities
 - **[[MY-INTERESTS]]** - Topics for your daily briefs
-- **[[03-professional/COMPETITIVE-WATCHLIST]]** - Companies you're tracking
+- **[[03-professional/COMPETITIVE-WATCHLIST]]** - Companies you're tracking *(if applicable)*
 
-**You can edit these files anytime.** COG reads them when you use commands, so your changes take effect immediately.
+**You can edit these files anytime.** COG reads them when you use skills, so your changes take effect immediately.
 
-## Quick Start Commands
+## Quick Start Skills
 
 ### 1. Daily Morning Routine
-```
-/daily-brief
-```
-Get your personalized intelligence briefing covering:
+Invoke the daily-brief skill to get your personalized intelligence briefing covering:
 [List their selected interest areas]
 
 ### 2. Capture Your Thoughts
-```
-/braindump
-```
-Quickly capture ideas, insights, and thoughts. Your braindumps will automatically be categorized into:
+Use the braindump skill to quickly capture ideas, insights, and thoughts. Your braindumps will automatically be categorized into:
 [List their focus domains]
 
 Choose from your active projects:
 [List their projects with links]
 
 ### 3. Weekly Reflection
-```
-/weekly-checkin
-```
-Every [day based on workflow preference], review your week's insights and patterns.
+Every week, use the weekly-checkin skill to review your week's insights and patterns.
 
 ## Your Active Projects
 
@@ -311,19 +299,19 @@ You're tracking these projects:
 - [[04-projects/[slug]/PROJECT-OVERVIEW|Project 1]]
 - [[04-projects/[slug]/PROJECT-OVERVIEW|Project 2]]
 
-When you use `/braindump`, select the project to automatically file your thoughts in the right place.
+When you use the braindump skill, select the project to automatically file your thoughts in the right place.
 
 ## How COG Uses Your Profile
 
 **Daily Briefs**: Uses [[MY-INTERESTS]] to curate relevant news
 **Braindumps**: Offers your projects from [[MY-PROFILE]] as options
 **Competitive Intel**: Auto-extracts mentions of companies in [[COMPETITIVE-WATCHLIST]]
-**Weekly Check-ins**: Reviews progress toward [[MY-GOALS]]
+**Weekly Check-ins**: Reviews progress across your domains
 
 ## Next Steps
 
-1. **Try your first braindump**: Just type `/braindump` and start writing
-2. **Get your daily brief**: Type `/daily-brief` to see curated intelligence
+1. **Try your first braindump**: Use the braindump skill and start writing
+2. **Get your daily brief**: Invoke the daily-brief skill to see curated intelligence
 3. **Explore your vault**: All your files are organized in the sidebar
 4. **Edit your profile**: Open [[MY-PROFILE]] and customize anytime
 
@@ -331,14 +319,13 @@ When you use `/braindump`, select the project to automatically file your thought
 
 - **Don't overthink it**: Just dump your thoughts, COG will help organize
 - **Be consistent**: Daily briefs and braindumps work best as habits
-- **Review weekly**: Use `/weekly-checkin` to see patterns emerge
-- **Evolve your setup**: Edit your profile files anytime or run `/onboarding` to add projects
+- **Review weekly**: Use the weekly-checkin skill to see patterns emerge
+- **Evolve your setup**: Edit your profile files anytime or run onboarding again to add projects
 
 ## Getting Help
 
-- Type `/help` for command list
 - Check `SETUP.md` for detailed guides
-- Visit [GitHub repo] for documentation
+- Visit the GitHub repo for documentation
 
 **Your second brain is learning about you. Let's begin!**
 
@@ -355,7 +342,6 @@ Great! Your COG is now configured.
 
 I've created these profile documents for you:
 - MY-PROFILE.md (your basic preferences)
-- MY-GOALS.md (your goals and priorities)
 - MY-INTERESTS.md (topics for daily briefs)
 [If applicable:] - COMPETITIVE-WATCHLIST.md (companies to track)
 [If applicable:] - PROJECT-OVERVIEW.md files for each project
@@ -367,14 +353,14 @@ Would you like to:
 1. **Try your first braindump** - Capture what's on your mind right now
 2. **Get your daily brief** - See today's intelligence report
 3. **Review your profile** - Open MY-PROFILE.md to see/edit settings
-4. **Start later** - You're all set, just type /braindump when ready
+4. **Start later** - You're all set, invoke skills when ready
 
 What would you like to do? (1-4)
 ```
 
 ## Configuration Update Mode
 
-If user runs `/onboarding` after initial setup (MY-PROFILE.md exists):
+If user runs onboarding after initial setup (MY-PROFILE.md exists):
 
 ```
 You've already completed onboarding! Would you like to:
@@ -382,49 +368,19 @@ You've already completed onboarding! Would you like to:
 1. **Update your profile** - Edit MY-PROFILE.md with new preferences
 2. **Add new interests** - Update MY-INTERESTS.md with new topics
 3. **Add new projects** - Create new project structures
-4. **Update goals** - Revise MY-GOALS.md
-5. **View current profile** - See your current MY-PROFILE.md
+4. **View current profile** - See your current MY-PROFILE.md
 
-What would you like to do? (1-5)
+What would you like to do? (1-4)
 ```
-
-## Integration with Other Commands
-
-All other COG commands should check for profile files:
-
-```markdown
-## Check Configuration
-Before executing, check if `00-inbox/MY-PROFILE.md` exists:
-- If NO: Prompt user to run `/onboarding` first
-- If YES: Read profile and use personalized settings
-```
-
-### Usage in Commands
-
-**In /braindump:**
-- Read `MY-PROFILE.md` to get active projects
-- Read `COMPETITIVE-WATCHLIST.md` for automatic intelligence extraction
-- Use capture style preference from profile
-
-**In /daily-brief:**
-- Read `MY-INTERESTS.md` to curate relevant content
-- Read `MY-PROFILE.md` for timezone and greeting preference
-- Read `MY-GOALS.md` to weight strategic relevance
-
-**In /weekly-checkin:**
-- Read `MY-GOALS.md` to frame assessment questions
-- Read `MY-PROFILE.md` for focus domains to review
-- Read project overviews for project progress tracking
 
 ## Success Criteria
 
 Onboarding is successful when:
 1. ✅ `MY-PROFILE.md` created in `00-inbox/`
-2. ✅ `MY-GOALS.md` created in `00-inbox/`
-3. ✅ `MY-INTERESTS.md` created in `00-inbox/`
-4. ✅ Project directories and overviews created (if applicable)
-5. ✅ `WELCOME-TO-COG.md` guide created
-6. ✅ User understands next steps and where their profile is stored
+2. ✅ `MY-INTERESTS.md` created in `00-inbox/`
+3. ✅ Project directories and overviews created (if applicable)
+4. ✅ `WELCOME-TO-COG.md` guide created
+5. ✅ User understands next steps and where their profile is stored
 
 ## Error Handling
 
@@ -439,7 +395,7 @@ Onboarding is successful when:
 - Continue with rest of setup
 
 **If user exits mid-onboarding:**
-- Create partial profile with note: "Onboarding incomplete - run `/onboarding` to finish"
+- Create partial profile with note: "Onboarding incomplete - run onboarding skill to finish"
 - Save what was collected so far
 - Resume from last completed step on next run
 
@@ -447,7 +403,6 @@ Onboarding is successful when:
 
 All configuration data is stored as markdown files in:
 - `00-inbox/MY-PROFILE.md` - Basic profile
-- `00-inbox/MY-GOALS.md` - Goals and priorities
 - `00-inbox/MY-INTERESTS.md` - Interest areas
 - `03-professional/COMPETITIVE-WATCHLIST.md` - Competitive tracking
 - `04-projects/[project]/PROJECT-OVERVIEW.md` - Project details

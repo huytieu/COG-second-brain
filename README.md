@@ -37,10 +37,10 @@ COG is a personal productivity and knowledge management system that:
    cp -r COG-second-brain/.claude .
    ```
 
-3. **Open Claude Code in your vault and run onboarding:**
+3. **Open Claude Code in your vault and invoke onboarding:**
    ```bash
    code .
-   # In Claude Code, type: /onboarding
+   # In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
    ```
 
 That's it! The onboarding will personalize COG for your needs in 3-5 minutes.
@@ -53,37 +53,35 @@ See [SETUP.md](SETUP.md) for step-by-step instructions with screenshots.
 
 ## What You Get
 
-### 16 Custom Slash Commands
+### 5 Powerful Skills
 
-**Setup:**
-- `/onboarding` - Personalize COG for your workflow (run this first!)
+COG uses Claude's Agent Skills architecture - specialized capabilities that Claude automatically invokes when relevant to your request.
+
+**Setup & Personalization:**
+- **onboarding** - Personalize COG for your workflow (run this first!)
 
 **Daily Operations:**
-- `/daily-brief` - Personalized news intelligence (verified sources only)
-- `/daily-checkin` - Structured daily reflection
-- `/braindump` - Quick capture of raw thoughts
-- `/brain-dump-analysis` - Transform thoughts into strategic insights
+- **braindump** - Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction
+- **daily-brief** - Personalized news intelligence with verified sources (7-day freshness requirement)
 
 **Weekly & Strategic:**
-- `/weekly-checkin` - Cross-domain pattern analysis
-- `/consolidate-knowledge` - Build frameworks from scattered insights
-- `/meeting-transcript` - Process meeting recordings with noise filtering
+- **weekly-checkin** - Cross-domain pattern analysis and strategic reflection
+- **knowledge-consolidation** - Build frameworks from scattered insights across all your notes
 
-**Project & Content:**
-- `/project-story` - Generate compelling narratives about project evolution
-- `/newsletter-research` - Research and develop thought leadership content
+**How Skills Work:**
 
-### 2 Core Specialized Subagents
+Skills are self-contained AI capabilities that combine orchestration and specialized processing. Unlike the old command/subagent split, each skill now:
+- Automatically activates when Claude detects relevant user intent
+- Handles the complete workflow from user interaction to file creation
+- Contains all necessary instructions, analysis frameworks, and verification protocols
+- Uses progressive disclosure to load information only as needed
 
-- **Brain Dump Analyst** (`.claude/subagents/brain-dump-analyst.md`): Transforms stream-of-consciousness into structured insights with domain classification and competitive intelligence extraction
-- **News Curator** (`.claude/subagents/news-curator.md`): Finds verified news with strict 7-day freshness requirement, cross-references sources, and generates personalized briefings
+For example:
+- Ask "What's on my mind?" → Claude invokes the **braindump** skill
+- Say "Give me my daily brief" → Claude invokes the **daily-brief** skill
+- Request "Weekly review" → Claude invokes the **weekly-checkin** skill
 
-**How Subagents Work:**
-Commands are thin orchestration layers that delegate specialized work to subagents. For example:
-- `/braindump` collects your thoughts, then delegates analysis to brain-dump-analyst
-- `/daily-brief` reads your profile, then delegates news curation to news-curator
-
-This architecture keeps commands simple while subagents handle complex, specialized processing.
+This architecture leverages Claude Code's native skill system for better performance and simpler maintenance.
 
 ## Key Features
 
@@ -98,8 +96,8 @@ COG doesn't just store notes—it actively learns:
 
 **Weekly Evolution Cycle:**
 ```
-Monday-Friday: Capture thoughts via /braindump
-Friday: Run /consolidate-knowledge
+Monday-Friday: Capture thoughts via braindump skill
+Friday: Run knowledge-consolidation skill
 → COG analyzes ALL your notes
 → Builds frameworks you didn't explicitly create
 → Updates "single source of truth" files
@@ -132,11 +130,17 @@ Friday: Run /consolidate-knowledge
 ```
 your-obsidian-vault/
 ├── .claude/
-│   ├── commands/              # 16 custom slash commands (thin orchestrators)
-│   ├── subagents/             # 2 specialized AI subagents (complex processors)
-│   │   ├── brain-dump-analyst.md
-│   │   └── news-curator.md
-│   └── settings.local.json    # Agent configuration (optional)
+│   └── skills/                # 5 specialized skills
+│       ├── onboarding/
+│       │   └── SKILL.md
+│       ├── braindump/
+│       │   └── SKILL.md
+│       ├── daily-brief/
+│       │   └── SKILL.md
+│       ├── weekly-checkin/
+│       │   └── SKILL.md
+│       └── knowledge-consolidation/
+│           └── SKILL.md
 ├── 00-inbox/                  # Temporary processing area
 │   ├── MY-PROFILE.md          # Your profile (created by onboarding)
 │   ├── MY-INTERESTS.md        # Your topics & news sources
@@ -169,11 +173,9 @@ your-obsidian-vault/
 
 ### First Time Setup
 
-```bash
-/onboarding
-```
+Ask Claude: "Run onboarding" or "Set up my COG profile"
 
-The onboarding command will ask:
+The onboarding skill will ask:
 - Your name
 - What you do (your job/role)
 - Topics you're interested in (3-5 main areas)
@@ -196,9 +198,7 @@ After onboarding, COG will:
 
 ### Daily Intelligence Briefing
 
-```bash
-/daily-brief
-```
+Ask Claude: "Give me my daily brief" or "What's the news today?"
 
 Generates a personalized briefing with:
 - Verified news from the last 7 days
@@ -208,14 +208,11 @@ Generates a personalized briefing with:
 
 ### Brain Dump → Strategic Insights
 
-```bash
-/braindump    # Capture raw thoughts (no judgment)
-/brain-dump-analysis    # Transform into insights
-```
+Ask Claude: "I need to braindump" or "What's on my mind?"
 
-Two-stage process:
+Single integrated workflow:
 1. **Quick capture**: Preserves spontaneity, no filtering
-2. **Intelligent processing**: Extracts themes, actions, connections
+2. **Intelligent processing**: Automatically extracts themes, actions, connections
 
 The system automatically:
 - Classifies by domain
@@ -225,9 +222,7 @@ The system automatically:
 
 ### Knowledge Consolidation
 
-```bash
-/consolidate-knowledge
-```
+Ask Claude: "Consolidate my knowledge" or "Build frameworks from my notes"
 
 Weekly or monthly:
 - Analyzes patterns across all braindumps

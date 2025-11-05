@@ -45,8 +45,8 @@ Before you begin, ensure you have:
    code .
    ```
 
-   - In Claude Code, test the setup: Type `/braindump`
-   - If command is recognized, COG is working!
+   - In Claude Code, test the setup: Ask "I need to braindump"
+   - If Claude recognizes the skill, COG is working!
 
 ### Method 2: Manual Setup
 
@@ -74,17 +74,17 @@ mkdir -p 05-knowledge/timeline
 mkdir -p 06-templates
 ```
 
-#### Step 2: Set Up Claude Commands
+#### Step 2: Set Up Claude Skills
 
 1. Create `.claude` directory in your vault root:
    ```bash
-   mkdir -p .claude/commands
-   mkdir -p .claude/subagents
+   mkdir -p .claude/skills
    ```
 
-2. Download command files from the COG repository:
-   - Navigate to https://github.com/huytieu/COG-second-brain/.claude/commands/
-   - Download each `.md` file to your `.claude/commands/` folder
+2. Download skill files from the COG repository:
+   - Navigate to https://github.com/huytieu/COG-second-brain/.claude/skills/
+   - Download each skill folder (onboarding, braindump, daily-brief, weekly-checkin, knowledge-consolidation) to your `.claude/skills/` folder
+   - Each skill folder should contain a `SKILL.md` file
 
 #### Step 3: Set Up Templates
 
@@ -99,18 +99,16 @@ mkdir -p 06-templates
    code .
    ```
 
-2. Try a command:
-   ```
-   /braindump
-   ```
+2. Try invoking a skill:
+   Ask Claude: "I need to braindump"
 
-3. If it works, you're ready to go!
+3. If Claude recognizes the skill and responds, you're ready to go!
 
 ## Configuration
 
 ### Customizing Your Interests
 
-Edit `.claude/commands/daily-brief.md` to customize your interest areas for news curation.
+Run the onboarding skill to set up your profile, or directly edit `00-inbox/MY-INTERESTS.md` to customize your interest areas for news curation.
 
 ### Adding Projects
 
@@ -121,7 +119,7 @@ When starting a new project:
    mkdir -p 04-projects/your-project-name/{braindumps,competitive,content,planning}
    ```
 
-2. Projects will be automatically detected by COG commands
+2. Projects will be automatically detected by COG skills
 
 ### Setting Up Git (Optional but Recommended)
 
@@ -169,32 +167,29 @@ When starting a new project:
 
 ### Day 1: Set Up Your Profile
 
-1. **Create your first braindump:**
-   ```
-   /braindump
-   ```
+1. **Run onboarding:**
+   Ask Claude: "Run onboarding" or "Set up my COG profile"
 
-   Paste this to get started:
-   ```
-   I'm setting up COG to help me with:
-   - [Your main goals]
-   - [Your current projects]
-   - [Your areas of interest]
-   - [What you want to track]
-   ```
+   This will guide you through personalization and create:
+   - Your profile with goals and projects
+   - Your interests for news curation
+   - Your competitive watchlist (optional)
 
-2. **Test daily brief:**
-   ```
-   /daily-brief
-   ```
+2. **Create your first braindump:**
+   Ask Claude: "I need to braindump"
 
-   This will generate your first intelligence briefing based on your braindump
+   Share what's on your mind to test the system
+
+3. **Test daily brief:**
+   Ask Claude: "Give me my daily brief"
+
+   This will generate your first intelligence briefing based on your interests
 
 ### Week 1: Build the Habit
 
-Use these commands daily:
-- Morning: `/daily-brief` for intelligence
-- Throughout day: `/braindump` for capturing thoughts
+Use these skills daily:
+- Morning: Ask for "daily brief" for intelligence
+- Throughout day: "braindump" for capturing thoughts
 - Evening: Quick review of your braindumps
 
 ### Week 2: Start Consolidating

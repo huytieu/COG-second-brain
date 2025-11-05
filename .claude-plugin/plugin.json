@@ -33,47 +33,36 @@
     "productivity",
     "note-taking"
   ],
-  "commands": [
+  "skills": [
     {
       "name": "onboarding",
-      "path": ".claude/commands/onboarding.md",
+      "path": ".claude/skills/onboarding/SKILL.md",
       "description": "Personalize COG for your workflow - creates profile, interests, and watchlist files (run this first!)"
     },
     {
-      "name": "daily-brief",
-      "path": ".claude/commands/daily-brief.md",
-      "description": "Generate personalized news intelligence with verified sources (7-day freshness requirement)"
-    },
-    {
       "name": "braindump",
-      "path": ".claude/commands/braindump.md",
+      "path": ".claude/skills/braindump/SKILL.md",
       "description": "Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction"
     },
     {
+      "name": "daily-brief",
+      "path": ".claude/skills/daily-brief/SKILL.md",
+      "description": "Generate personalized news intelligence with verified sources (7-day freshness requirement)"
+    },
+    {
       "name": "weekly-checkin",
-      "path": ".claude/commands/weekly-checkin.md",
+      "path": ".claude/skills/weekly-checkin/SKILL.md",
       "description": "Cross-domain pattern analysis and strategic reflection for weekly review"
     },
     {
       "name": "knowledge-consolidation",
-      "path": ".claude/commands/knowledge-consolidation.md",
+      "path": ".claude/skills/knowledge-consolidation/SKILL.md",
       "description": "Build frameworks from scattered insights across all braindumps and notes"
-    }
-  ],
-  "agents": [
-    {
-      "name": "brain-dump-analyst",
-      "path": ".claude/subagents/brain-dump-analyst.md",
-      "description": "Transforms stream-of-consciousness into structured insights with domain classification and competitive intelligence extraction"
-    },
-    {
-      "name": "news-curator",
-      "path": ".claude/subagents/news-curator.md",
-      "description": "Finds verified news with strict 7-day freshness requirement, cross-references sources, and generates personalized briefings"
     }
   ],
   "metadata": {
     "pluginRoot": ".",
+    "architecture": "claude-agent-skills",
     "features": [
       "Self-evolving intelligence with pattern recognition",
       "Self-healing system with auto-updating cross-references",
@@ -81,7 +70,8 @@
       "Privacy-first architecture with strict domain separation",
       "Plain text markdown files (no database, no vendor lock-in)",
       "Multi-device sync via iCloud (iPhone, iPad, Mac)",
-      "Git version control for tracking thinking evolution"
+      "Git version control for tracking thinking evolution",
+      "Progressive disclosure for efficient context usage"
     ],
     "requirements": {
       "obsidian": "Recommended for markdown file management",
@@ -94,12 +84,20 @@
       "onboardingTime": "2 minutes"
     },
     "directoryStructure": {
+      ".claude/skills": "5 specialized agent skills (onboarding, braindump, daily-brief, weekly-checkin, knowledge-consolidation)",
       "00-inbox": "Temporary processing area with profile and interests files",
       "01-daily": "Daily briefs and check-ins",
       "02-personal": "Personal domain (strict privacy)",
       "03-professional": "Professional domain with competitive watchlist",
       "04-projects": "Project-specific tracking",
       "05-knowledge": "Consolidated insights and patterns"
+    },
+    "skillArchitecture": {
+      "type": "agent-skills",
+      "skills": 5,
+      "invocation": "model-invoked",
+      "progressiveDisclosure": true,
+      "description": "Self-contained skills that combine orchestration and specialized processing using Claude's progressive disclosure pattern"
     }
   }
 }
