@@ -58,6 +58,11 @@
       "name": "knowledge-consolidation",
       "path": ".claude/skills/knowledge-consolidation/SKILL.md",
       "description": "Build frameworks from scattered insights across all braindumps and notes"
+    },
+    {
+      "name": "url-dump",
+      "path": ".claude/skills/url-dump/SKILL.md",
+      "description": "Quick capture URLs with automatic content extraction, insights, and categorization into knowledge booklets"
     }
   ],
   "metadata": {
@@ -84,7 +89,7 @@
       "onboardingTime": "2 minutes"
     },
     "directoryStructure": {
-      ".claude/skills": "5 specialized agent skills (onboarding, braindump, daily-brief, weekly-checkin, knowledge-consolidation)",
+      ".claude/skills": "6 specialized agent skills (onboarding, braindump, daily-brief, weekly-checkin, knowledge-consolidation, url-dump)",
       "00-inbox": "Temporary processing area with profile and interests files",
       "01-daily": "Daily briefs and check-ins",
       "02-personal": "Personal domain (strict privacy)",
@@ -94,7 +99,7 @@
     },
     "skillArchitecture": {
       "type": "agent-skills",
-      "skills": 5,
+      "skills": 6,
       "invocation": "model-invoked",
       "progressiveDisclosure": true,
       "description": "Self-contained skills that combine orchestration and specialized processing using Claude's progressive disclosure pattern"
