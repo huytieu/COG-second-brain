@@ -1,6 +1,94 @@
 # Changelog
 
-All notable changes to COG (Claude + Obsidian + Git) will be documented in this file.
+All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
+
+## [3.0.0] - 2026-01-19
+
+### Multi-Agent Support - COG Goes Agentic
+
+This release transforms COG from a Claude Code-only system to a truly agent-agnostic second brain that works with multiple AI platforms.
+
+### Added
+
+#### Multi-Agent Architecture
+- **`agents.md`** - Universal agent documentation for OpenAI and other agents
+  - Documents all 6 skills with triggers, purposes, and outputs
+  - Works with any AI that reads markdown
+  - Includes vault structure and quick start guide
+
+- **`.kiro/powers/`** - Native Kiro support with 6 powers
+  - `cog-onboarding/POWER.md` - Profile setup
+  - `cog-braindump/POWER.md` - Thought capture
+  - `cog-daily-brief/POWER.md` - News intelligence
+  - `cog-weekly-checkin/POWER.md` - Weekly reflection
+  - `cog-knowledge-consolidation/POWER.md` - Framework building
+  - `cog-url-dump/POWER.md` - URL bookmarking
+
+#### New Skill
+- **url-dump** - Quick capture URLs with automatic content extraction
+  - Fetches and extracts content from URLs
+  - Auto-categorizes into booklets (articles, tools, reference, etc.)
+  - Generates insights and key takeaways
+  - Saves to `05-knowledge/booklets/` or project resources
+
+### Changed
+
+#### Rebranding
+- **COG = Cognition + Obsidian + Git** (previously Claude + Obsidian + Git)
+- Positioned as "agentic second brain" rather than Claude-specific
+- Updated all documentation to reflect multi-agent support
+
+#### Documentation Updates
+- **README.md** - Complete rewrite for multi-agent support
+  - New prerequisites section with agent options
+  - Updated directory structure showing all agent formats
+  - Agent-agnostic installation instructions
+  - FAQ updated for multi-agent questions
+
+- **SETUP.md** - Multi-agent setup instructions
+  - Separate setup steps for Claude Code, Kiro, and other agents
+  - Updated troubleshooting for each agent type
+  - Skill customization guide for all formats
+
+- **CONTRIBUTING.md** - Multi-format contribution guidelines
+  - How to add skills in all agent formats
+  - Coding conventions for each format
+  - Keep-in-sync guidance
+
+### Architecture
+
+#### Skill Formats
+COG skills are now defined in three parallel formats:
+
+| Format | Location | Agent |
+|--------|----------|-------|
+| SKILL.md | `.claude/skills/[name]/` | Claude Code |
+| POWER.md | `.kiro/powers/cog-[name]/` | Kiro |
+| agents.md | Root directory | OpenAI, others |
+
+#### Benefits
+- **Agent flexibility**: Use whichever AI agent you prefer
+- **Future-proof**: Easy to add support for new agents
+- **Consistent experience**: Same 6 skills across all platforms
+- **No lock-in**: Switch agents without losing functionality
+
+### Migration Guide
+
+If upgrading from v2.x:
+
+1. **Pull new files**:
+   ```bash
+   git pull origin main
+   ```
+
+2. **New files added automatically**:
+   - `agents.md` - Universal documentation
+   - `.kiro/powers/` - Kiro support
+   - `.claude/skills/url-dump/` - New skill
+
+3. **No breaking changes** - All existing skills and content remain compatible
+
+---
 
 ## [2.0.0] - 2025-10-17
 

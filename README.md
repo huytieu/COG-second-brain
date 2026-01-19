@@ -1,8 +1,8 @@
-# COG: The Easiest Second Brain That Actually Self-Evolves
+# COG: The Agentic Second Brain That Actually Self-Evolves
 
-**COG = Claude + Obsidian + Git**
+**COG = Cognition + Obsidian + Git**
 
-A self-evolving second brain system using Claude Code, Obsidian markdown files, and Git version control. No database, no vendor lock-in—just `.md` files that think.
+A self-evolving second brain powered by AI agents, Obsidian markdown files, and Git version control. Works with **Claude Code**, **Kiro**, **OpenAI agents**, and any AI that reads markdown. No database, no vendor lock-in—just `.md` files that think.
 
 ## What is COG?
 
@@ -13,14 +13,18 @@ COG is a personal productivity and knowledge management system that:
 - 📝 **Plain text**: Just markdown files (no database, no vendor lock-in)
 - 📱 **Multi-device**: Syncs via iCloud to iPhone, iPad, Mac
 - 🔒 **Privacy-first**: Your data, your files, your control
-- 🎯 **Specialized agents**: Custom AI assistants for specific workflows
+- 🤖 **Agent-agnostic**: Works with Claude Code, Kiro, OpenAI, and more
+- 🎯 **Specialized skills**: Custom AI capabilities for specific workflows
 - ✅ **Verification-first**: No AI hallucinations, sources required
 
 ## Quick Start
 
 ### Prerequisites
 
-- [Claude Code](https://claude.ai/download) - Required
+- **AI Agent** (choose one or more):
+  - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/`
+  - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/`
+  - Any OpenAI-compatible agent - Uses `agents.md`
 - [Obsidian](https://obsidian.md/) - Recommended for viewing/editing your notes
 - Git - Already on your system if you can run the clone command below
 
@@ -32,19 +36,27 @@ COG is a personal productivity and knowledge management system that:
    cd COG-second-brain
    ```
 
-2. **Open Claude Code and run onboarding:**
+2. **Open your AI agent and run onboarding:**
    ```bash
-   code .
-   # In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
+   # Claude Code:
+   code .  # Then ask: "Run onboarding"
+
+   # Kiro:
+   # Open folder, mention "onboarding" or "setup COG"
+
+   # Other agents:
+   # Reference agents.md and ask to run onboarding
    ```
 
 That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
 
 **What just happened?**
 - The cloned repo IS your second brain - all files are ready to use
-- `.claude/skills/` contains 5 AI skills ready to invoke
+- Skills are defined in multiple formats for agent compatibility:
+  - `.claude/skills/` - 6 Claude Code skills
+  - `.kiro/powers/` - 6 Kiro powers
+  - `agents.md` - Universal agent documentation
 - Onboarding will create your personalized directory structure
-- Just run onboarding to set up and personalize COG
 
 **Want Obsidian integration?**
 - Open Obsidian → "Open folder as vault" → Select the `COG-second-brain` folder
@@ -56,9 +68,9 @@ See [SETUP.md](SETUP.md) for optional configurations (Git sync, iCloud, etc.).
 
 ## What You Get
 
-### 5 Powerful Skills
+### 6 Powerful Skills
 
-COG uses Claude's Agent Skills architecture - specialized capabilities that Claude automatically invokes when relevant to your request.
+COG provides specialized AI capabilities that work across different agents. The same skills are available whether you use Claude Code, Kiro, or other AI agents.
 
 **Setup & Personalization:**
 - **onboarding** - Personalize COG for your workflow (run this first!)
@@ -66,6 +78,7 @@ COG uses Claude's Agent Skills architecture - specialized capabilities that Clau
 **Daily Operations:**
 - **braindump** - Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction
 - **daily-brief** - Personalized news intelligence with verified sources (7-day freshness requirement)
+- **url-dump** - Quick capture URLs with automatic content extraction, insights, and categorization
 
 **Weekly & Strategic:**
 - **weekly-checkin** - Cross-domain pattern analysis and strategic reflection
@@ -134,18 +147,23 @@ Friday: Run knowledge-consolidation skill
 
 ```
 your-obsidian-vault/
+├── agents.md                  # Universal agent documentation (OpenAI, etc.)
 ├── .claude/
-│   └── skills/                # 5 specialized skills
+│   └── skills/                # 6 Claude Code skills
 │       ├── onboarding/
-│       │   └── SKILL.md
 │       ├── braindump/
-│       │   └── SKILL.md
 │       ├── daily-brief/
-│       │   └── SKILL.md
 │       ├── weekly-checkin/
-│       │   └── SKILL.md
-│       └── knowledge-consolidation/
-│           └── SKILL.md
+│       ├── knowledge-consolidation/
+│       └── url-dump/
+├── .kiro/
+│   └── powers/                # 6 Kiro powers
+│       ├── cog-onboarding/
+│       ├── cog-braindump/
+│       ├── cog-daily-brief/
+│       ├── cog-weekly-checkin/
+│       ├── cog-knowledge-consolidation/
+│       └── cog-url-dump/
 ├── 00-inbox/                  # Temporary processing area
 │   ├── MY-PROFILE.md          # Your profile (created by onboarding)
 │   ├── MY-INTERESTS.md        # Your topics & news sources
@@ -171,6 +189,7 @@ your-obsidian-vault/
 └── 05-knowledge/              # Consolidated insights
     ├── consolidated/
     ├── patterns/
+    ├── booklets/              # URL bookmarks by category
     └── timeline/
 ```
 
@@ -245,9 +264,9 @@ Weekly or monthly:
 - ✅ **Git for thoughts**: Version control shows thinking evolution
 
 ### What Doesn't Work
-- ⚠️ Requires discipline—system only works if used consistently
-- ⚠️ Not for everyone—if you don't think in text files, this won't click
-- ⚠️ Requires Claude Code (though adaptable to other AI environments)
+- Requires discipline—system only works if used consistently
+- Not for everyone—if you don't think in text files, this won't click
+- Requires an AI agent (Claude Code, Kiro, or compatible agent)
 
 ### Unexpected Benefits
 - 💡 **Thinking partner, not just storage**: Writing brain dumps knowing they'll be analyzed improves clarity
@@ -358,7 +377,11 @@ After 3 months of use:
 A: COG adds self-evolving intelligence. It doesn't just store—it learns, analyzes, and synthesizes insights automatically.
 
 **Q: Do I need Claude Code specifically?**
-A: Claude Code is recommended, but you can adapt the commands for any AI environment (VSCode + Claude extension, custom API integration, etc.)
+A: No! COG now supports multiple AI agents:
+- **Claude Code**: Uses `.claude/skills/` (native support)
+- **Kiro**: Uses `.kiro/powers/` (native support)
+- **OpenAI/Other agents**: Use `agents.md` for skill documentation
+- Any AI that reads markdown can use COG's skills
 
 **Q: How much does it cost?**
 A: COG is free (MIT license). You only pay for Claude Code usage (Anthropic's pricing).
@@ -395,6 +418,7 @@ COG is free and open-source (MIT license). Your support helps keep it that way w
 
 Built with:
 - [Claude Code](https://claude.ai/code) by Anthropic
+- [Kiro](https://kiro.dev/) by AWS
 - [Obsidian](https://obsidian.md/) for markdown management
 - Inspiration from Zettelkasten, Building a Second Brain, and GTD methodologies
 
@@ -404,6 +428,6 @@ Built with:
 
 ---
 
-**TL;DR:** COG is a self-evolving second brain using Claude Code + Obsidian + Git. Just `.md` files that sync via iCloud and learn your patterns. Setup in 3 steps, zero maintenance required.
+**TL;DR:** COG is a self-evolving agentic second brain using AI agents + Obsidian + Git. Works with Claude Code, Kiro, OpenAI, and more. Just `.md` files that sync via iCloud and learn your patterns. Setup in 2 steps, zero maintenance required.
 
 ⭐ Star this repo if you find it useful!

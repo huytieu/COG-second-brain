@@ -1,6 +1,10 @@
-# COG Second Brain - Agent Commands
+# COG: Agentic Second Brain - Universal Agent Commands
 
-This document defines the available commands/skills for AI agents interacting with COG (Claude + Obsidian + Git second brain system).
+This document defines the available commands/skills for AI agents interacting with COG (Cognition + Obsidian + Git) - a self-evolving agentic second brain system.
+
+**Compatible with:** OpenAI agents, Claude (via this file), and any AI that reads markdown.
+
+> **Note:** Claude Code users should use `.claude/skills/` and Kiro users should use `.kiro/powers/` for native support. This file serves as universal documentation for all other agents.
 
 ## Available Commands
 

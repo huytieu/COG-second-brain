@@ -14,7 +14,7 @@ If you find a bug or have a suggestion:
    - Detailed description of the problem or suggestion
    - Steps to reproduce (for bugs)
    - Expected vs actual behavior
-   - Your environment (OS, Obsidian version, Claude Code version)
+   - Your environment (OS, Obsidian version, AI agent used: Claude Code/Kiro/Other)
 
 ### Suggesting Enhancements
 
@@ -39,7 +39,10 @@ We welcome ideas for new features or improvements:
 
 #### Making Changes
 
-1. **Commands**: New commands should be self-contained `.md` files in `.claude/commands/`
+1. **Skills**: New skills should be added in all supported formats:
+   - `.claude/skills/[name]/SKILL.md` - Claude Code format
+   - `.kiro/powers/cog-[name]/POWER.md` - Kiro format
+   - Update `agents.md` - Universal documentation
 2. **Templates**: Follow existing YAML frontmatter conventions
 3. **Documentation**: Update README.md if adding major features
 4. **Examples**: Provide examples of your feature in action
@@ -74,14 +77,14 @@ Before submitting:
 
 ### High Priority
 
-- **New Commands**: Useful slash commands for common workflows
-- **Improved Templates**: Better templates for specific use cases
+- **New Skills**: Useful skills for common workflows (add in all agent formats)
+- **Agent Format Support**: Improve support for additional AI agents
 - **Documentation**: Tutorials, examples, use cases
 - **Bug Fixes**: Fixes for reported issues
 
 ### Medium Priority
 
-- **Specialized Agents**: New subagents for specific domains
+- **Specialized Skills**: New skills for specific domains
 - **Integration Scripts**: Scripts for connecting COG with other tools
 - **Workflow Examples**: Real-world workflow demonstrations
 - **Performance Improvements**: Optimizations for large vaults
@@ -102,28 +105,52 @@ Before submitting:
 
 ## Coding Conventions
 
-### Command Files
+### Claude Code Skills (`.claude/skills/[name]/SKILL.md`)
 
 ```markdown
-# Command Name
+---
+name: skill-name
+description: What this skill does
+---
 
-## Purpose
-[Clear one-sentence description]
+# Skill Name
 
-## Command: `/command-name`
+## When to Invoke
+[Trigger patterns]
 
 ## Process Flow
 [Step-by-step process]
 
-## Metadata Template
-[YAML template]
-
 ## Output Structure
 [Expected output format]
-
-## Guidelines
-[Usage guidelines]
 ```
+
+### Kiro Powers (`.kiro/powers/cog-[name]/POWER.md`)
+
+```markdown
+---
+name: "cog-skill-name"
+displayName: "Skill Display Name"
+description: "What this power does"
+keywords: ["keyword1", "keyword2", "keyword3"]
+---
+
+# Skill Name
+
+## When This Power Activates
+[Trigger patterns]
+
+## Process Flow
+[Step-by-step process]
+```
+
+### Universal Documentation (`agents.md`)
+
+Add new skills under "## Available Commands" with:
+- Command name and triggers
+- Description and purpose
+- What it does (numbered list)
+- Output locations
 
 ### Template Files
 

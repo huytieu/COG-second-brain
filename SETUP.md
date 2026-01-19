@@ -1,12 +1,15 @@
 # COG Setup Guide
 
-Complete step-by-step instructions for setting up your COG (Claude + Obsidian + Git) second brain system.
+Complete step-by-step instructions for setting up your COG (Cognition + Obsidian + Git) agentic second brain system.
 
 ## Quick Start (Easiest Way)
 
 ### What You Need
 
-1. **Claude Code** ([Download here](https://claude.ai/download)) - Required
+1. **AI Agent** (choose one or more):
+   - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/`
+   - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/`
+   - Any OpenAI-compatible agent - Uses `agents.md`
 2. **Obsidian** ([Download here](https://obsidian.md/)) - Recommended (optional)
 3. **Git** - Already on your system if you can run clone commands
 
@@ -18,19 +21,32 @@ git clone https://github.com/huytieu/COG-second-brain.git
 cd COG-second-brain
 ```
 
-**Step 2: Open Claude Code and run onboarding**
+**Step 2: Open your AI agent and run onboarding**
+
+**Claude Code:**
 ```bash
 code .
-# In Claude Code, ask: "Run onboarding"
+# Ask: "Run onboarding"
 ```
+
+**Kiro:**
+- Open the folder in Kiro
+- Say "onboarding" or "setup COG"
+- Kiro will activate the cog-onboarding power
+
+**Other Agents:**
+- Point the agent to `agents.md` for skill documentation
+- Ask it to run the onboarding workflow
 
 That's it! You now have a working second brain.
 
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
-- 5 AI skills are ready to use in `.claude/skills/`
+- 6 AI skills are available in multiple formats:
+  - `.claude/skills/` - For Claude Code
+  - `.kiro/powers/` - For Kiro
+  - `agents.md` - For any agent
 - Onboarding will create your personalized directory structure
-- Just run onboarding to set up and personalize COG
 
 **Optional: Use with Obsidian**
 
@@ -97,13 +113,23 @@ After running onboarding, you'll have this structure:
 
 ```
 COG-second-brain/              # This is your second brain folder
+├── agents.md                  # Universal agent documentation
 ├── .claude/
-│   └── skills/                # 5 AI skills ready to invoke
+│   └── skills/                # 6 Claude Code skills
 │       ├── onboarding/
 │       ├── braindump/
 │       ├── daily-brief/
 │       ├── weekly-checkin/
-│       └── knowledge-consolidation/
+│       ├── knowledge-consolidation/
+│       └── url-dump/
+├── .kiro/
+│   └── powers/                # 6 Kiro powers
+│       ├── cog-onboarding/
+│       ├── cog-braindump/
+│       ├── cog-daily-brief/
+│       ├── cog-weekly-checkin/
+│       ├── cog-knowledge-consolidation/
+│       └── cog-url-dump/
 ├── 00-inbox/                  # Temporary & profile files (created by onboarding)
 ├── 01-daily/                  # Daily briefs and check-ins
 │   ├── briefs/
@@ -116,6 +142,7 @@ COG-second-brain/              # This is your second brain folder
 ├── 05-knowledge/              # Consolidated insights
 │   ├── consolidated/
 │   ├── patterns/
+│   ├── booklets/              # URL bookmarks
 │   └── timeline/
 └── 06-templates/              # Markdown templates
 ```
@@ -223,11 +250,12 @@ Update `00-inbox/MY-PROFILE.md` to include the new project in your active projec
 
 ## Customizing Skills
 
-Want to customize how COG works?
+Want to customize how COG works? Skills are defined in multiple formats for different agents.
+
+### For Claude Code
 
 **Edit existing skills:**
 ```bash
-# Example: Customize the braindump skill
 code .claude/skills/braindump/SKILL.md
 ```
 
@@ -242,39 +270,54 @@ mkdir -p .claude/skills/my-skill
 touch .claude/skills/my-skill/SKILL.md
 ```
 
-Add content:
-```markdown
----
-name: my-skill
-description: What this skill does (Claude uses this to decide when to invoke)
----
+### For Kiro
 
-# My Custom Skill
-
-## When to Invoke
-- User says "do the thing"
-- User mentions "custom workflow"
-
-## Process Flow
-
-### 1. Do Something
-[Instructions for Claude]
-
-### 2. Create Output
-[More instructions]
+**Edit existing powers:**
+```bash
+code .kiro/powers/cog-braindump/POWER.md
 ```
+
+Each `POWER.md` file contains:
+- `name`, `displayName`, `description`, `keywords` in frontmatter
+- Onboarding and steering instructions in body
+
+**Create new powers:**
+```bash
+mkdir -p .kiro/powers/my-power
+touch .kiro/powers/my-power/POWER.md
+```
+
+### For Other Agents
+
+Edit `agents.md` to add or modify skill documentation. This file serves as universal documentation that any AI agent can read.
+
+### Keeping Skills in Sync
+
+When you modify a skill, update all formats:
+1. `.claude/skills/[name]/SKILL.md` - Claude Code
+2. `.kiro/powers/cog-[name]/POWER.md` - Kiro
+3. `agents.md` - Universal documentation
 
 ## Troubleshooting
 
 ### Skills Not Recognized
 
-**Problem:** Claude doesn't recognize skill invocations
+**Problem:** Agent doesn't recognize skill invocations
 
-**Solutions:**
+**Solutions for Claude Code:**
 1. Check `.claude/skills/` folder exists in your COG folder
 2. Verify each skill folder has a `SKILL.md` file
 3. Make sure you're running Claude Code from the COG folder root
 4. Try restarting Claude Code
+
+**Solutions for Kiro:**
+1. Check `.kiro/powers/` folder exists
+2. Verify each power folder has a `POWER.md` file
+3. Try mentioning specific keywords from the power's `keywords` list
+
+**Solutions for Other Agents:**
+1. Ensure `agents.md` exists in the root folder
+2. Point the agent to read `agents.md` for available commands
 
 ### Files Saving to Wrong Location
 
@@ -371,4 +414,4 @@ Once you're comfortable:
 
 ---
 
-**Welcome to COG!** Your second brain is ready to learn and evolve with you.
+**Welcome to COG!** Your agentic second brain is ready to learn and evolve with you—powered by whichever AI agent you choose.
