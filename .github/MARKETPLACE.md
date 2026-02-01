@@ -29,16 +29,13 @@ The `plugin.json` file contains:
 
 ### Components
 
-#### Commands (5 total)
-1. `/onboarding` - Personalization workflow
-2. `/daily-brief` - News intelligence
-3. `/braindump` - Thought capture
-4. `/weekly-checkin` - Pattern analysis
-5. `/knowledge-consolidation` - Framework building
-
-#### Agents (2 total)
-1. `brain-dump-analyst` - Stream-of-consciousness analysis
-2. `news-curator` - Verified news curation
+#### Skills (6 total)
+1. `onboarding` - Personalization workflow
+2. `daily-brief` - News intelligence
+3. `braindump` - Thought capture
+4. `weekly-checkin` - Pattern analysis
+5. `knowledge-consolidation` - Framework building
+6. `url-dump` - Quick URL capture with auto-extraction
 
 ### Extended Metadata
 - `features`: List of key COG features
@@ -112,16 +109,15 @@ To validate your plugin manifest:
 
 ```bash
 # Check JSON syntax
-cat plugin.json | python3 -m json.tool > /dev/null && echo "✓ JSON is valid"
+cat .claude-plugin/plugin.json | python3 -m json.tool > /dev/null && echo "✓ JSON is valid"
 
-# Verify all file paths exist
-ls .claude/commands/onboarding.md
-ls .claude/commands/daily-brief.md
-ls .claude/commands/braindump.md
-ls .claude/commands/weekly-checkin.md
-ls .claude/commands/knowledge-consolidation.md
-ls .claude/subagents/brain-dump-analyst.md
-ls .claude/subagents/news-curator.md
+# Verify all skill files exist
+ls .claude/skills/onboarding/SKILL.md
+ls .claude/skills/daily-brief/SKILL.md
+ls .claude/skills/braindump/SKILL.md
+ls .claude/skills/weekly-checkin/SKILL.md
+ls .claude/skills/knowledge-consolidation/SKILL.md
+ls .claude/skills/url-dump/SKILL.md
 ```
 
 All paths should exist relative to the repository root.

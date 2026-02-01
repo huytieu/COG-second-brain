@@ -101,7 +101,6 @@ Create braindump file with this structure:
 ```markdown
 ---
 type: "braindump"
-analyst: "brain-dump-analyst"
 domain: "[personal|professional|project-specific|mixed]"
 project: "[project-name]" # Only if project-specific
 date: "YYYY-MM-DD"
