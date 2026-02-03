@@ -248,10 +248,12 @@ items_count: [number]
 
 ## Opportunities & Recommendations
 
+**Note:** Calculate actual due dates from today's date and append Obsidian Tasks emoji format.
+
 ### Immediate Actions (Today/This Week)
-- [ ] [Specific action item 1]
-- [ ] [Specific action item 2]
-- [ ] [Specific action item 3]
+- [ ] [Specific action item 1] 📅 [YYYY-MM-DD = today's date]
+- [ ] [Specific action item 2] 📅 [YYYY-MM-DD = today's date]
+- [ ] [Specific action item 3] 📅 [YYYY-MM-DD = end of this week]
 
 ### Research Needed
 - [Area 1 requiring deeper investigation]

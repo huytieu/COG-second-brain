@@ -199,9 +199,9 @@ briefs_reviewed: [count]
 [Any strategic insights or direction changes]
 
 **Next Steps:**
-- [ ] [Specific next action 1]
-- [ ] [Specific next action 2]
-- [ ] [Specific next action 3]
+- [ ] [Specific next action 1] 📅 [YYYY-MM-DD = date of next Monday]
+- [ ] [Specific next action 2] 📅 [YYYY-MM-DD = date of next Friday]
+- [ ] [Specific next action 3] 📅 [YYYY-MM-DD = date +1 week from today]
 
 **Rating:** [1-5] ⭐
 
@@ -246,9 +246,9 @@ briefs_reviewed: [count]
 [Brief explanation of strategic importance]
 
 ### Carry Forward Items
-- [ ] [Unresolved item from this week - with context]
-- [ ] [Ongoing task - with next action]
-- [ ] [Follow-up needed - with who/what]
+- [ ] [Unresolved item from this week - with context] 📅 [YYYY-MM-DD = date of next Monday]
+- [ ] [Ongoing task - with next action] 📅 [YYYY-MM-DD = mid-next-week]
+- [ ] [Follow-up needed - with who/what] 📅 [YYYY-MM-DD = date +1 week from today]
 
 ### Experiments & Changes
 

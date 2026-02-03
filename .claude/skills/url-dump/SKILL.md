@@ -158,8 +158,8 @@ confidence: "[high|medium|low]"
 [Key excerpts or quotes from the content - 200-400 words max]
 
 ## Practical Takeaways
-- [ ] [Action item 1 if applicable]
-- [ ] [Action item 2 if applicable]
+- [ ] [Action item 1 if applicable] 📅 [YYYY-MM-DD = date +1 week from today]
+- [ ] [Action item 2 if applicable] 📅 [YYYY-MM-DD = date +1 week from today]
 
 ## Related Knowledge
 - **Similar Bookmarks:** [[bookmark1]], [[bookmark2]]
@@ -228,10 +228,10 @@ status: "to-evaluate"
 [Connection to user's work/interests]
 
 ## Evaluation Status
-- [ ] Sign up / try demo
-- [ ] Test key features
-- [ ] Compare with alternatives
-- [ ] Decision: [use|pass|revisit]
+- [ ] Sign up / try demo 📅 [YYYY-MM-DD = date +3 days from today]
+- [ ] Test key features 📅 [YYYY-MM-DD = date +1 week from today]
+- [ ] Compare with alternatives 📅 [YYYY-MM-DD = date +1 week from today]
+- [ ] Decision: [use|pass|revisit] 📅 [YYYY-MM-DD = date +2 weeks from today]
 
 ## Notes
 [Space for user's evaluation notes]

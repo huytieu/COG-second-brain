@@ -157,11 +157,13 @@ confidence: "[high|medium|low]"
 
 ## Action Items
 
+**Note:** Calculate actual due dates from today's date and append Obsidian Tasks emoji format.
+
 ### Immediate (24-48 hours)
-- [ ] [specific action with deadline]
+- [ ] [specific action] 📅 [YYYY-MM-DD = tomorrow's date]
 
 ### Short-term (1-2 weeks)
-- [ ] [specific action with deadline]
+- [ ] [specific action] 📅 [YYYY-MM-DD = date +1 week from today]
 
 ### Strategic Considerations
 - [longer-term implications and considerations]
@@ -230,7 +232,7 @@ tags: ["#competitive", "#intelligence", "#[company-slug]"]
 [Analysis of what this means for the project]
 
 ## Action Items
-- [ ] [Follow-up actions based on intel]
+- [ ] [Follow-up actions based on intel] 📅 [YYYY-MM-DD = calculated due date]
 
 ---
 
