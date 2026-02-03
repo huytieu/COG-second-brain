@@ -124,7 +124,6 @@ Create structured briefing document:
 ```markdown
 ---
 type: "daily-brief"
-curator: "news-curator"
 domain: "shared"
 date: "YYYY-MM-DD"
 created: "YYYY-MM-DD HH:MM"
