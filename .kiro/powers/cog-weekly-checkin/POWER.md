@@ -99,6 +99,22 @@ Create structured document with:
 - **Contradiction Analysis:** Where does thinking conflict with actions?
 - **Energy Pattern Detection:** When was energy highest/lowest?
 
+## Task Date Format
+
+Action items use Obsidian Tasks emoji format with calculated due dates:
+- **Next steps:** `📅 [next Monday/Friday/+1 week]`
+- **Carry forward items:** `📅 [next week dates]`
+
+Example:
+```markdown
+**Next Steps:**
+- [ ] Complete project milestone 📅 2026-02-09
+- [ ] Review team feedback 📅 2026-02-10
+
+### Carry Forward Items
+- [ ] Follow up with client 📅 2026-02-10
+```
+
 ## Success Metrics
 
 - User completes meaningful reflection

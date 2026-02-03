@@ -56,6 +56,14 @@ If you want to view/edit your notes in Obsidian:
 3. Select the `COG-second-brain` folder
 4. Done! Now you have both Claude Code AI features AND Obsidian's visual interface
 
+**Recommended: Install Obsidian Tasks Plugin**
+
+COG generates tasks with [Obsidian Tasks emoji format](https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format) (`📅 YYYY-MM-DD`). To use task dashboards and date-based queries:
+1. Open Obsidian Settings → Community plugins
+2. Browse and install "Tasks" plugin
+3. Enable the plugin
+4. COG tasks will now appear in your Tasks queries (due today, due this week, etc.)
+
 ## First Use
 
 ### Day 1: Personalize COG

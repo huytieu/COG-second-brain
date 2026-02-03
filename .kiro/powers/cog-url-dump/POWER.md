@@ -125,6 +125,23 @@ Summary: X articles, Y tools saved
 - **Dynamic Content:** Note content may change
 - **Non-English:** Note language, provide translation if possible
 
+## Task Date Format
+
+Action items use Obsidian Tasks emoji format with calculated due dates:
+- **Practical takeaways:** `📅 [date +1 week]`
+- **Tool evaluation tasks:** Progressive dates from +3 days to +2 weeks
+
+Example:
+```markdown
+## Practical Takeaways
+- [ ] Try the API integration 📅 2026-02-10
+
+## Evaluation Status
+- [ ] Sign up / try demo 📅 2026-02-06
+- [ ] Test key features 📅 2026-02-10
+- [ ] Decision: [use|pass|revisit] 📅 2026-02-17
+```
+
 ## Success Metrics
 
 - Speed of capture (< 30 seconds for single URL)

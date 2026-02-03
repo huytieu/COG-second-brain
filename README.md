@@ -16,6 +16,7 @@ COG is a personal productivity and knowledge management system that:
 - 🤖 **Agent-agnostic**: Works with Claude Code, Kiro, OpenAI, and more
 - 🎯 **Specialized skills**: Custom AI capabilities for specific workflows
 - ✅ **Verification-first**: No AI hallucinations, sources required
+- 📋 **Obsidian Tasks compatible**: Tasks include `📅 YYYY-MM-DD` emoji format for dashboard queries
 
 ## Quick Start
 
@@ -134,7 +135,24 @@ Friday: Run knowledge-consolidation skill
 - Explicit confidence levels for all analysis
 - Multi-source cross-referencing required
 
-### 4. Privacy-First Architecture
+### 4. Obsidian Tasks Integration
+
+COG skills generate tasks with [Obsidian Tasks emoji format](https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format):
+
+```markdown
+### Immediate (24-48 hours)
+- [ ] Check competitor pricing 📅 2026-02-04
+
+### Short-term (1-2 weeks)
+- [ ] Schedule team discussion 📅 2026-02-10
+```
+
+Tasks automatically appear in:
+- Tasks dashboard queries ("due today", "due this week")
+- Daily notes task views
+- Any date-based task filtering
+
+### 5. Privacy-First Architecture
 
 - **Strict domain separation**: Personal, professional, project-specific
 - **Local-first**: Works offline, syncs when online

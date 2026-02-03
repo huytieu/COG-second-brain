@@ -87,10 +87,23 @@ Mark with warning, state what's uncertain, recommend monitoring.
 ### Sources Conflict
 Present both perspectives, areas of agreement/disagreement, recommendation.
 
+## Task Date Format
+
+Action items use Obsidian Tasks emoji format with calculated due dates:
+- **Today's actions:** `📅 [today's date]`
+- **This week actions:** `📅 [end of week date]`
+
+Example:
+```markdown
+### Immediate Actions (Today/This Week)
+- [ ] Review competitor announcement 📅 2026-02-03
+- [ ] Schedule team briefing 📅 2026-02-07
+```
+
 ## Success Criteria
 
 - All news within 7-day window (100% compliance)
 - All sources verified and linked
 - Confidence levels clearly stated
 - Opportunities and risks identified
-- Follow-up actions suggested
+- Follow-up actions suggested with due dates

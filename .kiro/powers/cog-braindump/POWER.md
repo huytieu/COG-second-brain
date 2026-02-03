@@ -67,7 +67,7 @@ Create structured braindump file with:
 - Raw Thoughts section (preserved exactly)
 - Content Analysis (themes, questions, decisions)
 - Strategic Intelligence (insights, patterns, implications)
-- Action Items (immediate, short-term, strategic)
+- Action Items with Obsidian Tasks emoji dates (📅 YYYY-MM-DD)
 - Connections (related braindumps, projects, knowledge)
 
 ## Output Locations
@@ -84,6 +84,18 @@ Create structured braindump file with:
 - **Low (50-69%):** Significant ambiguity requiring user input
 
 Always state confidence levels explicitly in processing notes.
+
+## Task Date Format
+
+Action items use Obsidian Tasks emoji format with calculated due dates:
+- **Immediate (24-48 hours):** `📅 [tomorrow's date]`
+- **Short-term (1-2 weeks):** `📅 [date +1 week]`
+
+Example:
+```markdown
+### Immediate (24-48 hours)
+- [ ] Review competitor announcement 📅 2026-02-04
+```
 
 ## Follow-up Suggestions
 

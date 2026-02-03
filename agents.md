@@ -251,6 +251,27 @@ Edit these files anytime - changes take effect immediately.
 
 ---
 
+## Task Format
+
+All skills generate tasks with [Obsidian Tasks emoji format](https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format) for dashboard compatibility:
+
+```markdown
+- [ ] Action item 📅 YYYY-MM-DD
+```
+
+**Date calculation by context:**
+- "Immediate (24-48 hours)" → tomorrow's date
+- "Short-term (1-2 weeks)" → +1 week from today
+- "Today/This Week" → today or end of week
+- "Next Steps" → next Monday/Friday
+
+This enables:
+- Tasks dashboard queries ("due today", "due this week")
+- Daily notes task views
+- Date-based filtering and sorting
+
+---
+
 ## Philosophy
 
 COG follows these principles:
@@ -259,3 +280,4 @@ COG follows these principles:
 - **Configuration as knowledge:** Preferences stored as editable notes
 - **Self-evolving:** Patterns and frameworks grow over time
 - **Low friction:** Quick capture, systematic organization
+- **Obsidian Tasks compatible:** All tasks include emoji due dates
