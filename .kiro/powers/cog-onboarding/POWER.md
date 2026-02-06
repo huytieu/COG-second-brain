@@ -7,7 +7,7 @@ keywords: ["onboarding", "setup COG", "setup profile", "get started", "configure
 
 # COG Onboarding Power
 
-Welcome new users and collect essential information to personalize their COG (Claude + Obsidian + Git) second brain experience.
+Welcome new users and collect essential information to personalize their COG (Cognition + Obsidian + Git) second brain experience.
 
 ## When This Power Activates
 
@@ -15,35 +15,66 @@ Welcome new users and collect essential information to personalize their COG (Cl
 - User is new and hasn't completed onboarding yet
 - User wants to update their profile or add new projects
 
+## Core Principle: Smart, Low-Friction Onboarding
+
+**The onboarding MUST feel like a natural conversation, NOT a form.**
+
+- Ask open-ended questions, never numbered option lists
+- Ask as few questions as possible - infer from natural responses
+- Never ask redundant questions - if info was already given, don't re-ask
+- Parse intelligently - extract name, role, interests, projects, watchlist from a single paragraph if the user provides them
+- Confirm your interpretation rather than asking the question fresh
+
 ## Onboarding Steps
 
 ### 1. Check for Existing Profile
 
 Look for `00-inbox/MY-PROFILE.md` in the vault:
-- If exists: Offer update mode (update profile, add interests, add projects, view current, start fresh)
+- If exists: Ask "What would you like to update? Just tell me what needs changing." (no numbered menus)
 - If not found: Proceed with full onboarding
 
-### 2. Collect Information (Keep it Simple!)
+### 2. Single Open-Ended Prompt
 
-Ask only essential questions conversationally:
+Instead of asking 6 sequential questions, start with ONE open-ended message:
 
-1. **Name** - First name or full name
-2. **Role** - Job/role/main activity (e.g., "Software engineer", "Product manager")
-3. **Interests** - 3-5 topics to learn about or stay updated on
-4. **News Sources** - Preferred information sources (e.g., "Hacker News, Twitter")
-5. **Active Projects** - Optional, comma-separated project names
-6. **Competitive Watch** - Optional, companies/people to track
+```
+Welcome to COG - your self-evolving second brain!
 
-### 3. Generate Profile Documents
+Tell me a bit about yourself - your name, what you do, and what topics you're most interested in staying sharp on. Feel free to share as much or as little as you'd like.
+```
+
+### 3. Intelligent Extraction
+
+From the user's response, extract:
+- **Name** (required) - from self-introduction patterns
+- **Role** (required) - from job/activity mentions
+- **Interests** (required, 2-3 minimum) - from topic mentions, also infer from role
+- **News Sources** (optional) - from source mentions, skip if not mentioned
+- **Projects** (optional) - from project mentions, skip if not mentioned
+- **Competitive Watch** (optional) - from company/person mentions, skip if not mentioned
+
+### 4. Smart Follow-Up (Only If Needed)
+
+Only ask a follow-up if required fields (name, role, interests) are missing. Ask ONE question covering all gaps. Never ask about optional fields the user didn't mention.
+
+### 5. Confirm and Create
+
+Show a brief summary of what was captured. Also ask about agent mode:
+- **Solo mode** (default): Handle everything in a single conversation
+- **Agent team mode**: Delegate to specialist sub-agents for deeper results (works best with Claude Code)
+
+Default to `solo` if user doesn't express a preference. Store as `agent_mode: solo|team` in MY-PROFILE.md frontmatter.
+
+### 6. Generate Profile Documents
 
 Create these markdown files:
 
 **`00-inbox/MY-PROFILE.md`** - Basic profile with name, role, active projects
 **`00-inbox/MY-INTERESTS.md`** - Topics and preferred news sources
-**`03-professional/COMPETITIVE-WATCHLIST.md`** - If tracking competitors
-**`04-projects/[project-slug]/PROJECT-OVERVIEW.md`** - For each project
+**`03-professional/COMPETITIVE-WATCHLIST.md`** - Only if they mentioned competitors
+**`04-projects/[project-slug]/PROJECT-OVERVIEW.md`** - Only if they mentioned projects
 
-### 4. Create Directory Structure
+### 7. Create Directory Structure
 
 ```
 00-inbox/
@@ -55,9 +86,9 @@ Create these markdown files:
 06-templates/
 ```
 
-### 5. Generate Welcome Guide
+### 8. Generate Welcome Guide and Wrap Up
 
-Create `00-inbox/WELCOME-TO-COG.md` with quick start instructions.
+Create `00-inbox/WELCOME-TO-COG.md` with quick start instructions. Suggest a natural next action (braindump or daily brief) without presenting a numbered menu.
 
 ## Success Criteria
 

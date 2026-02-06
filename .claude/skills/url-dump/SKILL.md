@@ -14,6 +14,12 @@ Transform raw URLs into structured, insightful knowledge entries through intelli
 - User pastes a URL and wants to capture it
 - User wants to organize web resources into their knowledge base
 
+## Agent Mode Awareness
+
+**Check `agent_mode` in `00-inbox/MY-PROFILE.md` frontmatter:**
+- If `agent_mode: team` — delegate content extraction, analysis, and categorization to a sub-agent while handling user interaction directly. The sub-agent fetches URL content, generates insights, and returns structured results for filing.
+- If `agent_mode: solo` (default) — handle everything directly in the conversation. No delegation.
+
 ## Pre-Flight Check
 
 **Before executing, check for user profile:**

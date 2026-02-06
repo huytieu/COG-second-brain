@@ -14,6 +14,12 @@ Find verified, relevant news for personalized daily briefings with strict verifi
 - User wants to stay updated on their interests
 - Morning routine or regular check-in time
 
+## Agent Mode Awareness
+
+**Check `agent_mode` in `00-inbox/MY-PROFILE.md` frontmatter:**
+- If `agent_mode: team` — delegate news research across different interest areas to parallel sub-agents (e.g., one agent per topic cluster). Each agent searches, verifies sources, and returns findings. Combine and synthesize results into the final brief.
+- If `agent_mode: solo` (default) — handle all research and synthesis directly in the conversation. No delegation.
+
 ## Pre-Flight Check
 
 **Before executing, check for user profile:**

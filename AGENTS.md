@@ -10,7 +10,7 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ### /onboarding
 
-**Description:** Personalize COG for your workflow - creates profile, interests, and watchlist files with guided setup.
+**Description:** Personalize COG for your workflow - creates profile, interests, and watchlist files with a smart, conversational setup.
 
 **Triggers:**
 - `/onboarding`
@@ -19,15 +19,24 @@ This document defines the available commands/skills for AI agents interacting wi
 - "setup my profile"
 - "get started"
 
-**Purpose:** Welcome new users and collect essential information to personalize their COG experience. Creates profile documents stored as markdown files within the vault.
+**Purpose:** Welcome new users and collect essential information to personalize their COG experience through natural conversation - not sequential form-filling. Creates profile documents stored as markdown files within the vault.
 
-**What it does:**
-1. Collects user name, role, interests, and preferred news sources
-2. Creates `00-inbox/MY-PROFILE.md` with basic preferences
-3. Creates `00-inbox/MY-INTERESTS.md` with topics for daily briefs
-4. Optionally creates project structures in `04-projects/`
-5. Optionally creates `03-professional/COMPETITIVE-WATCHLIST.md`
-6. Generates a welcome guide
+**How it works:**
+1. Asks ONE open-ended question: "Tell me about yourself - name, role, and what you're interested in"
+2. Intelligently parses the response to extract name, role, interests, projects, news sources, and competitive watchlist
+3. Only asks a follow-up if required info (name, role, interests) is still missing
+4. Asks about agent mode preference (solo vs team) during confirmation
+5. Confirms extracted info before creating files
+6. Creates `00-inbox/MY-PROFILE.md` with basic preferences and agent_mode setting
+7. Creates `00-inbox/MY-INTERESTS.md` with topics for daily briefs
+8. Optionally creates project structures in `04-projects/` and `03-professional/COMPETITIVE-WATCHLIST.md` (only if mentioned)
+9. Generates a welcome guide
+
+**Agent modes:**
+- **Solo** (default): All skills handle everything directly in one conversation
+- **Team**: Skills delegate research, analysis, and writing to specialist sub-agents for deeper results (works best with Claude Code)
+
+**Design principle:** Never ask redundant questions. Never show numbered option menus. Infer what you can from context.
 
 **Run this first** if you're new to COG.
 

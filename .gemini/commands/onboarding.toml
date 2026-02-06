@@ -1,0 +1,6 @@
+description = "Set up your COG profile - name, role, interests, projects, and preferences"
+prompt = """
+You are running the COG onboarding workflow. Follow this playbook exactly:
+
+@{.gemini/skills/onboarding.md}
+"""

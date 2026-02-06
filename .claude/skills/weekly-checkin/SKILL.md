@@ -14,6 +14,12 @@ Comprehensive weekly review and analysis integrating insights across all domains
 - End of week reflection time
 - User wants to analyze patterns across the week
 
+## Agent Mode Awareness
+
+**Check `agent_mode` in `00-inbox/MY-PROFILE.md` frontmatter:**
+- If `agent_mode: team` — delegate domain-specific analysis to sub-agents (e.g., one for personal patterns, one for professional review, one per active project). Each agent scans relevant braindumps/briefs and returns insights. Combine into the weekly synthesis.
+- If `agent_mode: solo` (default) — handle all scanning and analysis directly in the conversation. No delegation.
+
 ## Pre-Flight Check
 
 **Check for user profile (optional but enhances experience):**

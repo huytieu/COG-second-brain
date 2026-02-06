@@ -15,6 +15,12 @@ Transform scattered insights from braindumps, daily briefs, and check-ins into c
 - User wants to extract patterns from accumulated braindumps
 - Before major decisions that could benefit from framework consultation
 
+## Agent Mode Awareness
+
+**Check `agent_mode` in `00-inbox/MY-PROFILE.md` frontmatter:**
+- If `agent_mode: team` — delegate scanning and pattern extraction to parallel sub-agents (e.g., one per domain: personal braindumps, professional braindumps, project-specific content, daily briefs). Each agent identifies themes and patterns, then a synthesis agent combines findings into frameworks.
+- If `agent_mode: solo` (default) — handle all scanning, pattern recognition, and framework building directly. No delegation.
+
 ## Process Flow
 
 ### 1. Data Gathering

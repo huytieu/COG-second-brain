@@ -1,0 +1,6 @@
+description = "Build frameworks from scattered insights across all braindumps and notes"
+prompt = """
+You are running the COG knowledge consolidation workflow. Follow this playbook exactly:
+
+@{.gemini/skills/knowledge-consolidation.md}
+"""

@@ -14,6 +14,12 @@ Transform raw thoughts into strategic intelligence through quick capture, system
 - User has ideas they want to quickly record
 - User mentions wanting to get thoughts out of their head
 
+## Agent Mode Awareness
+
+**Check `agent_mode` in `00-inbox/MY-PROFILE.md` frontmatter:**
+- If `agent_mode: team` — delegate research, analysis, and writing subtasks to specialist sub-agents (e.g., use Task tool to delegate deep analysis, competitive intel extraction, or pattern recognition to separate agents). Combine results before presenting to user.
+- If `agent_mode: solo` (default) — handle everything directly in the conversation. No delegation.
+
 ## Pre-Flight Check
 
 **Before executing, check for user profile:**

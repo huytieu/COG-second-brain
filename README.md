@@ -2,7 +2,7 @@
 
 **COG = Cognition + Obsidian + Git**
 
-A self-evolving second brain powered by AI agents, Obsidian markdown files, and Git version control. Works with **Claude Code**, **Kiro**, **OpenAI agents**, and any AI that reads markdown. No database, no vendor lock-in—just `.md` files that think.
+A self-evolving second brain powered by AI agents, Obsidian markdown files, and Git version control. Works with **Claude Code**, **Kiro**, **Gemini CLI**, **OpenAI Codex**, and any AI that reads markdown. No database, no vendor lock-in—just `.md` files that think.
 
 ## What is COG?
 
@@ -13,7 +13,7 @@ COG is a personal productivity and knowledge management system that:
 - 📝 **Plain text**: Just markdown files (no database, no vendor lock-in)
 - 📱 **Multi-device**: Syncs via iCloud to iPhone, iPad, Mac
 - 🔒 **Privacy-first**: Your data, your files, your control
-- 🤖 **Agent-agnostic**: Works with Claude Code, Kiro, OpenAI, and more
+- 🤖 **Agent-agnostic**: Works with Claude Code, Kiro, Gemini CLI, OpenAI Codex, and more
 - 🎯 **Specialized skills**: Custom AI capabilities for specific workflows
 - ✅ **Verification-first**: No AI hallucinations, sources required
 - 📋 **Obsidian Tasks compatible**: Tasks include `📅 YYYY-MM-DD` emoji format for dashboard queries
@@ -25,7 +25,9 @@ COG is a personal productivity and knowledge management system that:
 - **AI Agent** (choose one or more):
   - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/`
   - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/`
-  - Any OpenAI-compatible agent - Uses `agents.md`
+  - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Uses `GEMINI.md` + `.gemini/commands/`
+  - [OpenAI Codex](https://github.com/openai/codex) - Uses `AGENTS.md`
+  - Any other AI agent - Uses `AGENTS.md`
 - [Obsidian](https://obsidian.md/) - Recommended for viewing/editing your notes
 - Git - Already on your system if you can run the clone command below
 
@@ -45,8 +47,14 @@ COG is a personal productivity and knowledge management system that:
    # Kiro:
    # Open folder, mention "onboarding" or "setup COG"
 
+   # Gemini CLI:
+   gemini  # Then type: /onboarding
+
+   # OpenAI Codex:
+   codex  # Then ask: "Run onboarding"
+
    # Other agents:
-   # Reference agents.md and ask to run onboarding
+   # Reference AGENTS.md and ask to run onboarding
    ```
 
 That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
@@ -56,7 +64,8 @@ That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
 - Skills are defined in multiple formats for agent compatibility:
   - `.claude/skills/` - 6 Claude Code skills
   - `.kiro/powers/` - 6 Kiro powers
-  - `agents.md` - Universal agent documentation
+  - `GEMINI.md` + `.gemini/commands/` - 6 Gemini CLI commands
+  - `AGENTS.md` - Universal agent documentation (OpenAI Codex and others)
 - Onboarding will create your personalized directory structure
 
 **Want Obsidian integration?**
@@ -87,18 +96,24 @@ COG provides specialized AI capabilities that work across different agents. The 
 
 **How Skills Work:**
 
-Skills are self-contained AI capabilities that combine orchestration and specialized processing. Unlike the old command/subagent split, each skill now:
-- Automatically activates when Claude detects relevant user intent
+Skills are self-contained AI capabilities that combine orchestration and specialized processing. Each skill:
+- Automatically activates when the AI agent detects relevant user intent
 - Handles the complete workflow from user interaction to file creation
 - Contains all necessary instructions, analysis frameworks, and verification protocols
-- Uses progressive disclosure to load information only as needed
+- Works across all supported agents (Claude Code, Kiro, Gemini CLI, OpenAI Codex)
 
 For example:
-- Ask "What's on my mind?" → Claude invokes the **braindump** skill
-- Say "Give me my daily brief" → Claude invokes the **daily-brief** skill
-- Request "Weekly review" → Claude invokes the **weekly-checkin** skill
+- Ask "What's on my mind?" → Agent invokes the **braindump** skill
+- Say "Give me my daily brief" → Agent invokes the **daily-brief** skill
+- Request "Weekly review" → Agent invokes the **weekly-checkin** skill
 
-This architecture leverages Claude Code's native skill system for better performance and simpler maintenance.
+**Agent-Specific Formats:**
+| Agent | Skill Format | Invocation |
+|-------|-------------|------------|
+| Claude Code | `.claude/skills/*/SKILL.md` | Auto-detected from intent |
+| Kiro | `.kiro/powers/*/POWER.md` | Auto-detected from intent |
+| Gemini CLI | `.gemini/commands/*.toml` → `.gemini/skills/*.md` | `/command` slash commands |
+| OpenAI Codex | `AGENTS.md` | Natural language request |
 
 ## Key Features
 
@@ -165,7 +180,8 @@ Tasks automatically appear in:
 
 ```
 your-obsidian-vault/
-├── agents.md                  # Universal agent documentation (OpenAI, etc.)
+├── AGENTS.md                  # Universal agent documentation (OpenAI Codex, etc.)
+├── GEMINI.md                  # Gemini CLI context file
 ├── .claude/
 │   └── skills/                # 6 Claude Code skills
 │       ├── onboarding/
@@ -174,6 +190,15 @@ your-obsidian-vault/
 │       ├── weekly-checkin/
 │       ├── knowledge-consolidation/
 │       └── url-dump/
+├── .gemini/
+│   ├── commands/              # 6 Gemini CLI slash commands
+│   │   ├── onboarding.toml
+│   │   ├── braindump.toml
+│   │   ├── daily-brief.toml
+│   │   ├── weekly-checkin.toml
+│   │   ├── knowledge-consolidation.toml
+│   │   └── url-dump.toml
+│   └── skills/                # 6 Gemini skill playbooks
 ├── .kiro/
 │   └── powers/                # 6 Kiro powers
 │       ├── cog-onboarding/
@@ -217,21 +242,19 @@ your-obsidian-vault/
 
 In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
 
-The onboarding skill will ask:
-- Your name
-- What you do (your job/role)
-- Topics you're interested in (3-5 main areas)
-- Where you get your news (preferred sources)
-- Active projects you're working on (optional)
-- Companies/people you want to track (optional)
+The onboarding skill asks ONE open-ended question: "Tell me about yourself." It intelligently extracts your name, role, interests, projects, and competitive watchlist from your natural response — no sequential form-filling. It also asks about **agent mode** (solo vs team) for power users.
 
 **Takes 2 minutes. Everything is stored as readable markdown files.**
 
 Onboarding creates:
-- `00-inbox/MY-PROFILE.md` - Your basic info and projects
+- `00-inbox/MY-PROFILE.md` - Your basic info, projects, and agent mode setting
 - `00-inbox/MY-INTERESTS.md` - Your topics and news sources
 - `03-professional/COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
 - `04-projects/[project-name]/` folders for each active project
+
+**Agent modes** (set during onboarding, changeable anytime in MY-PROFILE.md):
+- **Solo** (default): Skills handle everything directly in one conversation
+- **Team**: Skills delegate research, analysis, and writing to specialist sub-agents for deeper results (works best with Claude Code)
 
 After onboarding, COG will:
 - Personalize daily briefs to your topics
@@ -395,11 +418,12 @@ After 3 months of use:
 A: COG adds self-evolving intelligence. It doesn't just store—it learns, analyzes, and synthesizes insights automatically.
 
 **Q: Do I need Claude Code specifically?**
-A: No! COG now supports multiple AI agents:
+A: No! COG supports multiple AI agents with native integrations:
 - **Claude Code**: Uses `.claude/skills/` (native support)
 - **Kiro**: Uses `.kiro/powers/` (native support)
-- **OpenAI/Other agents**: Use `agents.md` for skill documentation
-- Any AI that reads markdown can use COG's skills
+- **Gemini CLI**: Uses `GEMINI.md` + `.gemini/commands/` (native slash commands)
+- **OpenAI Codex**: Uses `AGENTS.md` (auto-loaded at startup)
+- Any AI that reads markdown can use COG's skills via `AGENTS.md`
 
 **Q: How much does it cost?**
 A: COG is free (MIT license). You only pay for Claude Code usage (Anthropic's pricing).
@@ -437,6 +461,8 @@ COG is free and open-source (MIT license). Your support helps keep it that way w
 Built with:
 - [Claude Code](https://claude.ai/code) by Anthropic
 - [Kiro](https://kiro.dev/) by AWS
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli) by Google
+- [OpenAI Codex](https://github.com/openai/codex) by OpenAI
 - [Obsidian](https://obsidian.md/) for markdown management
 - Inspiration from Zettelkasten, Building a Second Brain, and GTD methodologies
 
@@ -446,6 +472,6 @@ Built with:
 
 ---
 
-**TL;DR:** COG is a self-evolving agentic second brain using AI agents + Obsidian + Git. Works with Claude Code, Kiro, OpenAI, and more. Just `.md` files that sync via iCloud and learn your patterns. Setup in 2 steps, zero maintenance required.
+**TL;DR:** COG is a self-evolving agentic second brain using AI agents + Obsidian + Git. Works with Claude Code, Kiro, Gemini CLI, OpenAI Codex, and more. Just `.md` files that sync via iCloud and learn your patterns. Setup in 2 steps, zero maintenance required.
 
 ⭐ Star this repo if you find it useful!

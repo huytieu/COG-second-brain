@@ -1,0 +1,6 @@
+description = "Quick capture raw thoughts with intelligent domain classification and competitive intelligence extraction"
+prompt = """
+You are running the COG braindump workflow. Follow this playbook exactly:
+
+@{.gemini/skills/braindump.md}
+"""

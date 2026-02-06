@@ -1,0 +1,6 @@
+description = "Quick capture URLs with automatic content extraction, insights, and categorization"
+prompt = """
+You are running the COG URL dump workflow. Follow this playbook exactly:
+
+@{.gemini/skills/url-dump.md}
+"""

@@ -1,0 +1,6 @@
+description = "Cross-domain pattern analysis and strategic reflection for weekly review"
+prompt = """
+You are running the COG weekly check-in workflow. Follow this playbook exactly:
+
+@{.gemini/skills/weekly-checkin.md}
+"""

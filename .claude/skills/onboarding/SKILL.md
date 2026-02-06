@@ -14,6 +14,17 @@ Welcome new users and collect essential information to personalize their COG exp
 - User wants to update their profile or add new projects
 - Any time profile customization is needed
 
+## Core Design Principle: Smart, Low-Friction Onboarding
+
+**The onboarding MUST feel like a natural conversation, NOT a form to fill out.**
+
+Key rules:
+- **Ask open-ended questions, not option-pickers.** Never present numbered lists of choices for the user to pick from.
+- **Ask as few questions as possible.** Infer what you can from context and the user's natural responses.
+- **Never ask redundant questions.** If you can extract the answer from something the user already said, don't ask again.
+- **Parse intelligently.** If someone says "I'm Alex, a PM at a fintech startup tracking Stripe and Plaid", extract: name=Alex, role=PM at fintech startup, watchlist=[Stripe, Plaid]. Don't ask follow-up questions for info already given.
+- **Confirm, don't re-ask.** If you're unsure about something the user said, confirm your interpretation rather than asking the question fresh.
+
 ## Process Flow
 
 ### 1. Welcome Message
@@ -21,68 +32,71 @@ Greet the user warmly and explain what COG is:
 ```
 Welcome to COG - your self-evolving second brain powered by Claude + Obsidian + Git!
 
-COG helps you:
-- Capture thoughts and insights through brain dumps
-- Get daily intelligence briefings tailored to your interests
-- Build and consolidate knowledge over time
-- Track patterns in your thinking and development
+COG helps you capture thoughts, get daily intelligence briefings, and build knowledge over time - all stored as simple markdown files you own.
 
-Before we begin, I'll ask you a few questions to personalize your experience. This will take about 3-5 minutes.
-
-All your preferences will be stored as readable markdown files in your vault, so you can edit them anytime.
+Let's get you set up. Tell me a bit about yourself - your name, what you do, and what topics or areas you're most interested in staying sharp on. Feel free to share as much or as little as you'd like.
 ```
+
+**This single open-ended prompt replaces the old sequential questions.** The user can naturally mention their name, role, interests, sources, projects, and competitors all at once - or just share a few things.
 
 ### 2. Check for Existing Profile
 
 Look for `00-inbox/MY-PROFILE.md`. If it exists:
 ```
-I found an existing profile! Would you like to:
-1. Update your profile
-2. Add new projects
-3. Update interest areas
-4. View current profile
-5. Start fresh (archive old profile)
-
-What would you like to do? (1-5)
+I found an existing COG profile! What would you like to update? Just tell me what you'd like to change - your interests, projects, profile info, or anything else.
 ```
 
-### 3. Information Collection (Keep it Simple!)
+**Don't present a numbered menu.** Let them describe what they want in natural language.
 
-Ask only essential questions in a conversational way:
+### 3. Intelligent Information Extraction
 
-**Question 1: What's your name?**
-- Just first name is fine, or full name if they prefer
-- Store in: `00-inbox/MY-PROFILE.md`
+After the user responds, extract as much as possible from their natural language:
 
-**Question 2: What do you do? (Your job/role/main activity)**
-- This helps personalize content relevance
-- Examples: "Software engineer", "Product manager", "Student studying AI", "Entrepreneur"
-- Store in: `00-inbox/MY-PROFILE.md`
+| Field | How to Extract |
+|-------|---------------|
+| **Name** | Look for self-introduction patterns ("I'm Alex", "My name is...", "Call me..."). Use first name by default. |
+| **Role** | Look for job/activity mentions ("I'm a PM", "I work in...", "software engineer at..."). |
+| **Interests** | Look for topic mentions ("interested in AI", "following crypto", "love design"). Also infer from role context. |
+| **News Sources** | Look for source mentions ("I read HN", "follow on Twitter"). If not mentioned, skip - it's optional. |
+| **Projects** | Look for project mentions ("working on a SaaS app", "building..."). If not mentioned, skip. |
+| **Competitive Watch** | Look for company/person mentions ("tracking Stripe", "watching what OpenAI does"). If not mentioned, skip. |
 
-**Question 3: What topics are you interested in?**
-- Ask them to list 3-5 main topics they want to learn about or stay updated on
-- Examples: "AI/ML, startups, health optimization", "leadership, product strategy, design"
-- Store in: `00-inbox/MY-INTERESTS.md`
-- Keep it natural - don't make them choose from categories
+### 4. Smart Follow-Up (Only If Needed)
 
-**Question 4: Where do you like to get your news and information?**
-- Examples: "Hacker News, Twitter, research papers", "TechCrunch, newsletters, podcasts"
-- Store in: `00-inbox/MY-INTERESTS.md` under "Preferred Sources"
-- This helps COG understand what sources to prioritize
+After extracting what you can, check what's missing from the **required** fields only:
+- **Name** (required)
+- **Role** (required)
+- **Interests** (required - need at least 2-3 topics)
 
-**Question 5: Do you have any active projects you're working on?**
-- Optional - if yes, ask for project names (comma-separated)
-- For each project, create:
-  - `04-projects/[project-slug]/PROJECT-OVERVIEW.md` with basic structure
-  - Full directory structure
-- If no projects, skip this entirely
+If any required field is missing, ask ONE follow-up that covers all gaps. For example:
+```
+Thanks! I got your name and role. What topics are you most interested in staying updated on? (e.g., AI, startups, design, health - whatever matters to you)
+```
 
-**Question 6: Any companies, competitors, or people you want to keep an eye on?** (Optional)
-- Optional - if yes, collect the list
-- Store in: `03-professional/COMPETITIVE-WATCHLIST.md`
-- Used for automatic extraction in braindumps
+**Optional fields** (news sources, projects, competitive watch) should NEVER generate follow-up questions. If the user didn't mention them, skip them. They can always add them later by editing the files or running onboarding again.
 
-### 4. Generate Profile Documents
+### 5. Confirm and Create
+
+Before creating files, briefly confirm what you captured and ask about agent team mode:
+```
+Here's what I've got:
+
+- **Name**: Alex
+- **Role**: Product Manager at a fintech startup
+- **Interests**: AI/ML, fintech trends, product strategy, UX design
+- **Projects**: Payments dashboard revamp
+- **Tracking**: Stripe, Plaid
+
+One more thing - COG can run in two modes:
+- **Solo mode** (default): I handle everything directly in our conversation.
+- **Agent team mode**: I delegate research, analysis, and writing to specialist sub-agents for deeper, more thorough results. Works best with Claude Code.
+
+Which do you prefer? (Solo is great for most people - team mode is for power users who want maximum depth.)
+```
+
+**Wait for confirmation**, then generate everything. If they say "looks good" or similar, proceed. If they correct something, update and proceed without re-confirming. Default to `solo` if they don't express a preference.
+
+### 6. Generate Profile Documents
 
 Create the following markdown files:
 
@@ -92,6 +106,7 @@ Create the following markdown files:
 type: profile
 created: YYYY-MM-DD
 onboarding_completed: true
+agent_mode: solo
 tags: ["#profile", "#config", "#cog"]
 ---
 
@@ -102,13 +117,16 @@ tags: ["#profile", "#config", "#cog"]
 - **Role**: [Job/role/main activity]
 - **Profile Created**: [Date]
 
+## Settings
+- **Agent Mode**: solo *(solo = handle everything directly; team = delegate to specialist sub-agents for deeper results)*
+
 ## Active Projects
-[If they have projects:]
+[If they mentioned projects:]
 - [[04-projects/[slug]/PROJECT-OVERVIEW|Project Name 1]]
 - [[04-projects/[slug]/PROJECT-OVERVIEW|Project Name 2]]
 
 [If no projects:]
-*No active projects yet. Add them anytime by editing this file or running the onboarding skill again.*
+*No active projects yet. Add them anytime by editing this file or running onboarding again.*
 
 ## Related
 - [[MY-INTERESTS|My Interests & News Sources]]
@@ -142,10 +160,14 @@ tags: ["#interests", "#daily-brief", "#config"]
 - [Topic 5]
 
 ## Preferred News Sources
+[If sources were mentioned:]
 *Where I like to get information:*
 - [Source 1]
 - [Source 2]
 - [Source 3]
+
+[If no sources mentioned:]
+*No specific sources set. COG will search broadly for your topics. Add preferred sources here anytime.*
 
 ## Notes
 *Add any additional context about your interests here.*
@@ -155,7 +177,7 @@ tags: ["#interests", "#daily-brief", "#config"]
 *Update this file anytime as your interests evolve. Just edit and save—COG will pick up the changes.*
 ```
 
-#### `03-professional/COMPETITIVE-WATCHLIST.md` (if applicable)
+#### `03-professional/COMPETITIVE-WATCHLIST.md` (only if they mentioned companies/people to track)
 ```markdown
 ---
 type: competitive-intelligence
@@ -214,7 +236,7 @@ tags: ["#project", "#overview"]
 *This overview helps COG organize your project-related thoughts and updates.*
 ```
 
-### 5. Create Directory Structure
+### 7. Create Directory Structure
 Based on configuration, create personalized structure:
 
 **Base Structure (Always):**
@@ -237,6 +259,7 @@ Based on configuration, create personalized structure:
   consolidated/
   patterns/
   timeline/
+  booklets/
 06-templates/
 ```
 
@@ -251,7 +274,7 @@ Based on configuration, create personalized structure:
   resources/
 ```
 
-### 6. Create Welcome Guide
+### 8. Create Welcome Guide
 
 Generate: `00-inbox/WELCOME-TO-COG.md`
 
@@ -334,53 +357,36 @@ When you use the braindump skill, select the project to automatically file your 
 *You can archive or delete this welcome guide once you're comfortable with COG.*
 ```
 
-### 7. First Action Prompts
-After setup, guide the user to their first action:
+### 9. Wrap-Up (No Menu!)
+After setup, summarize what was created and suggest a natural next action:
 
 ```
-Great! Your COG is now configured.
+You're all set! I've created your profile, interests, and project files. Everything is in your vault and editable anytime.
 
-I've created these profile documents for you:
-- MY-PROFILE.md (your basic preferences)
-- MY-INTERESTS.md (topics for daily briefs)
-[If applicable:] - COMPETITIVE-WATCHLIST.md (companies to track)
-[If applicable:] - PROJECT-OVERVIEW.md files for each project
-
-All files are in your vault and can be edited anytime.
-
-Would you like to:
-
-1. **Try your first braindump** - Capture what's on your mind right now
-2. **Get your daily brief** - See today's intelligence report
-3. **Review your profile** - Open MY-PROFILE.md to see/edit settings
-4. **Start later** - You're all set, invoke skills when ready
-
-What would you like to do? (1-4)
+If you want to jump right in, try a braindump - just tell me what's on your mind and I'll capture it. Or ask for your daily brief to see what's happening in your interest areas today.
 ```
+
+**Don't present a numbered menu of next actions.** Just suggest one or two natural things and let them decide.
 
 ## Configuration Update Mode
 
 If user runs onboarding after initial setup (MY-PROFILE.md exists):
 
+Don't show a menu. Just ask:
 ```
-You've already completed onboarding! Would you like to:
-
-1. **Update your profile** - Edit MY-PROFILE.md with new preferences
-2. **Add new interests** - Update MY-INTERESTS.md with new topics
-3. **Add new projects** - Create new project structures
-4. **View current profile** - See your current MY-PROFILE.md
-
-What would you like to do? (1-4)
+You've already completed onboarding! What would you like to update? Just tell me what needs changing.
 ```
+
+Then intelligently handle whatever they say - whether it's adding projects, changing interests, updating their role, etc.
 
 ## Success Criteria
 
 Onboarding is successful when:
-1. ✅ `MY-PROFILE.md` created in `00-inbox/`
-2. ✅ `MY-INTERESTS.md` created in `00-inbox/`
-3. ✅ Project directories and overviews created (if applicable)
-4. ✅ `WELCOME-TO-COG.md` guide created
-5. ✅ User understands next steps and where their profile is stored
+1. `MY-PROFILE.md` created in `00-inbox/`
+2. `MY-INTERESTS.md` created in `00-inbox/`
+3. Project directories and overviews created (if applicable)
+4. `WELCOME-TO-COG.md` guide created
+5. User understands next steps and where their profile is stored
 
 ## Error Handling
 
@@ -408,12 +414,12 @@ All configuration data is stored as markdown files in:
 - `04-projects/[project]/PROJECT-OVERVIEW.md` - Project details
 
 Benefits of markdown storage:
-- ✅ Human-readable and editable
-- ✅ Version controlled with Git
-- ✅ Searchable in Obsidian
-- ✅ Linkable from other notes
-- ✅ No parsing required, just read as text
-- ✅ Can be archived, moved, organized like any other note
+- Human-readable and editable
+- Version controlled with Git
+- Searchable in Obsidian
+- Linkable from other notes
+- No parsing required, just read as text
+- Can be archived, moved, organized like any other note
 
 ## Philosophy
 
