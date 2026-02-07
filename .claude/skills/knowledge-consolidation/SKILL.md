@@ -21,6 +21,14 @@ Transform scattered insights from braindumps, daily briefs, and check-ins into c
 - If `agent_mode: team` — delegate scanning and pattern extraction to parallel sub-agents (e.g., one per domain: personal braindumps, professional braindumps, project-specific content, daily briefs). Each agent identifies themes and patterns, then a synthesis agent combines findings into frameworks.
 - If `agent_mode: solo` (default) — handle all scanning, pattern recognition, and framework building directly. No delegation.
 
+## Pre-Flight Check
+
+**Get current timestamp (REQUIRED before generating any files):**
+
+1. Run `date '+%Y-%m-%d %H:%M'` using Bash to get the actual current date and time
+2. Store this value and use it for the `created:` frontmatter field
+3. NEVER guess or fabricate the time — always use the value returned by the `date` command
+
 ## Process Flow
 
 ### 1. Data Gathering

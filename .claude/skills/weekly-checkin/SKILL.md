@@ -30,6 +30,12 @@ Comprehensive weekly review and analysis integrating insights across all domains
    - Read active projects to review project-specific progress
    - Tailor reflection questions to user's role and projects
 
+**Get current timestamp (REQUIRED before generating any files):**
+
+1. Run `date '+%Y-%m-%d %H:%M'` using Bash to get the actual current date and time
+2. Store this value and use it for the `created:` frontmatter field
+3. NEVER guess or fabricate the time — always use the value returned by the `date` command
+
 ## Process Flow
 
 ### 1. Gather Context
