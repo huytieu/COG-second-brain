@@ -39,6 +39,12 @@ Transform raw thoughts into strategic intelligence through quick capture, system
    - Use user's name for friendly communication
    - Read `03-professional/COMPETITIVE-WATCHLIST.md` if it exists for competitive intelligence detection
 
+**Get current timestamp (REQUIRED before generating any files):**
+
+1. Run `date '+%Y-%m-%d %H:%M'` using Bash to get the actual current date and time
+2. Store this value and use it for ALL timestamp fields (`created:` frontmatter AND filename `HHMM` component)
+3. NEVER guess or fabricate the time — always use the value returned by the `date` command
+
 ## Process Flow
 
 ### 1. User Interaction & Input Collection

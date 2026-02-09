@@ -40,6 +40,12 @@ Find verified, relevant news for personalized daily briefings with strict verifi
    - Use topics to curate relevant news
    - Connect news to user's active projects when relevant
 
+**Get current timestamp (REQUIRED before generating any files):**
+
+1. Run `date '+%Y-%m-%d %H:%M'` using Bash to get the actual current date and time
+2. Store this value and use it for the `created:` frontmatter field
+3. NEVER guess or fabricate the time — always use the value returned by the `date` command
+
 ## Process Flow
 
 ### 1. Gather Context
