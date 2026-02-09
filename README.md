@@ -1,507 +1,157 @@
 # COG: The Agentic Second Brain That Actually Self-Evolves
 
-**COG = Cognition + Obsidian + Git**
+**Cognition + Obsidian + Git** — A self-evolving second brain powered by AI agents, markdown files, and version control. No database, no vendor lock-in — just `.md` files that think.
 
-A self-evolving second brain powered by AI agents, Obsidian markdown files, and Git version control. Works with **Claude Code**, **Kiro**, **Gemini CLI**, **OpenAI Codex**, and any AI that reads markdown. No database, no vendor lock-in—just `.md` files that think.
+[Quick Start](#quick-start) | [Skills](#skills) | [Features](#features-at-a-glance) | [FAQ](#faq) | [SETUP.md](SETUP.md)
 
-## What is COG?
+> Works with [Claude Code](https://claude.ai/download) &bull; [Kiro](https://kiro.dev/) &bull; [Gemini CLI](https://github.com/google-gemini/gemini-cli) &bull; [OpenAI Codex](https://github.com/openai/codex) &bull; any AI that reads markdown
 
-COG is a personal productivity and knowledge management system that:
+```mermaid
+graph LR
+    A[You] -- natural language --> B[AI Agent]
+    B -- runs --> C[7 Skills]
+    C -- reads & writes --> D[.md Files]
+    D --> E[Git]
+    D --> F[iCloud]
+```
 
-- 🧠 **Self-evolves**: Learns your patterns and auto-organizes content
-- 🔄 **Self-heals**: Updates cross-references when you reorganize
-- 📝 **Plain text**: Just markdown files (no database, no vendor lock-in)
-- 📱 **Multi-device**: Syncs via iCloud to iPhone, iPad, Mac
-- 🔒 **Privacy-first**: Your data, your files, your control
-- 🤖 **Agent-agnostic**: Works with Claude Code, Kiro, Gemini CLI, OpenAI Codex, and more
-- 🎯 **Specialized skills**: Custom AI capabilities for specific workflows
-- ✅ **Verification-first**: No AI hallucinations, sources required
-- 📋 **Obsidian Tasks compatible**: Tasks include `📅 YYYY-MM-DD` emoji format for dashboard queries
+> **New to COG?** Watch the [2-minute walkthrough](https://youtube.com/PLACEHOLDER) to see it in action.
 
 ## Quick Start
 
-### Prerequisites
-
-- **AI Agent** (choose one or more):
-  - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/`
-  - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/`
-  - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Uses `GEMINI.md` + `.gemini/commands/`
-  - [OpenAI Codex](https://github.com/openai/codex) - Uses `AGENTS.md`
-  - Any other AI agent - Uses `AGENTS.md`
-- [Obsidian](https://obsidian.md/) - Recommended for viewing/editing your notes
-- Git - Already on your system if you can run the clone command below
-
-### Installation (2 Steps)
-
-1. **Clone this repo to where you want your second brain:**
-   ```bash
-   git clone https://github.com/huytieu/COG-second-brain.git
-   cd COG-second-brain
-   ```
-
-2. **Open your AI agent and run onboarding:**
-   ```bash
-   # Claude Code:
-   code .  # Then ask: "Run onboarding"
-
-   # Kiro:
-   # Open folder, mention "onboarding" or "setup COG"
-
-   # Gemini CLI:
-   gemini  # Then type: /onboarding
-
-   # OpenAI Codex:
-   codex  # Then ask: "Run onboarding"
-
-   # Other agents:
-   # Reference AGENTS.md and ask to run onboarding
-   ```
-
-That's it! The onboarding will personalize COG for your needs in 2-3 minutes.
-
-**What just happened?**
-- The cloned repo IS your second brain - all files are ready to use
-- Skills are defined in multiple formats for agent compatibility:
-  - `.claude/skills/` - 6 Claude Code skills
-  - `.kiro/powers/` - 6 Kiro powers
-  - `GEMINI.md` + `.gemini/commands/` - 6 Gemini CLI commands
-  - `AGENTS.md` - Universal agent documentation (OpenAI Codex and others)
-- Onboarding will create your personalized directory structure
-
-**Want Obsidian integration?**
-- Open Obsidian → "Open folder as vault" → Select the `COG-second-brain` folder
-- Now you can view/edit notes in Obsidian while using Claude Code for AI features
-
-### Detailed Setup Guide
-
-See [SETUP.md](SETUP.md) for optional configurations (Git sync, iCloud, etc.).
-
-## What You Get
-
-### 6 Powerful Skills
-
-COG provides specialized AI capabilities that work across different agents. The same skills are available whether you use Claude Code, Kiro, or other AI agents.
-
-**Setup & Personalization:**
-- **onboarding** - Personalize COG for your workflow (run this first!)
-
-**Daily Operations:**
-- **braindump** - Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction
-- **daily-brief** - Personalized news intelligence with verified sources (7-day freshness requirement)
-- **url-dump** - Quick capture URLs with automatic content extraction, insights, and categorization
-
-**Weekly & Strategic:**
-- **weekly-checkin** - Cross-domain pattern analysis and strategic reflection
-- **knowledge-consolidation** - Build frameworks from scattered insights across all your notes
-
-**How Skills Work:**
-
-Skills are self-contained AI capabilities that combine orchestration and specialized processing. Each skill:
-- Automatically activates when the AI agent detects relevant user intent
-- Handles the complete workflow from user interaction to file creation
-- Contains all necessary instructions, analysis frameworks, and verification protocols
-- Works across all supported agents (Claude Code, Kiro, Gemini CLI, OpenAI Codex)
-
-For example:
-- Ask "What's on my mind?" → Agent invokes the **braindump** skill
-- Say "Give me my daily brief" → Agent invokes the **daily-brief** skill
-- Request "Weekly review" → Agent invokes the **weekly-checkin** skill
-
-**Agent-Specific Formats:**
-| Agent | Skill Format | Invocation |
-|-------|-------------|------------|
-| Claude Code | `.claude/skills/*/SKILL.md` | Auto-detected from intent |
-| Kiro | `.kiro/powers/*/POWER.md` | Auto-detected from intent |
-| Gemini CLI | `.gemini/commands/*.toml` → `.gemini/skills/*.md` | `/command` slash commands |
-| OpenAI Codex | `AGENTS.md` | Natural language request |
-
-## Key Features
-
-### 1. Self-Evolving Intelligence
-
-COG doesn't just store notes—it actively learns:
-
-- **Pattern recognition**: Identifies recurring themes across your notes
-- **Auto-classification**: Categorizes content by domain (personal/professional/projects)
-- **Knowledge consolidation**: Synthesizes scattered insights into frameworks
-- **Adaptive learning**: Gets better at understanding your thinking patterns
-
-**Weekly Evolution Cycle:**
-```
-Monday-Friday: Capture thoughts via braindump skill
-Friday: Run knowledge-consolidation skill
-→ COG analyzes ALL your notes
-→ Builds frameworks you didn't explicitly create
-→ Updates "single source of truth" files
-→ Next week, it knows more about how you think
-```
-
-### 2. Self-Healing System
-
-- Rename a file? COG updates all cross-references
-- Change project structure? Auto-reclassifies content
-- New project emerges? Auto-creates tracking folders
-- Competitive intel mentioned? Auto-updates competitor files
-
-### 3. Verification-First (No AI Hallucinations)
-
-- All news must be verified with sources and dates
-- 7-day freshness requirement for current events
-- Explicit confidence levels for all analysis
-- Multi-source cross-referencing required
-
-### 4. Obsidian Tasks Integration
-
-COG skills generate tasks with [Obsidian Tasks emoji format](https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format):
-
-```markdown
-### Immediate (24-48 hours)
-- [ ] Check competitor pricing 📅 2026-02-04
-
-### Short-term (1-2 weeks)
-- [ ] Schedule team discussion 📅 2026-02-10
-```
-
-Tasks automatically appear in:
-- Tasks dashboard queries ("due today", "due this week")
-- Daily notes task views
-- Any date-based task filtering
-
-### 5. Privacy-First Architecture
-
-- **Strict domain separation**: Personal, professional, project-specific
-- **Local-first**: Works offline, syncs when online
-- **No servers**: Your data never leaves your devices
-- **Version controlled**: Full history with Git
-
-## Directory Structure
-
-*This structure is created automatically when you run onboarding.*
-
-```
-your-obsidian-vault/
-├── AGENTS.md                  # Universal agent documentation (OpenAI Codex, etc.)
-├── GEMINI.md                  # Gemini CLI context file
-├── .claude/
-│   └── skills/                # 6 Claude Code skills
-│       ├── onboarding/
-│       ├── braindump/
-│       ├── daily-brief/
-│       ├── weekly-checkin/
-│       ├── knowledge-consolidation/
-│       └── url-dump/
-├── .gemini/
-│   ├── commands/              # 6 Gemini CLI slash commands
-│   │   ├── onboarding.toml
-│   │   ├── braindump.toml
-│   │   ├── daily-brief.toml
-│   │   ├── weekly-checkin.toml
-│   │   ├── knowledge-consolidation.toml
-│   │   └── url-dump.toml
-│   └── skills/                # 6 Gemini skill playbooks
-├── .kiro/
-│   └── powers/                # 6 Kiro powers
-│       ├── cog-onboarding/
-│       ├── cog-braindump/
-│       ├── cog-daily-brief/
-│       ├── cog-weekly-checkin/
-│       ├── cog-knowledge-consolidation/
-│       └── cog-url-dump/
-├── 00-inbox/                  # Temporary processing area
-│   ├── MY-PROFILE.md          # Your profile (created by onboarding)
-│   ├── MY-INTERESTS.md        # Your topics & news sources
-│   └── WELCOME-TO-COG.md      # Getting started guide
-├── 01-daily/                  # Daily briefs and check-ins
-│   ├── briefs/
-│   └── checkins/
-├── 02-personal/               # Personal domain (strict privacy)
-│   ├── braindumps/
-│   ├── development/
-│   └── wellness/
-├── 03-professional/           # Professional domain
-│   ├── braindumps/
-│   ├── leadership/
-│   ├── strategy/
-│   ├── skills/
-│   └── COMPETITIVE-WATCHLIST.md  # Companies/people to track
-├── 04-projects/               # Project-specific tracking
-│   └── [your-project]/
-│       ├── braindumps/
-│       ├── competitive/       # Auto-updated intel
-│       └── content/
-└── 05-knowledge/              # Consolidated insights
-    ├── consolidated/
-    ├── patterns/
-    ├── booklets/              # URL bookmarks by category
-    └── timeline/
-```
-
-## Example Workflows
-
-### First Time Setup (After Cloning)
-
-In Claude Code, ask: "Run onboarding" or "Set up my COG profile"
-
-The onboarding skill asks ONE open-ended question: "Tell me about yourself." It intelligently extracts your name, role, interests, projects, and competitive watchlist from your natural response — no sequential form-filling. It also asks about **agent mode** (solo vs team) for power users.
-
-**Takes 2 minutes. Everything is stored as readable markdown files.**
-
-Onboarding creates:
-- `00-inbox/MY-PROFILE.md` - Your basic info, projects, and agent mode setting
-- `00-inbox/MY-INTERESTS.md` - Your topics and news sources
-- `03-professional/COMPETITIVE-WATCHLIST.md` - Companies/people you're tracking (if any)
-- `04-projects/[project-name]/` folders for each active project
-
-**Agent modes** (set during onboarding, changeable anytime in MY-PROFILE.md):
-- **Solo** (default): Skills handle everything directly in one conversation
-- **Team**: Skills delegate research, analysis, and writing to specialist sub-agents for deeper results (works best with Claude Code)
-
-After onboarding, COG will:
-- Personalize daily briefs to your topics
-- Offer your projects when you braindump
-- Auto-extract competitive intel you care about
-
-### Daily Intelligence Briefing
-
-Ask Claude: "Give me my daily brief" or "What's the news today?"
-
-Generates a personalized briefing with:
-- Verified news from the last 7 days
-- Strategic analysis relevant to your interests
-- Competitive intelligence auto-extracted
-- Actionable next steps
-
-### Brain Dump → Strategic Insights
-
-Ask Claude: "I need to braindump" or "What's on my mind?"
-
-Single integrated workflow:
-1. **Quick capture**: Preserves spontaneity, no filtering
-2. **Intelligent processing**: Automatically extracts themes, actions, connections
-
-The system automatically:
-- Classifies by domain
-- Detects competitive intelligence
-- Cross-references related content
-- Identifies action items
-
-### Knowledge Consolidation
-
-Ask Claude: "Consolidate my knowledge" or "Build frameworks from my notes"
-
-Weekly or monthly:
-- Analyzes patterns across all braindumps
-- Builds frameworks from scattered insights
-- Updates "single source of truth" knowledge base
-- Tracks evolution of thinking over time
-
-## Why COG Works
-
-### What Works
-- ✅ **Setup is trivial**: Clone repo, run onboarding. Done in 2 minutes.
-- ✅ **Maintenance-free**: Self-heals and auto-organizes
-- ✅ **Actually portable**: Works on iPhone, iPad, Mac via iCloud
-- ✅ **Custom skills >> generic AI**: Specialized beats ChatGPT for repeated tasks
-- ✅ **Git for thoughts**: Version control shows thinking evolution
-
-### What Doesn't Work
-- Requires discipline—system only works if used consistently
-- Not for everyone—if you don't think in text files, this won't click
-- Requires an AI agent (Claude Code, Kiro, or compatible agent)
-
-### Unexpected Benefits
-- 💡 **Thinking partner, not just storage**: Writing brain dumps knowing they'll be analyzed improves clarity
-- 📊 **Pattern recognition**: Discover insights you'd miss manually
-- 🔗 **Cross-domain insights**: Personal wellness affects professional productivity (tracked quantitatively)
-- 📅 **Time patterns**: Git history reveals when you think best
-
-## Advanced Configuration
-
-### Customizing Skills
-
-Edit `.claude/skills/[skill-name]/SKILL.md` to customize workflows:
-```markdown
----
-name: my-custom-skill
-description: What this skill does
----
-
-# My Custom Skill
-
-## When to Invoke
-[When Claude should use this skill]
-
-## Process Flow
-[How it works]
-```
-
-### Adding New Skills
-
-Create `.claude/skills/my-skill/SKILL.md`:
-```markdown
----
-name: my-skill
-description: Brief description for Claude to know when to invoke this
----
-
-# My Custom Skill
-
-## Purpose
-[What this skill does]
-
-## When to Invoke
-[User intent patterns that should trigger this]
-
-## Process Flow
-[Detailed instructions]
-```
-
-### Template Customization
-
-Modify `06-templates/*.md` to match your workflow:
-```yaml
----
-type: "custom-type"
-domain: "personal|professional|project"
-# Add your metadata fields
----
-```
-
-## Syncing Across Devices
-
-### iCloud Sync (Recommended)
-- Store vault in `iCloud Drive/Obsidian/`
-- Automatically syncs to all Apple devices
-- Obsidian mobile works perfectly
-
-### Git Sync
+**1. Clone & enter the repo:**
 ```bash
-# Daily workflow
-git add .
-git commit -m "Update knowledge base"
-git push
+git clone https://github.com/huytieu/COG-second-brain.git
+cd COG-second-brain
 ```
 
-Combine both: iCloud for instant sync, Git for version history.
+**2. Run onboarding in your agent:**
 
-## Contributing
+| Agent | Command | How it finds skills |
+|---|---|---|
+| Claude Code | `code .` → "Run onboarding" | `.claude/skills/` |
+| Kiro | Open folder → "setup COG" | `.kiro/powers/` |
+| Gemini CLI | `gemini` → `/onboarding` | `GEMINI.md` + `.gemini/commands/` |
+| OpenAI Codex | `codex` → "Run onboarding" | `AGENTS.md` |
+| Other agents | Point at `AGENTS.md` → "Run onboarding" | `AGENTS.md` |
 
-Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) for optional config (Git sync, iCloud, Obsidian Tasks, etc.).
 
-**Ideas for contributions:**
-- New specialized agents
-- Additional slash commands
-- Template improvements
-- Documentation enhancements
-- Example workflows
+## Skills
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **onboarding** | Personalize COG for your workflow (run first!) | "Run onboarding" |
+| **braindump** | Capture raw thoughts with intelligent classification | "I need to braindump" |
+| **daily-brief** | Verified news intelligence (7-day freshness) | "Give me my daily brief" |
+| **url-dump** | Save URLs with auto-extracted insights | "Save this URL" |
+| **weekly-checkin** | Cross-domain pattern analysis | "Weekly review" |
+| **knowledge-consolidation** | Build frameworks from scattered notes | "Consolidate my knowledge" |
+| **update-cog** | Update framework files without touching your content | "Update COG" |
+
+## The Evolution Cycle
+
+```mermaid
+graph TD
+    A[Daily: Braindump thoughts] --> B[Daily: Intelligence briefing]
+    B --> C[Weekly: Pattern analysis]
+    C --> D[Monthly: Knowledge consolidation]
+    D -- COG learns your patterns --> A
+```
+
+- **Daily capture** — braindump raw thoughts; COG classifies by domain and extracts action items
+- **Daily intelligence** — personalized briefings with verified, sourced news
+- **Weekly reflection** — pattern analysis across all domains surfaces insights you'd miss
+- **Monthly synthesis** — scattered notes become consolidated frameworks and a knowledge base
+
+## Features at a Glance
+
+| | | |
+|---|---|---|
+| **Self-Evolving** — Learns your patterns, auto-organizes content, builds frameworks | **Self-Healing** — Rename files or restructure; cross-references update automatically | **Verification-First** — Sources required, 7-day freshness, confidence levels on all analysis |
+| **Privacy-First** — Local `.md` files, strict domain separation, no external servers | **Multi-Device** — iCloud sync to iPhone/iPad/Mac; Git for version history | **Obsidian Tasks** — `📅 YYYY-MM-DD` emoji format works with Tasks plugin dashboards |
+
+## Your Vault
+
+```
+COG-second-brain/
+├── .claude/skills/          # Claude Code skills
+├── .kiro/powers/            # Kiro powers
+├── .gemini/commands/        # Gemini CLI commands
+├── AGENTS.md                # Universal agent docs
+├── 00-inbox/                # Profiles & onboarding files
+├── 01-daily/                # Briefs & check-ins
+├── 02-personal/             # Personal braindumps (private)
+├── 03-professional/         # Professional braindumps & strategy
+├── 04-projects/             # Per-project tracking
+└── 05-knowledge/            # Consolidated insights & patterns
+```
+
+> **Real-world results:** 120+ braindumps processed, daily briefs with 95%+ source accuracy, 5 major strategic insights discovered — zero maintenance required.
 
 ## Keeping COG Updated
 
-COG separates **framework files** (skills, docs, scripts) from **your content** (braindumps, profiles, notes). When new versions are released, you can safely update framework files without risking your personal data.
+COG separates **framework files** (skills, docs, scripts) from **your content** (braindumps, profiles, notes). Updates never touch your personal data.
 
-### Three Ways to Update
+| Method | Command |
+|---|---|
+| AI Agent (any) | "Update COG" or `/update-cog` |
+| Shell script | `./cog-update.sh` (interactive) &bull; `--check` &bull; `--dry-run` &bull; `--force` |
+| Manual Git | `git fetch cog-upstream main` then checkout specific files |
 
-**1. AI Agent (any supported agent):**
-```
-"Update COG" or /update-cog
-```
+Check your version: `cat COG-VERSION`
 
-**2. Shell Script:**
-```bash
-./cog-update.sh           # Interactive — prompts per file
-./cog-update.sh --check   # Just check for updates
-./cog-update.sh --dry-run # Preview what would change
-./cog-update.sh --force   # Update everything
-```
+## FAQ
 
-**3. Manual Git:**
-```bash
-git remote add cog-upstream https://github.com/huytieu/COG-second-brain.git
-git fetch cog-upstream main
-git checkout cog-upstream/main -- README.md SETUP.md .claude/skills/ .kiro/powers/ # etc
-```
+<details><summary><strong>Why not just use Notion / Roam / Obsidian alone?</strong></summary>
 
-Your content folders (`00-inbox/`, `01-daily/`, `02-personal/`, etc.) are **never touched** by updates. Only framework files (skills, docs, scripts) are replaced.
+COG adds self-evolving intelligence on top. It doesn't just store — it learns, analyzes, and synthesizes insights automatically.
+</details>
 
-Check your current version: `cat COG-VERSION`
+<details><summary><strong>How much does it cost?</strong></summary>
+
+COG is free and open-source (MIT). You only pay for your AI agent's API usage.
+</details>
+
+<details><summary><strong>Is my data private?</strong></summary>
+
+Yes. Everything is local markdown files. The AI agent's API is only called when you invoke a skill. No data stored on external servers.
+</details>
+
+<details><summary><strong>Can I customize or add skills?</strong></summary>
+
+Yes — edit any `SKILL.md` / `POWER.md` / `AGENTS.md` file. See [SETUP.md](SETUP.md) for details on creating new skills.
+</details>
+
+<details><summary><strong>Will updating overwrite my customizations?</strong></summary>
+
+No. The update process detects customized files and lets you choose per-file: keep yours, use upstream, or backup + update. Nothing is overwritten without approval.
+</details>
+
+<details><summary><strong>What if I don't use Git?</strong></summary>
+
+Git is optional but recommended for version history. COG works fine with just iCloud sync.
+</details>
 
 ## Roadmap
 
-- [x] ~~Gemini support~~ (shipped in v3.0)
-- [ ] Upstream update system (safe framework updates without merge conflicts)
+- [x] ~~Gemini CLI + OpenAI Codex support~~ (shipped in v3.1)
+- [x] ~~Upstream update system~~ (shipped in v3.2)
 - [ ] Web interface for knowledge graph visualization
 - [ ] Mobile-first commands (optimized for Obsidian mobile)
 - [ ] Team collaboration features (with privacy preservation)
 - [ ] Integration with calendar/task management tools
 
-## Real-World Results
+## Contributing & Support
 
-After 3 months of use:
-- 120+ structured braindumps processed
-- Daily briefs with 95%+ source accuracy
-- 5 major strategic insights discovered
-- 0 maintenance required
-- 0 vendor lock-in anxiety
-
-## FAQ
-
-**Q: Why not just use Notion/Roam/Obsidian alone?**
-A: COG adds self-evolving intelligence. It doesn't just store—it learns, analyzes, and synthesizes insights automatically.
-
-**Q: Do I need Claude Code specifically?**
-A: No! COG supports multiple AI agents with native integrations:
-- **Claude Code**: Uses `.claude/skills/` (native support)
-- **Kiro**: Uses `.kiro/powers/` (native support)
-- **Gemini CLI**: Uses `GEMINI.md` + `.gemini/commands/` (native slash commands)
-- **OpenAI Codex**: Uses `AGENTS.md` (auto-loaded at startup)
-- Any AI that reads markdown can use COG's skills via `AGENTS.md`
-
-**Q: How much does it cost?**
-A: COG is free (MIT license). You only pay for Claude Code usage (Anthropic's pricing).
-
-**Q: Is my data private?**
-A: Yes. Everything is local markdown files. COG uses Claude's API only when you invoke commands. No data stored on external servers.
-
-**Q: Can I use this for team collaboration?**
-A: Currently designed for personal use. Team features planned for future releases.
-
-**Q: What if I don't use Git?**
-A: Git is optional but recommended for version history. COG works fine without it using just iCloud sync.
-
-**Q: How do I get new skills and features?**
-A: Run `/update-cog` in any supported agent, or use `./cog-update.sh` from the terminal. Updates only touch framework files — your notes are never modified. See [Keeping COG Updated](#keeping-cog-updated).
-
-**Q: Will updating overwrite my customizations?**
-A: The update process detects customized files and lets you choose per-file: keep yours, use upstream, or backup + update. Nothing is overwritten without your approval (unless you use `--force`).
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-Feel free to use COG for personal or commercial projects. If you build something cool with it, I'd love to hear about it!
-
-## Support COG's Development
-
-If COG has helped you build a better second brain, consider supporting its continued development:
-
-- ⭐ Star this repo to increase visibility
-- 💝 [Sponsor on GitHub](https://github.com/sponsors/huytieu) - Monthly support with perks
-- ☕ [Buy me a coffee](https://buymeacoffee.com/0xlight) - One-time appreciation
-- 🐛 [Report bugs](https://github.com/huytieu/COG-second-brain/issues)
-- 💬 [Share ideas](https://github.com/huytieu/COG-second-brain/discussions)
-- 📖 [Contribute](CONTRIBUTING.md)
-
-COG is free and open-source (MIT license). Your support helps keep it that way while enabling new features and better documentation.
+| | | |
+|---|---|---|
+| [Contribute](CONTRIBUTING.md) | [Report bugs](https://github.com/huytieu/COG-second-brain/issues) | [Discussions](https://github.com/huytieu/COG-second-brain/discussions) |
+| [Sponsor on GitHub](https://github.com/sponsors/huytieu) | [Buy me a coffee](https://buymeacoffee.com/0xlight) | [MIT License](LICENSE) |
 
 ## Acknowledgments
 
-Built with:
-- [Claude Code](https://claude.ai/code) by Anthropic
-- [Kiro](https://kiro.dev/) by AWS
-- [Gemini CLI](https://github.com/google-gemini/gemini-cli) by Google
-- [OpenAI Codex](https://github.com/openai/codex) by OpenAI
-- [Obsidian](https://obsidian.md/) for markdown management
-- Inspiration from Zettelkasten, Building a Second Brain, and GTD methodologies
+Built with [Claude Code](https://claude.ai/code), [Kiro](https://kiro.dev/), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenAI Codex](https://github.com/openai/codex), and [Obsidian](https://obsidian.md/). Inspired by Zettelkasten, Building a Second Brain, and GTD.
 
 ## Star History
 
@@ -509,6 +159,4 @@ Built with:
 
 ---
 
-**TL;DR:** COG is a self-evolving agentic second brain using AI agents + Obsidian + Git. Works with Claude Code, Kiro, Gemini CLI, OpenAI Codex, and more. Just `.md` files that sync via iCloud and learn your patterns. Setup in 2 steps, zero maintenance required.
-
-⭐ Star this repo if you find it useful!
+**TL;DR:** Clone, run onboarding, braindump daily. COG evolves with you — just `.md` files, any AI agent, zero maintenance.
