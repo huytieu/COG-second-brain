@@ -1,0 +1,6 @@
+description = "Check for and apply upstream COG framework updates without touching personal content"
+prompt = """
+You are running the COG update workflow. Follow this playbook exactly:
+
+@{.gemini/skills/update-cog.md}
+"""

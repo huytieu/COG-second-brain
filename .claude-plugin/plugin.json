@@ -1,6 +1,6 @@
 {
   "name": "cog-second-brain",
-  "version": "1.0.0",
+  "version": "3.2.0",
   "description": "A self-evolving second brain system using Claude Code, Obsidian markdown files, and Git version control. Features specialized AI agents for knowledge management, daily intelligence briefings, and strategic insights extraction.",
   "author": {
     "name": "Huy Tieu",
@@ -63,6 +63,11 @@
       "name": "url-dump",
       "path": ".claude/skills/url-dump/SKILL.md",
       "description": "Quick capture URLs with automatic content extraction, insights, and categorization into knowledge booklets"
+    },
+    {
+      "name": "update-cog",
+      "path": ".claude/skills/update-cog/SKILL.md",
+      "description": "Check for and apply upstream COG framework updates without touching personal content"
     }
   ],
   "metadata": {

@@ -12,14 +12,60 @@
 .DS_Store
 Thumbs.db
 
-# Personal Content (if sharing COG structure only)
-# Uncomment these if you want to keep your personal content private
-# 00-inbox/*
-# 01-daily/*
-# 02-personal/*
-# 03-professional/*
-# 04-projects/*
-# 05-knowledge/*
+# Personal Content — keep structure (.gitkeep) but ignore user files
+# These are active by default so upstream pulls never conflict with your notes
+
+# 00-inbox: ignore contents, keep .gitkeep
+00-inbox/*
+!00-inbox/.gitkeep
+
+# 01-daily: ignore contents, whitelist subdirs, then ignore their contents
+01-daily/*
+!01-daily/.gitkeep
+!01-daily/briefs/
+01-daily/briefs/*
+!01-daily/briefs/.gitkeep
+!01-daily/checkins/
+01-daily/checkins/*
+!01-daily/checkins/.gitkeep
+
+# 02-personal: ignore contents, whitelist subdirs
+02-personal/*
+!02-personal/.gitkeep
+!02-personal/braindumps/
+02-personal/braindumps/*
+!02-personal/braindumps/.gitkeep
+
+# 03-professional: ignore contents, whitelist subdirs
+03-professional/*
+!03-professional/.gitkeep
+!03-professional/braindumps/
+03-professional/braindumps/*
+!03-professional/braindumps/.gitkeep
+
+# 04-projects: ignore contents, keep .gitkeep
+04-projects/*
+!04-projects/.gitkeep
+
+# 05-knowledge: ignore contents, whitelist subdirs
+05-knowledge/*
+!05-knowledge/.gitkeep
+!05-knowledge/consolidated/
+05-knowledge/consolidated/*
+!05-knowledge/consolidated/.gitkeep
+!05-knowledge/patterns/
+05-knowledge/patterns/*
+!05-knowledge/patterns/.gitkeep
+!05-knowledge/timeline/
+05-knowledge/timeline/*
+!05-knowledge/timeline/.gitkeep
+!05-knowledge/booklets/
+05-knowledge/booklets/*
+!05-knowledge/booklets/.gitkeep
+
+# 06-templates: ignore contents, keep .gitkeep
+06-templates/*
+!06-templates/.gitkeep
 
 # IDE
 .vscode/

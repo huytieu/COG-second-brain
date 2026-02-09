@@ -403,6 +403,76 @@ First of the month:
 Analyze accumulated braindumps, build frameworks
 ```
 
+## Keeping COG Updated
+
+When new COG versions are released (new skills, improved docs, bug fixes), you can safely update framework files without touching your personal content.
+
+### Method 1: AI Agent (Recommended)
+
+Ask any supported agent:
+```
+"Update COG" or /update-cog
+```
+
+The agent will:
+1. Check your current version against upstream
+2. Show what's changed
+3. Let you approve updates per-file (with backup option for customized files)
+4. Apply updates and suggest a commit
+
+### Method 2: Shell Script
+
+```bash
+# Check for available updates (no changes made)
+./cog-update.sh --check
+
+# Preview what would change (no changes made)
+./cog-update.sh --dry-run
+
+# Interactive update — prompts for each file
+./cog-update.sh
+
+# Update everything without prompting
+./cog-update.sh --force
+```
+
+### Method 3: Manual Git
+
+```bash
+# One-time setup: add the upstream remote
+git remote add cog-upstream https://github.com/huytieu/COG-second-brain.git
+
+# Fetch latest
+git fetch cog-upstream main
+
+# Update specific files (surgical replacement, no merge needed)
+git checkout cog-upstream/main -- README.md SETUP.md AGENTS.md
+git checkout cog-upstream/main -- .claude/skills/ .kiro/powers/ .gemini/
+git checkout cog-upstream/main -- COG-VERSION cog-update.sh
+
+# Commit the update
+git add -A && git commit -m "Update COG framework to v$(cat COG-VERSION)"
+```
+
+### What Gets Updated vs What Doesn't
+
+| Updated (framework files) | Never touched (your content) |
+|---|---|
+| Skills (`.claude/skills/`, `.kiro/powers/`, `.gemini/`) | `00-inbox/` (profiles, notes) |
+| Docs (`README.md`, `SETUP.md`, `AGENTS.md`, etc.) | `01-daily/` (briefs, checkins) |
+| Scripts (`cog-update.sh`) | `02-personal/` (braindumps) |
+| Config (`.gitignore`, `plugin.json`) | `03-professional/` (braindumps) |
+| Version (`COG-VERSION`) | `04-projects/` (project files) |
+| | `05-knowledge/` (consolidated) |
+| | `06-templates/` (your templates) |
+
+### Checking Your Version
+
+```bash
+cat COG-VERSION
+# or ask any agent: "What version of COG am I running?"
+```
+
 ## Getting Help
 
 - **Issues:** https://github.com/huytieu/COG-second-brain/issues

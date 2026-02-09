@@ -90,6 +90,8 @@ Create these markdown files:
 
 Create `00-inbox/WELCOME-TO-COG.md` with quick start instructions. Suggest a natural next action (braindump or daily brief) without presenting a numbered menu.
 
+Also mention that COG can be kept up to date: "When new COG versions are released, run `/update-cog` or `./cog-update.sh` to safely update skills and docs without touching your personal content."
+
 ## Success Criteria
 
 - MY-PROFILE.md created in 00-inbox/

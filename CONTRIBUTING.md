@@ -36,6 +36,11 @@ We welcome ideas for new features or improvements:
    - Plain text over proprietary formats
    - Self-evolving intelligence
    - Verification-first approach
+4. **If your PR changes the framework** (skills, docs, scripts):
+   - Bump the version in `COG-VERSION` (e.g., `3.2.0` → `3.3.0`)
+   - Add a changelog entry in `CHANGELOG.md`
+   - If adding a new file, add it to the `FRAMEWORK_FILES` array in `cog-update.sh`
+   - Update `marketplace-entry.json` and `.claude-plugin/plugin.json` version fields
 
 #### Making Changes
 

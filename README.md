@@ -395,9 +395,40 @@ Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 - Documentation enhancements
 - Example workflows
 
+## Keeping COG Updated
+
+COG separates **framework files** (skills, docs, scripts) from **your content** (braindumps, profiles, notes). When new versions are released, you can safely update framework files without risking your personal data.
+
+### Three Ways to Update
+
+**1. AI Agent (any supported agent):**
+```
+"Update COG" or /update-cog
+```
+
+**2. Shell Script:**
+```bash
+./cog-update.sh           # Interactive — prompts per file
+./cog-update.sh --check   # Just check for updates
+./cog-update.sh --dry-run # Preview what would change
+./cog-update.sh --force   # Update everything
+```
+
+**3. Manual Git:**
+```bash
+git remote add cog-upstream https://github.com/huytieu/COG-second-brain.git
+git fetch cog-upstream main
+git checkout cog-upstream/main -- README.md SETUP.md .claude/skills/ .kiro/powers/ # etc
+```
+
+Your content folders (`00-inbox/`, `01-daily/`, `02-personal/`, etc.) are **never touched** by updates. Only framework files (skills, docs, scripts) are replaced.
+
+Check your current version: `cat COG-VERSION`
+
 ## Roadmap
 
-- [ ] Gemini support (in addition to Claude)
+- [x] ~~Gemini support~~ (shipped in v3.0)
+- [ ] Upstream update system (safe framework updates without merge conflicts)
 - [ ] Web interface for knowledge graph visualization
 - [ ] Mobile-first commands (optimized for Obsidian mobile)
 - [ ] Team collaboration features (with privacy preservation)
@@ -436,6 +467,12 @@ A: Currently designed for personal use. Team features planned for future release
 
 **Q: What if I don't use Git?**
 A: Git is optional but recommended for version history. COG works fine without it using just iCloud sync.
+
+**Q: How do I get new skills and features?**
+A: Run `/update-cog` in any supported agent, or use `./cog-update.sh` from the terminal. Updates only touch framework files — your notes are never modified. See [Keeping COG Updated](#keeping-cog-updated).
+
+**Q: Will updating overwrite my customizations?**
+A: The update process detects customized files and lets you choose per-file: keep yours, use upstream, or backup + update. Nothing is overwritten without your approval (unless you use `--force`).
 
 ## License
 

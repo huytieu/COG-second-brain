@@ -2,6 +2,61 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.2.0] - 2026-02-09
+
+### Upstream Update System
+
+Users who fork or clone COG can now safely pull framework updates (skills, docs, scripts) without risking merge conflicts with their personal content.
+
+### Added
+
+#### Update Tooling
+- **`cog-update.sh`** — Interactive bash script for updating framework files
+  - `--check`: See available updates without making changes
+  - `--dry-run`: Preview what would change
+  - `--force`: Update all framework files at once
+  - Interactive mode: Per-file prompts with diff, backup, and skip options
+- **`/update-cog` skill** — Available in all 4 agent formats:
+  - `.claude/skills/update-cog/SKILL.md` (Claude Code)
+  - `.kiro/powers/cog-update/POWER.md` (Kiro)
+  - `.gemini/commands/update-cog.toml` + `.gemini/skills/update-cog.md` (Gemini CLI)
+  - `AGENTS.md` updated with `/update-cog` command (OpenAI Codex, others)
+- **`COG-VERSION`** — Single-line version tracking file (currently `3.2.0`)
+
+#### Content/Framework Separation
+- **`.gitkeep` files** in all 15 content directories — preserves directory structure in upstream while `.gitignore` excludes user content
+- **`.gitignore` rewrite** — Content folder ignores now active by default with `.gitkeep` whitelisting
+
+#### Directory Structure Preservation
+- `.gitkeep` added to: `00-inbox/`, `01-daily/`, `01-daily/briefs/`, `01-daily/checkins/`, `02-personal/`, `02-personal/braindumps/`, `03-professional/`, `03-professional/braindumps/`, `04-projects/`, `05-knowledge/`, `05-knowledge/consolidated/`, `05-knowledge/patterns/`, `05-knowledge/timeline/`, `05-knowledge/booklets/`, `06-templates/`
+
+### Changed
+
+#### Documentation
+- **`README.md`** — Added "Keeping COG Updated" section, FAQ entries for updates, updated roadmap
+- **`SETUP.md`** — Added comprehensive "Keeping COG Updated" section with all 3 update methods
+- **`AGENTS.md`** — Added `/update-cog` command, version & updates configuration section
+- **`GEMINI.md`** — Added `/update-cog` to available skills list
+- **`CONTRIBUTING.md`** — Added version bump protocol to "Before You Start" section
+- **`CHANGELOG.md`** — This entry
+
+#### Integration
+- **`.claude-plugin/plugin.json`** — Added update-cog skill, bumped version to 3.2.0
+- **`marketplace-entry.json`** — Bumped version to 3.2.0
+- **`.claude/skills/onboarding/SKILL.md`** — Added "Keeping COG Updated" to welcome guide template
+- **`.kiro/powers/cog-onboarding/POWER.md`** — Added update mention to wrap-up section
+
+### Removed
+- **`example-vault/`** — Removed empty directory (contained only `.DS_Store`), replaced by `.gitkeep` files
+
+### Design Decisions
+- **Remote name `cog-upstream`**: Works for both fork and clone users without conflicting with `origin`
+- **`git checkout <remote>/<branch> -- <file>`**: Surgical file replacement with zero conflict risk
+- **Self-updating script**: `cog-update.sh` is in the framework file list, so it updates itself
+- **Active .gitignore**: Content folder ignores are on by default so new users get safe defaults
+
+---
+
 ## [3.1.0] - 2026-02-03
 
 ### Obsidian Tasks Plugin Integration

@@ -207,6 +207,40 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ---
 
+### /update-cog
+
+**Description:** Check for and apply upstream COG framework updates without touching personal content.
+
+**Triggers:**
+- `/update-cog`
+- "update COG"
+- "check for updates"
+- "get latest COG version"
+- "upgrade COG"
+- "new COG version"
+
+**Purpose:** Safely update framework files (skills, docs, scripts) from the official upstream repository while leaving all personal content untouched.
+
+**What it does:**
+1. Reads `COG-VERSION` to determine current version
+2. Adds/fetches the `cog-upstream` remote from the official repo
+3. Compares each framework file against upstream
+4. Detects customizations and offers per-file keep/overwrite/backup
+5. Applies updates via surgical `git checkout` (no merge conflicts)
+6. Reports updated files and suggests committing
+
+**Shell script alternative:**
+```bash
+./cog-update.sh           # Interactive
+./cog-update.sh --check   # Check for updates
+./cog-update.sh --dry-run # Preview changes
+./cog-update.sh --force   # Update all without prompting
+```
+
+**Safety:** Content folders (`00-inbox/`, `01-daily/`, `02-personal/`, etc.) are NEVER touched. Only framework files (skills, docs, scripts) are updated.
+
+---
+
 ## Vault Structure
 
 ```
@@ -257,6 +291,14 @@ All configuration is stored as readable markdown files:
 - `03-professional/COMPETITIVE-WATCHLIST.md` - Companies/people to track
 
 Edit these files anytime - changes take effect immediately.
+
+## Version & Updates
+
+COG tracks its version in `COG-VERSION` (currently 3.2.0). To check for updates:
+- Run `/update-cog` in any supported agent
+- Or use the shell script: `./cog-update.sh --check`
+
+Updates only touch framework files (skills, docs, scripts) — your personal content is never modified.
 
 ---
 

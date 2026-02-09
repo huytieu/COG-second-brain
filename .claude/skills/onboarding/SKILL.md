@@ -338,12 +338,22 @@ When you use the braindump skill, select the project to automatically file your 
 3. **Explore your vault**: All your files are organized in the sidebar
 4. **Edit your profile**: Open [[MY-PROFILE]] and customize anytime
 
+## Keeping COG Updated
+
+COG separates your content from framework files. When new versions are released:
+- Run `/update-cog` to check for and apply updates
+- Or use the shell script: `./cog-update.sh --check`
+- Your braindumps, profiles, and notes are **never** touched by updates
+
+Check your current version: `cat COG-VERSION`
+
 ## Tips for Success
 
 - **Don't overthink it**: Just dump your thoughts, COG will help organize
 - **Be consistent**: Daily briefs and braindumps work best as habits
 - **Review weekly**: Use the weekly-checkin skill to see patterns emerge
 - **Evolve your setup**: Edit your profile files anytime or run onboarding again to add projects
+- **Stay updated**: Run `/update-cog` periodically to get new skills and improvements
 
 ## Getting Help
 
