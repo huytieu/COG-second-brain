@@ -23,7 +23,7 @@ This document provides detailed, actionable steps to migrate the Light-Personal-
 
 ```bash
 # Navigate to COG-second-brain
-cd "/Users/huy.tieu/Library/Mobile Documents/iCloud~md~obsidian/Documents/COG-second-brain"
+# e.g. cd "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/COG-second-brain"
 
 # Create .claude/skills directory structure
 mkdir -p .claude/skills/{obsidian-workspace,domain-classifier,braindump-processor,strategic-analyst}
