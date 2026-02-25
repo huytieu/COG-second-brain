@@ -9,8 +9,9 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[7 Skills]
+    B -- runs --> C[10 Skills]
     C -- reads & writes --> D[.md Files]
+    C -- syncs with --> G[GitHub / Linear / Slack / PostHog]
     D --> E[Git]
     D --> F[iCloud]
 ```
@@ -39,6 +40,8 @@ Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) f
 
 ## Skills
 
+### Core Skills (Personal Knowledge)
+
 | Skill | What it does | Try saying... |
 |---|---|---|
 | **onboarding** | Personalize COG for your workflow (run first!) | "Run onboarding" |
@@ -49,19 +52,37 @@ Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) f
 | **knowledge-consolidation** | Build frameworks from scattered notes | "Consolidate my knowledge" |
 | **update-cog** | Update framework files without touching your content | "Update COG" |
 
+### Team Intelligence Skills (for Product & Engineering Leads)
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **team-brief** | Cross-reference GitHub + Linear + Slack + PostHog into a daily team intelligence brief with two-way Linear sync-back | "Team brief" / "What did we ship?" |
+| **meeting-transcript** | Process meeting recordings into structured decisions, action items, and team dynamics | "Process this meeting" |
+| **comprehensive-analysis** | Deep 7-day analysis for weekly reviews, board prep, or strategic planning (~8-12 min) | "Weekly analysis" / "Board prep" |
+
+> **New to team skills?** These require GitHub CLI (`gh`) and work best with Linear, Slack, and PostHog MCP integrations. They degrade gracefully — start with just GitHub and add integrations over time. See [SETUP.md](SETUP.md) for configuration.
+
 ## The Evolution Cycle
 
 ```mermaid
 graph TD
-    A[Daily: Braindump thoughts] --> B[Daily: Intelligence briefing]
+    A[Daily: Braindump thoughts] --> B[Daily: News intelligence]
+    A --> T[Daily: Team intelligence brief]
+    M[Meetings: Process transcripts] --> T
+    T -- syncs back to --> L[Linear / GitHub]
     B --> C[Weekly: Pattern analysis]
+    T --> CA[Weekly: Comprehensive analysis]
     C --> D[Monthly: Knowledge consolidation]
+    CA --> D
     D -- COG learns your patterns --> A
 ```
 
 - **Daily capture** — braindump raw thoughts; COG classifies by domain and extracts action items
-- **Daily intelligence** — personalized briefings with verified, sourced news
+- **Daily intelligence** — personalized news briefings with verified, sourced news
+- **Daily team brief** — cross-reference GitHub, Linear, Slack, PostHog, meetings into one brief with two-way sync
+- **Meeting processing** — extract decisions, action items, and team dynamics from transcripts
 - **Weekly reflection** — pattern analysis across all domains surfaces insights you'd miss
+- **Weekly deep dive** — comprehensive analysis for board prep, retros, and strategic planning
 - **Monthly synthesis** — scattered notes become consolidated frameworks and a knowledge base
 
 ## Features at a Glance
