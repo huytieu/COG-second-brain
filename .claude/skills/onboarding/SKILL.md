@@ -1,6 +1,8 @@
 ---
 name: onboarding
 description: Personalize COG for your workflow - creates profile, interests, and watchlist files with guided setup (run this first!)
+roles: [all]
+integrations: []
 ---
 
 # COG Onboarding Skill
@@ -96,6 +98,83 @@ Which do you prefer? (Solo is great for most people - team mode is for power use
 
 **Wait for confirmation**, then generate everything. If they say "looks good" or similar, proceed. If they correct something, update and proceed without re-confirming. Default to `solo` if they don't express a preference.
 
+### 5.5. Role Pack Matching
+
+After extracting the user's role text in Step 3, scan `.claude/roles/*.md` for a matching role pack:
+
+1. Read each role pack file's YAML frontmatter (`role_id` and `aliases`)
+2. Compare the user's extracted role text (case-insensitive) against:
+   - Exact `role_id` match (e.g., "product-manager")
+   - Any string in `aliases` (e.g., "pm", "product lead", "head of product")
+   - Fuzzy substring match (e.g., "product manager at a fintech startup" contains "product manager")
+3. If a match is found:
+   - Store the matched `role_id` as `role_pack` in the MY-PROFILE.md frontmatter
+   - Present role-specific recommendations:
+   ```
+   As a [Role Display Name], here are the skills and integrations that'll be most useful for you:
+
+   **Recommended skills** (ordered by relevance for your role):
+   [List top 5-6 skills from the role pack with the "Why it matters for you" context]
+
+   **Recommended integrations**:
+   [List integrations from the role pack with role-specific explanations]
+   ```
+   - Use the role pack's suggested `agent_mode` as the default (instead of `solo`)
+4. If no match is found:
+   - Set `role_pack: custom` in MY-PROFILE.md
+   - Recommend core skills only (those with `roles: [all]`)
+   - Ask about common integrations: "Do you use GitHub, Slack, or any other tools you'd like COG to connect with?"
+
+### 5.6. Integration Discovery
+
+After role pack matching, set up the user's integration preferences:
+
+1. If a role pack was matched, present its recommended integrations with role-specific context:
+   ```
+   Based on your role, these integrations would give COG the most context:
+
+   [For each integration in role pack:]
+   - **[Integration]** — [Why it matters for you, from role pack]
+
+   Which of these do you already use? And are there any other tools you'd like to connect?
+   ```
+
+2. Parse the user's response:
+   - Services they confirm using → add to **Active** section of MY-INTEGRATIONS.md
+   - Services they don't mention or say no to → add to **Disabled** section
+   - Additional services they mention → add to **Active** section
+   - Always add `ElevenLabs` to **Disabled** unless explicitly requested
+
+3. Generate `00-inbox/MY-INTEGRATIONS.md`:
+   ```markdown
+   ---
+   type: integrations
+   created: YYYY-MM-DD
+   tags: ["#integrations", "#config", "#cog"]
+   ---
+
+   # My Integrations
+
+   *COG checks this file before using any external service. Edit anytime.*
+
+   ## Active
+   [For each confirmed integration:]
+   - **[Service]**: [Brief description of how COG uses it]
+
+   ## Disabled
+   [For each declined/unmentioned integration:]
+   - **[Service]**: Skipped during onboarding. Enable anytime by moving to Active section.
+
+   ---
+
+   *Move services between Active and Disabled sections to control what COG connects to.*
+   ```
+
+4. If no role pack was matched, ask about common integrations conversationally:
+   ```
+   COG can connect with tools like GitHub, Slack, Linear, Notion, and PostHog for richer analysis. Do you use any of these? (Totally optional - COG works great without them too.)
+   ```
+
 ### 6. Generate Profile Documents
 
 Create the following markdown files:
@@ -106,7 +185,8 @@ Create the following markdown files:
 type: profile
 created: YYYY-MM-DD
 onboarding_completed: true
-agent_mode: solo
+role_pack: [matched role_id or "custom"]
+agent_mode: [solo or team, based on role pack suggestion]
 tags: ["#profile", "#config", "#cog"]
 ---
 
@@ -115,10 +195,11 @@ tags: ["#profile", "#config", "#cog"]
 ## About Me
 - **Name**: [Name]
 - **Role**: [Job/role/main activity]
+- **Role Pack**: [Display name from matched role pack, or "Custom" if no match]
 - **Profile Created**: [Date]
 
 ## Settings
-- **Agent Mode**: solo *(solo = handle everything directly; team = delegate to specialist sub-agents for deeper results)*
+- **Agent Mode**: [solo/team] *(solo = handle everything directly; team = delegate to specialist sub-agents for deeper results)*
 
 ## Active Projects
 [If they mentioned projects:]
@@ -293,13 +374,45 @@ Your COG is now personalized and ready to use. Here's how to get started:
 
 I've created these documents to store your preferences:
 
-- **[[MY-PROFILE]]** - Your basic info and workflow preferences
+- **[[MY-PROFILE]]** - Your basic info, role pack, and workflow preferences
 - **[[MY-INTERESTS]]** - Topics for your daily briefs
+- **[[MY-INTEGRATIONS]]** - Your active and disabled integrations
 - **[[03-professional/COMPETITIVE-WATCHLIST]]** - Companies you're tracking *(if applicable)*
 
 **You can edit these files anytime.** COG reads them when you use skills, so your changes take effect immediately.
 
-## Quick Start Skills
+## Skills for Your Role
+
+[If role pack was matched:]
+As a **[Role Display Name]**, these skills are ordered by relevance for you:
+
+[List skills from role pack in order, with brief "why it matters" from the role pack. Format as:]
+1. **[skill-name]** — [Role-specific explanation]
+2. **[skill-name]** — [Role-specific explanation]
+[...continue for all recommended skills]
+
+[If no role pack match:]
+Here are COG's core skills available to everyone:
+
+1. **daily-brief** — Personalized news intelligence
+2. **braindump** — Capture and classify thoughts
+3. **weekly-checkin** — Weekly pattern analysis
+4. **knowledge-consolidation** — Build frameworks from scattered notes
+5. **url-dump** — Save URLs with auto-extracted insights
+6. **update-cog** — Keep COG framework current
+
+## Your Integrations
+
+[If integrations were configured:]
+**Active**: [List active integrations]
+**Disabled**: [List disabled integrations]
+
+You can change these anytime by editing [[MY-INTEGRATIONS]].
+
+[If no integrations configured:]
+No integrations configured yet. COG works great standalone — add integrations anytime by editing `00-inbox/MY-INTEGRATIONS.md`.
+
+## Quick Start
 
 ### 1. Daily Morning Routine
 Invoke the daily-brief skill to get your personalized intelligence briefing covering:
@@ -392,11 +505,13 @@ Then intelligently handle whatever they say - whether it's adding projects, chan
 ## Success Criteria
 
 Onboarding is successful when:
-1. `MY-PROFILE.md` created in `00-inbox/`
+1. `MY-PROFILE.md` created in `00-inbox/` with `role_pack` in frontmatter
 2. `MY-INTERESTS.md` created in `00-inbox/`
-3. Project directories and overviews created (if applicable)
-4. `WELCOME-TO-COG.md` guide created
-5. User understands next steps and where their profile is stored
+3. `MY-INTEGRATIONS.md` created in `00-inbox/` with active/disabled sections
+4. Role pack matched (or set to `custom`) and recommendations presented
+5. Project directories and overviews created (if applicable)
+6. `WELCOME-TO-COG.md` guide created with role-specific skill ordering
+7. User understands next steps and where their profile is stored
 
 ## Error Handling
 
@@ -418,8 +533,9 @@ Onboarding is successful when:
 ## Privacy & Data
 
 All configuration data is stored as markdown files in:
-- `00-inbox/MY-PROFILE.md` - Basic profile
+- `00-inbox/MY-PROFILE.md` - Basic profile with role pack
 - `00-inbox/MY-INTERESTS.md` - Interest areas
+- `00-inbox/MY-INTEGRATIONS.md` - Active/disabled external service integrations
 - `03-professional/COMPETITIVE-WATCHLIST.md` - Competitive tracking
 - `04-projects/[project]/PROJECT-OVERVIEW.md` - Project details
 

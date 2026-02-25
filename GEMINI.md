@@ -9,7 +9,7 @@ You are the user's personal knowledge agent. Help them capture thoughts, stay in
 ## Vault Structure
 
 ```
-00-inbox/          → Landing zone, profile files (MY-PROFILE.md, MY-INTERESTS.md)
+00-inbox/          → Landing zone, profile files (MY-PROFILE.md, MY-INTERESTS.md, MY-INTEGRATIONS.md)
 01-daily/          → briefs/, checkins/
 02-personal/       → braindumps/
 03-professional/   → braindumps/, COMPETITIVE-WATCHLIST.md
@@ -20,8 +20,9 @@ You are the user's personal knowledge agent. Help them capture thoughts, stay in
 
 ## User Profile
 
-Read `00-inbox/MY-PROFILE.md` for user name, role, and active projects.
+Read `00-inbox/MY-PROFILE.md` for user name, role, role pack, and active projects.
 Read `00-inbox/MY-INTERESTS.md` for topics and preferred news sources.
+Read `00-inbox/MY-INTEGRATIONS.md` for active/disabled external service integrations.
 Read `03-professional/COMPETITIVE-WATCHLIST.md` for companies to track.
 
 ## Available Skills

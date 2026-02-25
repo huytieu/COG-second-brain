@@ -42,7 +42,7 @@ That's it! You now have a working second brain.
 
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
-- 6 AI skills are available in multiple formats:
+- 10 AI skills are available in multiple formats:
   - `.claude/skills/` - For Claude Code
   - `.kiro/powers/` - For Kiro
   - `agents.md` - For any agent
@@ -81,10 +81,13 @@ Onboarding will ask you:
 **Takes 2 minutes. Everything is stored as markdown files you can edit.**
 
 Onboarding creates:
-- `00-inbox/MY-PROFILE.md` - Your info and projects
+- `00-inbox/MY-PROFILE.md` - Your info, role pack, and projects
 - `00-inbox/MY-INTERESTS.md` - Topics for daily briefs
+- `00-inbox/MY-INTEGRATIONS.md` - Active/disabled external service integrations
 - `03-professional/COMPETITIVE-WATCHLIST.md` - Tracking list (if any)
 - Project folders in `04-projects/`
+
+**Role-based personalization:** COG matches your role to a role pack that prioritizes the most relevant skills and integrations for you. Available packs: Product Manager, Engineering Lead, Engineer, Designer, Founder, Marketer.
 
 ### Test Your Setup
 
@@ -123,7 +126,8 @@ After running onboarding, you'll have this structure:
 COG-second-brain/              # This is your second brain folder
 ├── agents.md                  # Universal agent documentation
 ├── .claude/
-│   └── skills/                # 6 Claude Code skills
+│   ├── roles/                 # 7 role packs for personalized recommendations
+│   └── skills/                # 10 Claude Code skills
 │       ├── onboarding/
 │       ├── braindump/
 │       ├── daily-brief/
@@ -138,7 +142,8 @@ COG-second-brain/              # This is your second brain folder
 │       ├── cog-weekly-checkin/
 │       ├── cog-knowledge-consolidation/
 │       └── cog-url-dump/
-├── 00-inbox/                  # Temporary & profile files (created by onboarding)
+├── CLAUDE.md                  # Framework instructions (role packs, integrations)
+├── 00-inbox/                  # Profiles, interests, integrations (created by onboarding)
 ├── 01-daily/                  # Daily briefs and check-ins
 │   ├── briefs/
 │   └── checkins/

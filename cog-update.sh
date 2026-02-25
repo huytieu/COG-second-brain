@@ -38,6 +38,21 @@ FRAMEWORK_FILES=(
   ".claude/skills/knowledge-consolidation/SKILL.md"
   ".claude/skills/url-dump/SKILL.md"
   ".claude/skills/update-cog/SKILL.md"
+  ".claude/skills/team-brief/SKILL.md"
+  ".claude/skills/comprehensive-analysis/SKILL.md"
+  ".claude/skills/meeting-transcript/SKILL.md"
+
+  # Role packs
+  ".claude/roles/_template.md"
+  ".claude/roles/product-manager.md"
+  ".claude/roles/engineer.md"
+  ".claude/roles/engineering-lead.md"
+  ".claude/roles/designer.md"
+  ".claude/roles/founder.md"
+  ".claude/roles/marketer.md"
+
+  # Framework config
+  "CLAUDE.md"
 
   # Kiro powers
   ".kiro/powers/cog-onboarding/POWER.md"

@@ -27,10 +27,13 @@ This document defines the available commands/skills for AI agents interacting wi
 3. Only asks a follow-up if required info (name, role, interests) is still missing
 4. Asks about agent mode preference (solo vs team) during confirmation
 5. Confirms extracted info before creating files
-6. Creates `00-inbox/MY-PROFILE.md` with basic preferences and agent_mode setting
-7. Creates `00-inbox/MY-INTERESTS.md` with topics for daily briefs
-8. Optionally creates project structures in `04-projects/` and `03-professional/COMPETITIVE-WATCHLIST.md` (only if mentioned)
-9. Generates a welcome guide
+6. Matches role to a role pack (`.claude/roles/*.md`) for personalized skill and integration recommendations
+7. Discovers integrations — presents role-specific recommendations, asks which tools the user already uses
+8. Creates `00-inbox/MY-PROFILE.md` with role_pack, agent_mode, and preferences
+9. Creates `00-inbox/MY-INTERESTS.md` with topics for daily briefs
+10. Creates `00-inbox/MY-INTEGRATIONS.md` with active/disabled integrations
+11. Optionally creates project structures in `04-projects/` and `03-professional/COMPETITIVE-WATCHLIST.md` (only if mentioned)
+12. Generates a welcome guide with role-ordered skills and integration status
 
 **Agent modes:**
 - **Solo** (default): All skills handle everything directly in one conversation
@@ -245,9 +248,11 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ```
 COG-second-brain/
+├── .claude/roles/         # Role packs for personalized recommendations
 ├── 00-inbox/              # Landing zone, profile files
-│   ├── MY-PROFILE.md      # User profile (created by onboarding)
-│   └── MY-INTERESTS.md    # User interests (created by onboarding)
+│   ├── MY-PROFILE.md      # User profile with role pack (created by onboarding)
+│   ├── MY-INTERESTS.md    # User interests (created by onboarding)
+│   └── MY-INTEGRATIONS.md # Active/disabled integrations (created by onboarding)
 ├── 01-daily/              # Daily content
 │   ├── briefs/            # Daily intelligence briefs
 │   └── checkins/          # Weekly check-ins
@@ -286,15 +291,25 @@ COG-second-brain/
 ## Configuration
 
 All configuration is stored as readable markdown files:
-- `00-inbox/MY-PROFILE.md` - Basic profile and active projects
+- `00-inbox/MY-PROFILE.md` - Profile, role pack, agent mode, and active projects
 - `00-inbox/MY-INTERESTS.md` - Topics for news curation
+- `00-inbox/MY-INTEGRATIONS.md` - Active/disabled external service integrations
 - `03-professional/COMPETITIVE-WATCHLIST.md` - Companies/people to track
 
 Edit these files anytime - changes take effect immediately.
 
+### Role Packs
+
+COG matches your role to a role pack during onboarding. Role packs (in `.claude/roles/`) define:
+- Which skills are most relevant for your role
+- Which integrations to recommend
+- Suggested agent mode (solo vs team)
+
+Available packs: Product Manager, Engineering Lead, Engineer, Designer, Founder, Marketer. Create custom packs from `_template.md`.
+
 ## Version & Updates
 
-COG tracks its version in `COG-VERSION` (currently 3.2.0). To check for updates:
+COG tracks its version in `COG-VERSION` (currently 3.3.0). To check for updates:
 - Run `/update-cog` in any supported agent
 - Or use the shell script: `./cog-update.sh --check`
 

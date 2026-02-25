@@ -2,6 +2,64 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.3.0] - 2026-02-25
+
+### Role Packs & Integration Discovery
+
+COG now matches your role during onboarding to personalize skill recommendations and integration suggestions. A PM and an engineer see different skill priorities. New roles can be added by dropping a file.
+
+### Added
+
+#### Role Packs (`.claude/roles/`)
+- **7 role pack files** — each defines per-role skill recommendations and integration needs:
+  - `_template.md` — starter for custom roles
+  - `product-manager.md` — skills: team-brief, comprehensive-analysis, meeting-transcript, daily-brief, braindump, etc. Integrations: GitHub, Linear, Slack, PostHog, Notion, HackMD
+  - `engineering-lead.md` — engineering-focused with team management emphasis. Integrations: GitHub, Linear, Slack, PostHog
+  - `engineer.md` — individual contributor focus. Integrations: GitHub
+  - `designer.md` — design and UX research focus. Integrations: Slack, Notion
+  - `founder.md` — all skills, all integrations recommended
+  - `marketer.md` — growth and content focus. Integrations: Slack, Notion, PostHog
+- Each role pack contains YAML frontmatter with `role_id`, `display_name`, and `aliases` for fuzzy matching during onboarding
+
+#### Onboarding Enhancements
+- **Step 5.5 — Role Pack Matching**: After extracting role text, scans `.claude/roles/*.md` for matching `role_id` or `aliases`. Presents role-specific skill and integration recommendations
+- **Step 5.6 — Integration Discovery**: Presents role pack's recommended integrations with role-specific explanations. Generates `00-inbox/MY-INTEGRATIONS.md` with Active/Disabled sections
+- **Updated MY-PROFILE.md template**: Now includes `role_pack` in YAML frontmatter
+- **Updated WELCOME-TO-COG.md template**: New "Skills for Your Role" section with role-ordered skills, and "Your Integrations" section
+
+#### Skill Metadata
+- All 10 skills now have `roles` and `integrations` fields in YAML frontmatter
+  - Core skills (onboarding, braindump, daily-brief, etc.): `roles: [all]`
+  - Team skills (team-brief, comprehensive-analysis): `roles: [product-manager, engineering-lead, founder]`
+  - Meeting-transcript: `roles: [product-manager, engineering-lead, founder, designer]`
+
+#### Framework Configuration
+- **`CLAUDE.md`** rewritten as universal framework file with Role Packs and Integration Preferences sections (no longer personal config)
+
+### Changed
+
+#### Documentation
+- **`README.md`** — Added "Role Packs" section, updated vault structure diagram with `.claude/roles/`, updated roadmap
+- **`SETUP.md`** — Updated skill counts, added role packs to onboarding output, added MY-INTEGRATIONS.md
+- **`AGENTS.md`** — Updated onboarding command with role matching and integration discovery, added team intelligence skills, updated vault structure and configuration section
+- **`GEMINI.md`** — Updated vault structure with role packs and integrations file
+- **`CONTRIBUTING.md`** — Updated skill frontmatter convention to include `roles` and `integrations` fields, added role pack contribution guidelines
+- **`CHANGELOG.md`** — This entry
+
+#### Version & Metadata
+- **`COG-VERSION`** — Bumped 3.2.0 → 3.3.0
+- **`.claude-plugin/plugin.json`** — Bumped version, updated skill count to 10, added `rolePacks: 7` metadata
+- **`marketplace-entry.json`** — Bumped version to 3.3.0
+- **`cog-update.sh`** — Added 7 role pack files, CLAUDE.md, and 3 team intelligence skills to FRAMEWORK_FILES array
+
+### Design Decisions
+- **File-based role packs**: New roles added by dropping a `.md` file — no code changes needed
+- **Alias-based matching**: Fuzzy matching via aliases handles variations like "PM", "product lead", "head of product"
+- **Integration discovery during onboarding**: Rather than skills failing at runtime, integrations are configured upfront
+- **CLAUDE.md as framework file**: Moves from personal config to universal instructions that work for any user
+
+---
+
 ## [3.2.0] - 2026-02-09
 
 ### Upstream Update System

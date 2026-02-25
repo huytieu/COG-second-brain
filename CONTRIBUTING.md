@@ -45,9 +45,10 @@ We welcome ideas for new features or improvements:
 #### Making Changes
 
 1. **Skills**: New skills should be added in all supported formats:
-   - `.claude/skills/[name]/SKILL.md` - Claude Code format
+   - `.claude/skills/[name]/SKILL.md` - Claude Code format (include `roles` and `integrations` in frontmatter)
    - `.kiro/powers/cog-[name]/POWER.md` - Kiro format
    - Update `agents.md` - Universal documentation
+   - If the skill is role-specific, add it to relevant role packs in `.claude/roles/`
 2. **Templates**: Follow existing YAML frontmatter conventions
 3. **Documentation**: Update README.md if adding major features
 4. **Examples**: Provide examples of your feature in action
@@ -116,6 +117,8 @@ Before submitting:
 ---
 name: skill-name
 description: What this skill does
+roles: [all]
+integrations: [github, slack]
 ---
 
 # Skill Name

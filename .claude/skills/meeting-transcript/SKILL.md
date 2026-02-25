@@ -1,6 +1,8 @@
 ---
 name: meeting-transcript
 description: Process meeting recordings and notes into structured decisions, action items, and team dynamics with intelligent noise filtering
+roles: [product-manager, engineering-lead, founder, designer]
+integrations: []
 ---
 
 # COG Meeting Transcript Skill

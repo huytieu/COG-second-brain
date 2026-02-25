@@ -1,6 +1,8 @@
 ---
 name: knowledge-consolidation
 description: Build frameworks from scattered insights across all braindumps and notes
+roles: [all]
+integrations: []
 ---
 
 # COG Knowledge Consolidation Skill

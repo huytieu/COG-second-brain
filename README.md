@@ -60,6 +60,10 @@ Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) f
 | **meeting-transcript** | Process meeting recordings into structured decisions, action items, and team dynamics | "Process this meeting" |
 | **comprehensive-analysis** | Deep 7-day analysis for weekly reviews, board prep, or strategic planning (~8-12 min) | "Weekly analysis" / "Board prep" |
 
+### Role Packs (Personalized Recommendations)
+
+COG matches your role during onboarding to a **role pack** that prioritizes the most relevant skills and integrations for you. Available role packs: Product Manager, Engineering Lead, Engineer, Designer, Founder, Marketer — or create your own from the template.
+
 > **New to team skills?** These require GitHub CLI (`gh`) and work best with Linear, Slack, and PostHog MCP integrations. They degrade gracefully — start with just GitHub and add integrations over time. See [SETUP.md](SETUP.md) for configuration.
 
 ## The Evolution Cycle
@@ -96,11 +100,13 @@ graph TD
 
 ```
 COG-second-brain/
-├── .claude/skills/          # Claude Code skills
+├── .claude/skills/          # Claude Code skills (10)
+├── .claude/roles/           # Role packs (7) — personalized recommendations
 ├── .kiro/powers/            # Kiro powers
 ├── .gemini/commands/        # Gemini CLI commands
 ├── AGENTS.md                # Universal agent docs
-├── 00-inbox/                # Profiles & onboarding files
+├── CLAUDE.md                # Framework instructions
+├── 00-inbox/                # Profiles, interests, integrations
 ├── 01-daily/                # Briefs & check-ins
 ├── 02-personal/             # Personal braindumps (private)
 ├── 03-professional/         # Professional braindumps & strategy
@@ -158,6 +164,7 @@ Git is optional but recommended for version history. COG works fine with just iC
 
 - [x] ~~Gemini CLI + OpenAI Codex support~~ (shipped in v3.1)
 - [x] ~~Upstream update system~~ (shipped in v3.2)
+- [x] ~~Role packs & integration discovery~~ (shipped in v3.3)
 - [ ] Web interface for knowledge graph visualization
 - [ ] Mobile-first commands (optimized for Obsidian mobile)
 - [ ] Team collaboration features (with privacy preservation)

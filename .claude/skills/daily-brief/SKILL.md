@@ -1,6 +1,8 @@
 ---
 name: daily-brief
 description: Generate personalized news intelligence with verified sources (7-day freshness requirement)
+roles: [all]
+integrations: [web-search]
 ---
 
 # COG Daily Brief Skill

@@ -1,6 +1,8 @@
 ---
 name: weekly-checkin
 description: Cross-domain pattern analysis and strategic reflection for weekly review
+roles: [all]
+integrations: []
 ---
 
 # COG Weekly Check-in Skill

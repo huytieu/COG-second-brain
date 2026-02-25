@@ -1,6 +1,8 @@
 ---
 name: update-cog
 description: Check for and apply upstream COG framework updates (skills, docs, scripts) without touching personal content
+roles: [all]
+integrations: [git]
 ---
 
 # COG Update Skill
