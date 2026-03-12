@@ -2,6 +2,77 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.4.0] - 2026-03-12
+
+### PM Workflow Skills & Auto-Research
+
+COG now includes a complete product management workflow (6 skills) and a deep strategic research engine. PM skills cover the full lifecycle from PRD to release notes to knowledge base maintenance, with multi-tracker support (Linear, GitHub Issues, Jira) and optional Confluence/Notion publishing.
+
+### Added
+
+#### Auto-Research Skill
+- **`auto-research`** — Deep strategic research engine inspired by Karpathy's autoresearch
+  - Decomposes strategic questions into 5-7 parallel research threads
+  - Spawns parallel agents (team mode) for simultaneous web research
+  - Synthesizes into actionable analysis with scenarios, options, and recommendations
+  - Always includes emerging tech thread for pre-mainstream concepts
+  - Saves to `05-knowledge/research/`
+
+#### PM Workflow Skills (6 new skills)
+- **`create-user-story`** — Create user stories with duplicate checking
+  - Multi-tracker: Linear (MCP), GitHub Issues (`gh` CLI), Jira (API)
+  - Standard As a/I want/So that format with Given/When/Then acceptance criteria
+  - Automatic duplicate detection before creation
+- **`generate-prd`** — Draft product requirement documents
+  - Standard sections: Problem, Goals, Non-goals, User workflows, Requirements, Risks, Metrics
+  - Approval gate before any external publishing
+  - Saves to `04-projects/[project]/PRDs/`
+- **`generate-release-notes`** — Generate release notes from any source
+  - GitHub milestones, Linear cycles, or manual input
+  - Auto-categorizes: Enhancements, Technical Improvements, Bug Fixes
+  - Saves to `04-projects/[project]/releases/`
+- **`export-open-issues`** — Audit and export open issues
+  - Multi-tracker support with stale issue detection
+  - Priority distribution and assignee load analysis
+  - Saves structured report to `04-projects/[project]/audits/`
+- **`publish-to-confluence`** — Publish vault markdown to Confluence
+  - Create or update pages with approval gate
+  - Requires Confluence integration active
+- **`update-knowledge-base`** — Maintain product knowledge base
+  - Accepts feature updates, release data, or both
+  - Cross-references PRDs and release notes
+  - Optional Confluence/Notion sync with approval
+
+#### Skill Metadata
+- All 7 new skills have `roles` and `integrations` fields in YAML frontmatter
+- PM skills: `roles: [product-manager, engineering-lead, founder]`
+- Auto-research: `roles: [product-manager, engineering-lead, founder, all]`
+
+### Changed
+
+#### Documentation
+- **`README.md`** — Added PM Workflow Skills section, Strategic Research section, updated mermaid diagrams, vault structure (17 skills), roadmap
+- **`AGENTS.md`** — Added 7 new skill commands with full documentation, PM Workflow lifecycle description
+- **`SETUP.md`** — Updated skill counts (10 → 17), updated directory structure
+- **`GEMINI.md`** — Updated available skills list
+- **`CLAUDE.md`** — Updated skill count to 17
+- **`CONTRIBUTING.md`** — No structural changes needed (existing conventions apply)
+- **`CHANGELOG.md`** — This entry
+
+#### Version & Metadata
+- **`COG-VERSION`** — Bumped 3.3.0 → 3.4.0
+- **`.claude-plugin/plugin.json`** — Bumped version, updated skill count to 17, added 7 new skills
+- **`marketplace-entry.json`** — Bumped version to 3.4.0
+- **`cog-update.sh`** — Added 7 new skills to FRAMEWORK_FILES array
+
+### Design Decisions
+- **Multi-tracker architecture**: PM skills check `MY-INTEGRATIONS.md` and work with Linear, GitHub, or Jira — graceful degradation when trackers are unavailable
+- **Approval gates**: Publishing to external services (Confluence, Notion) always requires explicit user confirmation
+- **Vault-first output**: All PM artifacts save to vault (`04-projects/`, `05-knowledge/`) before any external publishing
+- **PM lifecycle flow**: Skills designed as a pipeline: Research → PRD → Stories → Development → Release Notes → KB Update
+
+---
+
 ## [3.3.0] - 2026-02-25
 
 ### Role Packs & Integration Discovery

@@ -1,6 +1,6 @@
 {
   "name": "cog-second-brain",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "A self-evolving second brain system using Claude Code, Obsidian markdown files, and Git version control. Features specialized AI agents for knowledge management, daily intelligence briefings, and strategic insights extraction.",
   "author": {
     "name": "Huy Tieu",
@@ -68,6 +68,41 @@
       "name": "update-cog",
       "path": ".claude/skills/update-cog/SKILL.md",
       "description": "Check for and apply upstream COG framework updates without touching personal content"
+    },
+    {
+      "name": "auto-research",
+      "path": ".claude/skills/auto-research/SKILL.md",
+      "description": "Deep strategic research engine with parallel research threads and actionable analysis"
+    },
+    {
+      "name": "create-user-story",
+      "path": ".claude/skills/create-user-story/SKILL.md",
+      "description": "Create user stories with duplicate checking across Linear, GitHub Issues, or Jira"
+    },
+    {
+      "name": "generate-prd",
+      "path": ".claude/skills/generate-prd/SKILL.md",
+      "description": "Draft PRDs with approval gate before publishing to Confluence or Notion"
+    },
+    {
+      "name": "generate-release-notes",
+      "path": ".claude/skills/generate-release-notes/SKILL.md",
+      "description": "Generate release notes from GitHub milestones, Linear cycles, or manual input"
+    },
+    {
+      "name": "export-open-issues",
+      "path": ".claude/skills/export-open-issues/SKILL.md",
+      "description": "Audit and export open issues from any project tracker"
+    },
+    {
+      "name": "publish-to-confluence",
+      "path": ".claude/skills/publish-to-confluence/SKILL.md",
+      "description": "Publish vault markdown files to Confluence"
+    },
+    {
+      "name": "update-knowledge-base",
+      "path": ".claude/skills/update-knowledge-base/SKILL.md",
+      "description": "Maintain product knowledge base from releases and feature updates"
     }
   ],
   "metadata": {
@@ -105,7 +140,7 @@
     },
     "skillArchitecture": {
       "type": "agent-skills",
-      "skills": 10,
+      "skills": 17,
       "rolePacks": 7,
       "invocation": "model-invoked",
       "progressiveDisclosure": true,

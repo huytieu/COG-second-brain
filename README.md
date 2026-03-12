@@ -9,7 +9,7 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[10 Skills]
+    B -- runs --> C[17 Skills]
     C -- reads & writes --> D[.md Files]
     C -- syncs with --> G[GitHub / Linear / Slack / PostHog]
     D --> E[Git]
@@ -60,6 +60,25 @@ Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) f
 | **meeting-transcript** | Process meeting recordings into structured decisions, action items, and team dynamics | "Process this meeting" |
 | **comprehensive-analysis** | Deep 7-day analysis for weekly reviews, board prep, or strategic planning (~8-12 min) | "Weekly analysis" / "Board prep" |
 
+### PM Workflow Skills (for Product Managers)
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **create-user-story** | Create user stories with duplicate checking across Linear, GitHub Issues, or Jira | "Create a user story for..." |
+| **generate-prd** | Draft PRDs with approval gate before publishing to Confluence/Notion | "Generate a PRD for..." |
+| **generate-release-notes** | Generate release notes from GitHub milestones, Linear cycles, or manual input | "Generate release notes for v2.1" |
+| **export-open-issues** | Audit and export open issues from any tracker into a structured vault summary | "Export open issues" |
+| **publish-to-confluence** | Publish any vault markdown file to Confluence | "Publish this to Confluence" |
+| **update-knowledge-base** | Maintain product knowledge base from releases, features, and project changes | "Update the knowledge base with v2.1 changes" |
+
+> **PM Workflow:** These skills form a complete product management lifecycle: **Research** (`/auto-research`) → **PRD** (`/generate-prd`) → **Stories** (`/create-user-story`) → Development → **Release Notes** (`/generate-release-notes`) → **Knowledge Base** (`/update-knowledge-base`). Use `/export-open-issues` for audits and `/publish-to-confluence` to share externally.
+
+### Strategic Research
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **auto-research** | Deep strategic research engine — decomposes questions into parallel research threads with multiple agents | "Research the future of AI testing tools" |
+
 ### Role Packs (Personalized Recommendations)
 
 COG matches your role during onboarding to a **role pack** that prioritizes the most relevant skills and integrations for you. Available role packs: Product Manager, Engineering Lead, Engineer, Designer, Founder, Marketer — or create your own from the template.
@@ -79,6 +98,10 @@ graph TD
     C --> D[Monthly: Knowledge consolidation]
     CA --> D
     D -- COG learns your patterns --> A
+    R[Strategic: Auto-research] --> P[PM: Generate PRD]
+    P --> S[PM: Create user stories]
+    S -- after development --> RN[PM: Release notes]
+    RN --> KB[PM: Update knowledge base]
 ```
 
 - **Daily capture** — braindump raw thoughts; COG classifies by domain and extracts action items
@@ -88,6 +111,8 @@ graph TD
 - **Weekly reflection** — pattern analysis across all domains surfaces insights you'd miss
 - **Weekly deep dive** — comprehensive analysis for board prep, retros, and strategic planning
 - **Monthly synthesis** — scattered notes become consolidated frameworks and a knowledge base
+- **Strategic research** — deep multi-agent investigation of strategic questions with real sources
+- **PM workflow** — full product lifecycle from PRD to release notes to knowledge base updates
 
 ## Features at a Glance
 
@@ -100,7 +125,7 @@ graph TD
 
 ```
 COG-second-brain/
-├── .claude/skills/          # Claude Code skills (10)
+├── .claude/skills/          # Claude Code skills (17)
 ├── .claude/roles/           # Role packs (7) — personalized recommendations
 ├── .kiro/powers/            # Kiro powers
 ├── .gemini/commands/        # Gemini CLI commands
@@ -165,6 +190,7 @@ Git is optional but recommended for version history. COG works fine with just iC
 - [x] ~~Gemini CLI + OpenAI Codex support~~ (shipped in v3.1)
 - [x] ~~Upstream update system~~ (shipped in v3.2)
 - [x] ~~Role packs & integration discovery~~ (shipped in v3.3)
+- [x] ~~PM workflow skills & auto-research~~ (shipped in v3.4)
 - [ ] Web interface for knowledge graph visualization
 - [ ] Mobile-first commands (optimized for Obsidian mobile)
 - [ ] Team collaboration features (with privacy preservation)

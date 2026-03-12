@@ -36,7 +36,7 @@ Role packs live in `.claude/roles/`. New roles can be added by dropping a file f
 - `COMPETITIVE-WATCHLIST.md` — Companies/people being tracked
 
 ### Framework files (updated via `cog-update.sh` or `/update-cog`)
-- `.claude/skills/` — Claude Code skills (10 skills)
+- `.claude/skills/` — Claude Code skills (17 skills)
 - `.claude/roles/` — Role packs for personalized recommendations
 - `.kiro/powers/` — Kiro powers
 - `.gemini/commands/` — Gemini CLI commands

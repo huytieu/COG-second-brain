@@ -41,6 +41,13 @@ FRAMEWORK_FILES=(
   ".claude/skills/team-brief/SKILL.md"
   ".claude/skills/comprehensive-analysis/SKILL.md"
   ".claude/skills/meeting-transcript/SKILL.md"
+  ".claude/skills/auto-research/SKILL.md"
+  ".claude/skills/create-user-story/SKILL.md"
+  ".claude/skills/generate-prd/SKILL.md"
+  ".claude/skills/generate-release-notes/SKILL.md"
+  ".claude/skills/export-open-issues/SKILL.md"
+  ".claude/skills/publish-to-confluence/SKILL.md"
+  ".claude/skills/update-knowledge-base/SKILL.md"
 
   # Role packs
   ".claude/roles/_template.md"

@@ -42,7 +42,7 @@ That's it! You now have a working second brain.
 
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
-- 10 AI skills are available in multiple formats:
+- 17 AI skills are available in multiple formats:
   - `.claude/skills/` - For Claude Code
   - `.kiro/powers/` - For Kiro
   - `agents.md` - For any agent
@@ -127,13 +127,20 @@ COG-second-brain/              # This is your second brain folder
 ├── agents.md                  # Universal agent documentation
 ├── .claude/
 │   ├── roles/                 # 7 role packs for personalized recommendations
-│   └── skills/                # 10 Claude Code skills
+│   └── skills/                # 17 Claude Code skills
 │       ├── onboarding/
 │       ├── braindump/
 │       ├── daily-brief/
 │       ├── weekly-checkin/
 │       ├── knowledge-consolidation/
-│       └── url-dump/
+│       ├── url-dump/
+│       ├── auto-research/
+│       ├── create-user-story/
+│       ├── generate-prd/
+│       ├── generate-release-notes/
+│       ├── export-open-issues/
+│       ├── publish-to-confluence/
+│       └── update-knowledge-base/
 ├── .kiro/
 │   └── powers/                # 6 Kiro powers
 │       ├── cog-onboarding/

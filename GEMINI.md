@@ -27,7 +27,7 @@ Read `03-professional/COMPETITIVE-WATCHLIST.md` for companies to track.
 
 ## Available Skills
 
-Use `/onboarding`, `/braindump`, `/daily-brief`, `/weekly-checkin`, `/knowledge-consolidation`, `/url-dump`, or `/update-cog` to invoke COG skills. Each has a detailed playbook in `.gemini/skills/`.
+Use `/onboarding`, `/braindump`, `/daily-brief`, `/weekly-checkin`, `/knowledge-consolidation`, `/url-dump`, `/update-cog`, `/auto-research`, `/create-user-story`, `/generate-prd`, `/generate-release-notes`, `/export-open-issues`, `/publish-to-confluence`, or `/update-knowledge-base` to invoke COG skills. Each has a detailed playbook in `.gemini/skills/`.
 
 ## Rules
 

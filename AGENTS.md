@@ -244,6 +244,182 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ---
 
+### /auto-research
+
+**Description:** Deep strategic research engine — decomposes questions into parallel research threads, spawns multiple agents, and synthesizes into actionable strategic analysis.
+
+**Triggers:**
+- `/auto-research`
+- "research [topic]"
+- "investigate [question]"
+- "strategic analysis"
+- "deep dive into [topic]"
+
+**Purpose:** Take a high-level strategic question, decompose it into 5-7 parallel research threads, investigate each with real web sources, and synthesize findings into an actionable strategic analysis with scenarios and recommendations.
+
+**What it does:**
+1. Decomposes the question into independent research threads (market forces, historical precedent, player analysis, technology trajectory, emerging tech, contrarian view, etc.)
+2. Presents decomposition for user approval before launching research
+3. Spawns parallel research agents (team mode) or runs sequential research passes (solo mode)
+4. Each thread searches 8-12 high-quality sources via web search
+5. Synthesizes all threads into a unified strategic analysis with scenarios, options, and recommendations
+6. Saves to vault with executive summary
+
+**Output location:** `05-knowledge/research/YYYY-MM-DD-[slug].md`
+
+**Key features:**
+- No hallucinated sources — every claim traces to real web search results
+- Emerging tech thread always included — surfaces pre-mainstream concepts
+- Contrarian view section challenges consensus
+- Confidence levels and gaps explicitly stated
+
+---
+
+### PM Workflow Skills
+
+The following 6 skills form a complete product management lifecycle:
+**Research** → **PRD** → **Stories** → Development → **Release Notes** → **Knowledge Base**
+
+### /create-user-story
+
+**Description:** Create user stories with duplicate checking across Linear, GitHub Issues, or Jira.
+
+**Triggers:**
+- `/create-user-story`
+- "create a user story"
+- "create a story for"
+- "new user story"
+
+**Purpose:** Create well-structured user stories in your project tracker with automatic duplicate detection, standard As a/I want/So that format, and Given/When/Then acceptance criteria.
+
+**What it does:**
+1. Accepts problem statement and solution from user
+2. Checks active integrations (Linear, GitHub, Jira) in `00-inbox/MY-INTEGRATIONS.md`
+3. Searches for potential duplicate issues in the active tracker
+4. If duplicates found, stops and shows candidates
+5. If no duplicates, creates story with user story format and acceptance criteria
+6. Saves a copy to `04-projects/[project]/stories/`
+
+**Output:** Issue created in active tracker + local copy in vault
+
+---
+
+### /generate-prd
+
+**Description:** Draft product requirement documents with an approval gate before publishing.
+
+**Triggers:**
+- `/generate-prd`
+- "generate a PRD"
+- "draft PRD"
+- "product requirements"
+
+**Purpose:** Generate structured PRDs from problem context, save to vault, and optionally publish to Confluence/Notion with explicit human approval.
+
+**What it does:**
+1. Collects problem statement, goals, user context from user
+2. Reads existing project context from `04-projects/` and `05-knowledge/`
+3. Drafts PRD with standard sections (Problem, Goals, Non-goals, User workflows, Functional requirements, Iterations, Dependencies, Risks, Success metrics)
+4. Saves to `04-projects/[project]/PRDs/PRD-[slug].md`
+5. Presents summary and asks for explicit approval before any publishing
+6. Only publishes to Confluence/Notion if user explicitly approves
+
+**Output location:** `04-projects/[project]/PRDs/PRD-[slug].md`
+
+---
+
+### /generate-release-notes
+
+**Description:** Generate release notes from GitHub milestones, Linear cycles, or manual input.
+
+**Triggers:**
+- `/generate-release-notes`
+- "generate release notes"
+- "release notes for"
+- "what shipped in"
+
+**Purpose:** Compile release notes by pulling completed issues/PRs from your tracker, categorizing into enhancements, improvements, and bug fixes.
+
+**What it does:**
+1. Identifies release scope (GitHub milestone, Linear cycle, or manual list)
+2. Fetches all completed issues/PRs in the release
+3. Categorizes into Enhancements, Technical Improvements, Bug Fixes
+4. Generates formatted release notes markdown
+5. Saves to `04-projects/[project]/releases/`
+6. Optionally publishes to Confluence with approval
+
+**Output location:** `04-projects/[project]/releases/release-notes-[version]-YYYY-MM-DD.md`
+
+---
+
+### /export-open-issues
+
+**Description:** Audit and export open issues from any project tracker.
+
+**Triggers:**
+- `/export-open-issues`
+- "export open issues"
+- "issue audit"
+- "open issues report"
+
+**Purpose:** Generate a structured audit of all open issues from your active tracker for review, grooming, or stakeholder reporting.
+
+**What it does:**
+1. Checks active integrations for available trackers
+2. Fetches all open issues with metadata (assignee, priority, labels, dates)
+3. Generates summary statistics and categorized breakdown
+4. Identifies stale issues, unassigned work, and priority imbalances
+5. Saves structured report to vault
+
+**Output location:** `04-projects/[project]/audits/open-issues-YYYY-MM-DD.md`
+
+---
+
+### /publish-to-confluence
+
+**Description:** Publish any vault markdown file to Confluence.
+
+**Triggers:**
+- `/publish-to-confluence`
+- "publish to Confluence"
+- "push to Confluence"
+
+**Purpose:** Publish a local markdown file from the vault to a Confluence page (create or update), with explicit approval before publishing.
+
+**What it does:**
+1. Accepts path to local markdown file
+2. Requires Confluence integration to be active
+3. Converts markdown to Confluence-compatible format
+4. Creates new page or updates existing page
+5. Returns published page URL
+
+**Requires:** Confluence integration active in `00-inbox/MY-INTEGRATIONS.md`
+
+---
+
+### /update-knowledge-base
+
+**Description:** Maintain product knowledge base from releases, features, and project changes.
+
+**Triggers:**
+- `/update-knowledge-base`
+- "update knowledge base"
+- "update KB"
+- "sync knowledge base"
+
+**Purpose:** Keep your product knowledge base in `05-knowledge/` current by incorporating release data, feature updates, and project changes.
+
+**What it does:**
+1. Reads current knowledge base files from `05-knowledge/`
+2. Accepts feature updates and/or release version as input
+3. Cross-references with project PRDs and release notes in `04-projects/`
+4. Updates knowledge base with factual, thorough changes
+5. Optionally syncs to external wiki (Confluence/Notion) with approval
+
+**Output location:** `05-knowledge/consolidated/product-knowledge-base.md`
+
+---
+
 ## Vault Structure
 
 ```
@@ -285,6 +461,10 @@ COG-second-brain/
 4. **End of week?** Use `/weekly-checkin` to reflect
 5. **Save a link?** Use `/url-dump` with the URL
 6. **Build knowledge?** Run `/knowledge-consolidation` periodically
+7. **Create user stories?** Use `/create-user-story` with a problem/solution
+8. **Draft a PRD?** Use `/generate-prd` with your problem context
+9. **Release notes?** Use `/generate-release-notes` with a version
+10. **Strategic research?** Use `/auto-research` with your question
 
 ---
 
