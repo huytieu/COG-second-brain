@@ -66,6 +66,18 @@ Collect the information needed for personalized curation:
 - Read `03-professional/COMPETITIVE-WATCHLIST.md` (if exists) for:
   - Companies/people to track
 
+#### Deduplication — Previous Brief Scan
+
+Read the last 3 daily briefs from `01-daily/briefs/` (most recent first):
+- Extract `dedup_slugs` from their frontmatter (if present)
+- Also scan their headlines/story titles as fallback
+- Build a set of **covered stories** to avoid repeating
+
+During news research (Step 2), apply dedup rules:
+- **Skip** stories already covered unless there is a **material update** (new data, resolution, escalation, reversal)
+- If including an update, prefix with "**Update:** _first covered [date]_"
+- Stories older than 3 briefs are eligible for re-inclusion if still developing
+
 ### 2. News Research and Curation
 
 Apply comprehensive news research methodology:
@@ -148,6 +160,7 @@ tags: ["#daily-brief", "#news", "#strategic-intelligence"]
 interests: ["interest1", "interest2"]
 projects_referenced: ["project1"]
 items_count: [number]
+dedup_slugs: ["slug-of-each-story-covered"]
 ---
 
 # Daily Brief - [Date]
