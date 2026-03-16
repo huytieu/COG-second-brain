@@ -210,6 +210,31 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ---
 
+### /scout
+
+**Description:** Evaluate URLs and tools — check vault coverage, assess relevance, recommend save or skip.
+
+**Triggers:**
+- `/scout`
+- "scout this"
+- "evaluate this tool"
+- "should I save this?"
+- "check this out"
+
+**Purpose:** Lightweight triage that sits between "ignore" and `/url-dump`. Checks existing vault coverage, assesses relevance to your profile and interests, and recommends save or skip.
+
+**What it does:**
+1. Accepts URL(s) or tool name(s)
+2. Searches the entire vault for existing coverage (duplicates, mentions)
+3. If new — fetches content, detects type (tool, article, repo, research, news, reference)
+4. Assesses relevance against your profile (projects, role, tech stack) and interests
+5. Recommends **Save** (hands off to `/url-dump` with pre-filled category) or **Skip** (explains why)
+6. Supports batch mode (multiple URLs in one invocation)
+
+**Boundary with `/url-dump`:** Scout evaluates ("should I save this?"). URL-dump saves ("save this now"). If you already know you want to save, use `/url-dump` directly.
+
+---
+
 ### /update-cog
 
 **Description:** Check for and apply upstream COG framework updates without touching personal content.
@@ -460,11 +485,12 @@ COG-second-brain/
 3. **Morning routine?** Run `/daily-brief` for your intelligence briefing
 4. **End of week?** Use `/weekly-checkin` to reflect
 5. **Save a link?** Use `/url-dump` with the URL
-6. **Build knowledge?** Run `/knowledge-consolidation` periodically
-7. **Create user stories?** Use `/create-user-story` with a problem/solution
-8. **Draft a PRD?** Use `/generate-prd` with your problem context
-9. **Release notes?** Use `/generate-release-notes` with a version
-10. **Strategic research?** Use `/auto-research` with your question
+6. **Evaluate a tool?** Use `/scout` to check relevance before saving
+7. **Build knowledge?** Run `/knowledge-consolidation` periodically
+8. **Create user stories?** Use `/create-user-story` with a problem/solution
+9. **Draft a PRD?** Use `/generate-prd` with your problem context
+10. **Release notes?** Use `/generate-release-notes` with a version
+11. **Strategic research?** Use `/auto-research` with your question
 
 ---
 
