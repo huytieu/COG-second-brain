@@ -217,9 +217,9 @@ This document defines the available commands/skills for AI agents interacting wi
 **Triggers:**
 - `/scout`
 - "scout this"
-- "evaluate this tool"
+- "evaluate this"
 - "should I save this?"
-- "check this out"
+- "is this relevant?"
 
 **Purpose:** Lightweight triage that sits between "ignore" and `/url-dump`. Checks existing vault coverage, assesses relevance to your profile and interests, and recommends save or skip.
 

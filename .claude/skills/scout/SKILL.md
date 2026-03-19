@@ -2,7 +2,7 @@
 name: scout
 description: Evaluate URLs and tools — check vault coverage, assess relevance, recommend save or skip
 roles: [all]
-integrations: [web-fetch]
+integrations: [web-fetch, web-search]
 ---
 
 # COG Scout Skill
@@ -12,7 +12,7 @@ Lightweight URL/tool triage that sits between "ignore" and `/url-dump`. Evaluate
 
 ## When to Invoke
 - User wants to evaluate a URL or tool before committing to a full save
-- User says "scout this", "evaluate this tool", "should I save this?", "check this out"
+- User says "scout this", "evaluate this", "should I save this?", "is this relevant?"
 - User shares one or more URLs and wants a quick relevance assessment
 - User mentions a tool/service name and wants to know if it's worth investigating
 
@@ -36,7 +36,7 @@ Lightweight URL/tool triage that sits between "ignore" and `/url-dump`. Evaluate
 3. If found:
    - Read `MY-PROFILE.md` for active projects and role
    - Read `MY-INTERESTS.md` for topic areas
-   - Read `00-inbox/MY-INTEGRATIONS.md` for active integrations (check if `web-fetch` is available)
+   - Read `00-inbox/MY-INTEGRATIONS.md` for active integrations (check if `web-fetch` and `web-search` are available)
 
 ## Boundary with `/url-dump`
 
@@ -165,6 +165,7 @@ Based on user confirmation:
 | Scenario | Behavior |
 |----------|----------|
 | web-fetch unavailable | Evaluate based on URL structure, domain reputation, and vault search only. Note that content wasn't fetched. |
+| web-search unavailable | For tool-name inputs (no URL), ask the user for a direct URL instead. For URL inputs, proceed normally — web-search is not needed. |
 | No user profile | Evaluate with general quality/relevance criteria, skip personalized relevance scoring |
 | URL is paywalled | Note limitation, evaluate based on available preview and metadata |
 | Tool not found via search | Ask user for more context or a direct URL |
