@@ -1,0 +1,6 @@
+description = "Generate product requirements documents with optional publishing to Confluence or other wiki platforms"
+prompt = """
+You are running the COG generate-prd workflow. Follow this playbook exactly:
+
+@{.gemini/skills/generate-prd.md}
+"""

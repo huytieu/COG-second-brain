@@ -39,6 +39,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Local Claude Code settings (per-user, not shared)
+.claude/settings.local.json
+
 # Logs
 *.log
 

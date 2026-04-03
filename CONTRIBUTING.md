@@ -44,11 +44,12 @@ We welcome ideas for new features or improvements:
 
 #### Making Changes
 
-1. **Skills**: New skills should be added in all supported formats:
-   - `.claude/skills/[name]/SKILL.md` - Claude Code format (include `roles` and `integrations` in frontmatter)
-   - `.kiro/powers/cog-[name]/POWER.md` - Kiro format
-   - Update `agents.md` - Universal documentation
-   - If the skill is role-specific, add it to relevant role packs in `.claude/roles/`
+1. **Skills**: Add new skills to `.agents/skills/[name]/SKILL.md` only (single source of truth):
+   - Follow the [agentskills.io](https://agentskills.io/specification) standard format
+   - Include `metadata.keywords` and `metadata.display-name` for Kiro compatibility
+   - Run `./cog-sync.sh` to generate tool-specific files (Claude Code, Gemini CLI, Kiro)
+   - If the skill is role-specific, add it to relevant role packs in `.cog/user-roles/`
+   - **Never hand-edit** generated files — see [How skills are discovered](#how-skills-are-discovered) below
 2. **Templates**: Follow existing YAML frontmatter conventions
 3. **Documentation**: Update README.md if adding major features
 4. **Examples**: Provide examples of your feature in action
@@ -68,6 +69,7 @@ Before submitting:
 2. Ensure it works with existing commands
 3. Verify it doesn't break existing functionality
 4. Check that documentation is accurate
+5. Run `./cog-sync.sh --check` to verify all files are in sync
 
 #### Submitting
 
@@ -83,7 +85,7 @@ Before submitting:
 
 ### High Priority
 
-- **New Skills**: Useful skills for common workflows (add in all agent formats)
+- **New Skills**: Useful skills for common workflows (add to `.agents/skills/`, sync generates all formats)
 - **Agent Format Support**: Improve support for additional AI agents
 - **Documentation**: Tutorials, examples, use cases
 - **Bug Fixes**: Fixes for reported issues
@@ -104,21 +106,27 @@ Before submitting:
 ## Development Setup
 
 1. Fork and clone the repository
-2. Create a test Obsidian vault
-3. Copy COG files to your test vault
-4. Make changes and test
-5. Submit PR when ready
+2. Edit skills in `.agents/skills/[name]/SKILL.md` (the single source of truth)
+3. Run `./cog-sync.sh` to generate tool-specific files
+4. Run `./cog-sync.sh --check` to verify parity
+5. Test your changes in an actual COG vault with your preferred AI agent
+6. Submit PR when ready
 
 ## Coding Conventions
 
-### Claude Code Skills (`.claude/skills/[name]/SKILL.md`)
+### Skills (`.agents/skills/[name]/SKILL.md` — single source of truth)
+
+Skills follow the [agentskills.io](https://agentskills.io/specification) open standard:
 
 ```markdown
 ---
 name: skill-name
-description: What this skill does
-roles: [all]
-integrations: [github, slack]
+description: What this skill does and when to use it. Include trigger keywords.
+metadata:
+  roles: all
+  integrations: github,slack
+  keywords: keyword1,keyword2,keyword3
+  display-name: COG Skill Name
 ---
 
 # Skill Name
@@ -133,32 +141,28 @@ integrations: [github, slack]
 [Expected output format]
 ```
 
-### Kiro Powers (`.kiro/powers/cog-[name]/POWER.md`)
+After creating or editing a skill, run `./cog-sync.sh` to generate tool-specific files.
 
-```markdown
----
-name: "cog-skill-name"
-displayName: "Skill Display Name"
-description: "What this power does"
-keywords: ["keyword1", "keyword2", "keyword3"]
----
+### How skills are discovered
 
-# Skill Name
+Each AI tool discovers skills from its own native folder. `cog-sync.sh` generates these from the single source of truth in `.agents/skills/`:
 
-## When This Power Activates
-[Trigger patterns]
+| Generated file | What sync produces | How the tool uses it |
+|---|---|---|
+| `.claude/skills/[name]/SKILL.md` | Copy of source skill (as-is) | Claude Code loads skills from this folder natively |
+| `.gemini/skills/[name].md` | Skill body only (no frontmatter) | Referenced by `.gemini/commands/[name].toml` via `@{path}` |
+| `.gemini/commands/[name].toml` | Entry point with description + prompt | Gemini CLI registers these as `/commands` |
+| `.kiro/powers/cog-[name]/POWER.md` | Kiro frontmatter (`displayName`, `keywords` array) + body | Kiro activates powers by keyword matching |
+| `CLAUDE.md` | Pure copy of AGENTS.md, or header + AGENTS.md if marker present | Claude Code reads as project instructions |
+| `GEMINI.md` | Pure copy of AGENTS.md, or header + AGENTS.md if marker present | Gemini CLI reads as project context |
 
-## Process Flow
-[Step-by-step process]
-```
+**When adding a new skill**, also add a row to the skill table in `AGENTS.md`. This table is the skill catalog for agents without native skill discovery (e.g., OpenAI Codex). Tools with native folders (Claude Code, Gemini CLI, Kiro) discover skills automatically from their generated folders.
 
-### Universal Documentation (`agents.md`)
+**Context files (CLAUDE.md, GEMINI.md)** support two modes:
+- **Pure copy**: No marker — the file becomes an exact copy of AGENTS.md
+- **Header + AGENTS.md**: If the file contains a `<!-- AUTO-GENERATED -->` marker, content above it is preserved and AGENTS.md is appended below. Use this for tool-specific notes (e.g., Gemini's `.gemini/commands/` path hint).
 
-Add new skills under "## Available Commands" with:
-- Command name and triggers
-- Description and purpose
-- What it does (numbered list)
-- Output locations
+**Never hand-edit** files in `.claude/skills/`, `.gemini/skills/`, `.gemini/commands/`, or `.kiro/powers/` — they are overwritten on every sync. Also never edit content below the `<!-- AUTO-GENERATED -->` marker in context files.
 
 ### Template Files
 

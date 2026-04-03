@@ -1,0 +1,6 @@
+description = "Evaluate URLs and tools — check vault coverage, assess relevance, recommend save or skip"
+prompt = """
+You are running the COG scout workflow. Follow this playbook exactly:
+
+@{.gemini/skills/scout.md}
+"""

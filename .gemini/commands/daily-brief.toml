@@ -1,6 +1,6 @@
-description = "Generate personalized news intelligence briefing with verified sources (7-day freshness)"
+description = "Generate personalized news intelligence with verified sources (7-day freshness requirement)"
 prompt = """
-You are running the COG daily brief workflow. Follow this playbook exactly:
+You are running the COG daily-brief workflow. Follow this playbook exactly:
 
 @{.gemini/skills/daily-brief.md}
 """

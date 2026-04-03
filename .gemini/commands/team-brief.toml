@@ -1,0 +1,6 @@
+description = "Generate daily team intelligence brief by cross-referencing GitHub, Linear, Slack, PostHog, meetings, and braindumps with two-way Linear sync-back"
+prompt = """
+You are running the COG team-brief workflow. Follow this playbook exactly:
+
+@{.gemini/skills/team-brief.md}
+"""

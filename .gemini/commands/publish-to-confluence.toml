@@ -1,0 +1,6 @@
+description = "Publish any markdown file from the vault to Confluence with format conversion and approval gate"
+prompt = """
+You are running the COG publish-to-confluence workflow. Follow this playbook exactly:
+
+@{.gemini/skills/publish-to-confluence.md}
+"""

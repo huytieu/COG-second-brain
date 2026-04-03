@@ -2,6 +2,131 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.5.0] - 2026-04-03
+
+### Single Source of Truth & Multi-Tool Sync
+
+Skills are now authored once in `.agents/skills/` using the [agentskills.io](https://agentskills.io/specification) open standard. A new sync script generates all tool-specific files (Claude Code, Gemini CLI, Kiro) from that single source, eliminating manual duplication across 4 formats.
+
+### Added
+
+#### Skill Architecture
+- **`.agents/skills/[name]/SKILL.md`** — Single source of truth for all 18 skills using agentskills.io frontmatter (`name`, `description`, `metadata.roles`, `metadata.integrations`, `metadata.keywords`, `metadata.display-name`)
+- **`cog-sync.sh`** — Generates tool-specific files from `.agents/skills/`:
+  - `.claude/skills/[name]/SKILL.md` — Copy of source (as-is)
+  - `.gemini/skills/[name].md` — Body only (no frontmatter)
+  - `.gemini/commands/[name].toml` — Entry point with description + `@{path}` reference
+  - `.kiro/powers/cog-[name]/POWER.md` — Kiro frontmatter (`displayName`, `keywords` array) + body
+  - `CLAUDE.md` / `GEMINI.md` — Pure copy of AGENTS.md, or header + AGENTS.md if `<!-- AUTO-GENERATED -->` marker present
+  - Run `./cog-sync.sh --check` to verify all generated files are in sync
+- **`cog-migrate-skills.sh`** — Migration script for upgrading from 3.4.0:
+  - Reads existing `.claude/skills/*/SKILL.md` (including custom skills)
+  - Converts old frontmatter (`roles: [...]`, `integrations: [...]`) to agentskills.io format
+  - Pulls keywords from Kiro powers or curated fallback map
+  - Generates `metadata.display-name` from skill name
+  - Supports `--dry-run` for preview
+
+#### New Skill
+- **`scout`** — Quick-triage URLs: check vault coverage, assess relevance, recommend save or skip. Added across all tool formats.
+
+### Changed
+
+#### Directory Restructuring
+- **Role packs** moved from `.claude/roles/` to `.cog/user-roles/` (tool-agnostic location)
+- **Old `.kiro/powers/cog-update/`** renamed to `.kiro/powers/cog-update-cog/` for consistency with skill name
+
+#### Documentation
+- **`AGENTS.md`** — Rewritten: shared agent instructions as single source, skill table as catalog for agents without native discovery
+- **`CLAUDE.md`** — Now supports `<!-- AUTO-GENERATED -->` marker for tool-specific header + shared instructions
+- **`GEMINI.md`** — Same marker support as CLAUDE.md
+- **`CONTRIBUTING.md`** — Updated for single-source-of-truth workflow: edit `.agents/skills/`, run `cog-sync.sh`, never hand-edit generated files
+- **`README.md`** — Updated architecture section and skill discovery table
+- **`cog-update.sh`** — FRAMEWORK_FILES updated with all 18 skills across all formats, plus new scripts
+
+#### Version & Metadata
+- **`COG-VERSION`** — Bumped 3.4.0 → 3.5.0
+- **`.claude-plugin/plugin.json`** — Bumped version, added scout skill
+- **`marketplace-entry.json`** — Bumped version to 3.5.0
+
+### Migration Guide
+
+If upgrading from v3.4.0 or earlier:
+
+#### Option A: Using `cog-update.sh` (recommended for users without custom skills)
+
+```bash
+./cog-update.sh          # pulls all new framework files including scripts
+./cog-sync.sh --check    # verify everything is in sync
+```
+
+#### Option B: Migrating custom skills to the new structure
+
+If you have **custom skills** in `.claude/skills/` that are not part of the COG framework:
+
+```bash
+# 1. Pull the new framework files (your custom skills in .claude/skills/ are untouched)
+./cog-update.sh
+
+# 2. Migrate ALL skills (including your custom ones) to .agents/skills/
+./cog-migrate-skills.sh --dry-run   # preview first
+./cog-migrate-skills.sh             # migrate
+
+# 3. Regenerate all tool-specific files from the new source of truth
+./cog-sync.sh
+
+# 4. Verify parity
+./cog-sync.sh --check
+```
+
+#### Option C: Manual migration for a single custom skill
+
+```bash
+# 1. Create the new skill directory
+mkdir -p .agents/skills/my-skill/
+
+# 2. Copy and update frontmatter to agentskills.io format
+# Old format (.claude/skills/my-skill/SKILL.md):
+#   ---
+#   name: my-skill
+#   description: What it does
+#   roles: [all]
+#   integrations: [github]
+#   ---
+#
+# New format (.agents/skills/my-skill/SKILL.md):
+#   ---
+#   name: my-skill
+#   description: What it does
+#   metadata:
+#     roles: all
+#     integrations: github
+#     keywords: my-skill,keyword1,keyword2
+#     display-name: COG My Skill
+#   ---
+
+# 3. Regenerate tool-specific files
+./cog-sync.sh
+```
+
+#### What changed structurally
+
+| Before (3.4.0) | After (3.5.0) |
+|---|---|
+| Skills authored in `.claude/skills/` | Skills authored in `.agents/skills/` (tool-agnostic) |
+| Manually kept in sync across Claude/Gemini/Kiro | `cog-sync.sh` generates all formats |
+| Flat frontmatter: `roles: [all]` | Nested: `metadata.roles: all` |
+| No keywords | `metadata.keywords` for Kiro power matching |
+| No display-name | `metadata.display-name` for Kiro UI |
+| Role packs in `.claude/roles/` | Role packs in `.cog/user-roles/` |
+
+### Design Decisions
+- **agentskills.io standard**: Open format ensures skills work beyond Claude/Gemini/Kiro — any tool can read the frontmatter
+- **Single source of truth**: Eliminates drift between tool-specific copies; `cog-sync.sh --check` catches any divergence
+- **Generated files committed to repo**: Users without `cog-sync.sh` (e.g., older forks) still get working tool-specific files from upstream
+- **Migration script reads `.claude/skills/`**: Handles custom skills transparently — users don't need to manually convert frontmatter
+
+---
+
 ## [3.4.0] - 2026-03-12
 
 ### PM Workflow Skills & Auto-Research

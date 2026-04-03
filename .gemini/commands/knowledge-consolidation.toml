@@ -1,6 +1,6 @@
-description = "Build frameworks from scattered insights across all braindumps and notes"
+description = "Build frameworks from scattered insights, or run a lightweight vault health audit with freshness scoring and orphan detection"
 prompt = """
-You are running the COG knowledge consolidation workflow. Follow this playbook exactly:
+You are running the COG knowledge-consolidation workflow. Follow this playbook exactly:
 
 @{.gemini/skills/knowledge-consolidation.md}
 """
