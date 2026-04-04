@@ -1,0 +1,6 @@
+description = "Process meeting recordings and notes into structured decisions, action items, and team dynamics with intelligent noise filtering"
+prompt = """
+You are running the COG meeting-transcript workflow. Follow this playbook exactly:
+
+@{.gemini/skills/meeting-transcript.md}
+"""

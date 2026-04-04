@@ -1,0 +1,6 @@
+description = "Deep strategic research engine — decomposes questions into parallel research threads, spawns multiple agents, and synthesizes into actionable strategic analysis"
+prompt = """
+You are running the COG auto-research workflow. Follow this playbook exactly:
+
+@{.gemini/skills/auto-research.md}
+"""

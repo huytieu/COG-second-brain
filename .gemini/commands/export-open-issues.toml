@@ -1,0 +1,6 @@
+description = "Audit and export open issues from any project tracker with summary analysis and vault archival"
+prompt = """
+You are running the COG export-open-issues workflow. Follow this playbook exactly:
+
+@{.gemini/skills/export-open-issues.md}
+"""

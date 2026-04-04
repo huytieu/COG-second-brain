@@ -1,0 +1,6 @@
+description = "Generate categorized release notes from any source (GitHub, Linear, Jira, or manual input) with optional publishing"
+prompt = """
+You are running the COG generate-release-notes workflow. Follow this playbook exactly:
+
+@{.gemini/skills/generate-release-notes.md}
+"""

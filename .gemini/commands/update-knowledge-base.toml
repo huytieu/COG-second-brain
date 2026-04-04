@@ -1,0 +1,6 @@
+description = "Maintain and update product knowledge base from releases, features, and project changes with optional wiki sync"
+prompt = """
+You are running the COG update-knowledge-base workflow. Follow this playbook exactly:
+
+@{.gemini/skills/update-knowledge-base.md}
+"""

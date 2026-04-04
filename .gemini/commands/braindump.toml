@@ -1,4 +1,4 @@
-description = "Quick capture raw thoughts with intelligent domain classification and competitive intelligence extraction"
+description = "Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction"
 prompt = """
 You are running the COG braindump workflow. Follow this playbook exactly:
 
