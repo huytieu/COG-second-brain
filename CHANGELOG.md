@@ -2,7 +2,36 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
-## [3.5.0] - 2026-04-16
+## [3.6.0] - 2026-05-21
+
+### GitHub Copilot CLI Native Surface
+
+COG now ships a native worker agent surface for GitHub Copilot CLI via `.github/agents/`. All 6 COG worker agents are available as custom agents, enabling parallel execution via the `/fleet` slash command — equivalent to Claude Code's multi-agent Task tool.
+
+### Added
+
+#### Copilot CLI Worker Agent Surface (`.github/agents/`)
+- **`worker-data-collector`** — Structured extraction from GitHub, Slack, Jira, Linear, or file system
+- **`worker-researcher`** — Web research with source citations and evidence extraction
+- **`worker-file-ops`** — Vault file operations, metadata updates, profile maintenance
+- **`worker-executor`** — Pre-approved mutations: Jira transitions, Linear updates, API calls
+- **`worker-publisher`** — Publishing to Slack, Confluence, Notion, webhooks
+- **`brief-people-updater`** — Batch-update people profiles from meetings, briefs, and Slack data
+
+These mirror the `.claude/agents/` surface with two adaptations for Copilot CLI compatibility:
+1. `model:` field omitted — Copilot CLI subagents use its own model routing
+2. `ToolSearch` references replaced — Copilot CLI discovers MCP tools from its config automatically
+
+### Changed
+
+- **`README.md`** — Added Copilot CLI to agent support matrix; documented `/fleet` parallelism and rubber-duck critic
+- **`docs/AGENT-SUPPORT.md`** — Added Copilot CLI row, added worker agent sync rules to packaging section
+- **`SETUP.md`** — Added Copilot CLI to agent options and directory structure
+- **`CONTRIBUTING.md`** — Added dual-surface worker agent contribution convention (`.claude/agents/` + `.github/agents/`)
+- **`cog-update.sh`** — Added `.github/agents/` files to `FRAMEWORK_FILES`
+- **`COG-VERSION`** — Bumped to 3.6.0
+
+
 
 ### Specialist Sessions, People CRM & Worker Agents
 

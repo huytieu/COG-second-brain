@@ -8,6 +8,7 @@ Complete step-by-step instructions for setting up your COG (Cognition + Obsidian
 
 1. **AI Agent** (choose one or more):
    - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/` (full 17-skill native surface)
+   - [GitHub Copilot CLI](https://github.com/features/copilot) - Uses `.github/agents/` + `AGENTS.md` (6 worker agents + `/fleet` parallelism)
    - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/` (7 core native powers)
    - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Uses `GEMINI.md` + `.gemini/commands/` (7 core native commands)
    - Any OpenAI-compatible or markdown-reading agent - Uses `AGENTS.md`
@@ -45,6 +46,7 @@ That's it! You now have a working second brain.
 - The cloned `COG-second-brain` folder IS your second brain
 - COG now exposes a clear multi-agent support matrix:
   - `.claude/skills/` - 17 Claude Code skills (full surface)
+  - `.github/agents/` - 6 worker agents for GitHub Copilot CLI (use with `/fleet`)
   - `.kiro/powers/` - 7 Kiro powers (core workflows)
   - `.gemini/commands/` + `.gemini/skills/` - 7 Gemini CLI commands (core workflows)
   - `AGENTS.md` - 17 documented commands for Codex and other agents

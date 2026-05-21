@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.5.0",
-  "description": "Self-evolving second brain with 17 AI agent skills, 6 worker agents, and people CRM. Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.6.0",
+  "description": "Self-evolving second brain with 17 AI agent skills, 6 worker agents, and people CRM. Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, GitHub Copilot CLI, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -27,6 +27,8 @@
     "daily-brief",
     "team-intelligence",
     "claude-code",
+    "github-copilot-cli",
+    "copilot-cli",
     "cursor",
     "kiro",
     "gemini-cli",
@@ -50,6 +52,7 @@
     "worker-agents",
     "people-crm",
     "claude-code",
+    "github-copilot-cli",
     "cursor",
     "specialist-sessions"
   ],
@@ -171,7 +174,8 @@
     },
     "directoryStructure": {
       ".claude/skills": "17 Claude Code skills (full surface)",
-      ".claude/agents": "6 worker agent definitions for specialist sessions",
+      ".claude/agents": "6 worker agent definitions for specialist sessions (Claude Code)",
+      ".github/agents": "6 worker agent definitions for GitHub Copilot CLI (/fleet parallelism)",
       ".claude/roles": "7 role packs for personalized skill and integration recommendations",
       ".kiro/powers": "7 Kiro powers (core workflows)",
       ".gemini/commands": "7 Gemini CLI commands (core workflows)",
@@ -193,6 +197,7 @@
       "progressiveDisclosure": true,
       "nativeSurfaces": {
         "claudeCode": 17,
+        "copilotCli": 6,
         "kiro": 7,
         "geminiCli": 7,
         "agentsMd": 17
