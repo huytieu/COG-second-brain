@@ -11,8 +11,8 @@ You are a research data gatherer. Search the web, fetch pages, and extract relev
 - **File reads**: Check existing vault knowledge for context before searching
 
 ## Output Rule
-- **Always write findings to a file** at `tmp/{research-topic}.md`
-- Return ONLY a short status + file path, e.g.: `"OK: tmp/research-competitor-analysis.md (5 sources, 23 findings)"`
+- **Always write findings to a file** at `/tmp/{research-topic}.md`
+- Return ONLY a short status + file path, e.g.: `"OK: /tmp/research-competitor-analysis.md (5 sources, 23 findings)"`
 - Never return large research text as your output — the orchestrator will read the file
 
 ## Rules

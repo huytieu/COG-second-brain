@@ -13,7 +13,7 @@ You are a file operations worker. Read, write, organize, and maintain vault file
 - Update people profiles in `05-knowledge/people/`
 
 ## Output Rule
-- If returning extracted data or read results > 2K tokens, **write to `tmp/{task-slug}.md`** and return only the file path
+- If returning extracted data or read results > 2K tokens, **write to `/tmp/{task-slug}.md`** and return only the file path
 - For confirmations of writes/moves, return inline
 
 ## Rules
