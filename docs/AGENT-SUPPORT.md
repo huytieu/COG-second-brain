@@ -8,7 +8,8 @@ This document is the packaging contract: it tells contributors and maintainers w
 
 | Surface | Shipped format | Coverage | Status |
 |---|---|---:|---|
-| Claude Code | `.claude/skills/*/SKILL.md` | 17 skills | Full native surface |
+| Claude Code | `.claude/skills/*/SKILL.md` + `.claude/agents/*.md` | 17 skills + 6 agents | Full native surface |
+| GitHub Copilot CLI | `.github/agents/*.md` | 6 worker agents | Native custom agent surface |
 | Universal agent docs | `AGENTS.md` | 17 commands | Full documented fallback |
 | Kiro | `.kiro/powers/*/POWER.md` | 7 powers | Core workflows only |
 | Gemini CLI | `.gemini/commands/*.toml` + `.gemini/skills/*.md` | 7 commands | Core workflows only |
@@ -37,6 +38,8 @@ These surfaces should expose the complete public COG command set:
 
 Today, **Claude Code** and **`AGENTS.md`** are the full surfaces.
 
+**GitHub Copilot CLI** is a native worker agent surface. It ships all 6 COG worker agents via `.github/agents/` and supports parallel execution via the `/fleet` slash command. Skills are invoked via `AGENTS.md` (loaded as custom instructions). This surface is maintained in parallel with the Claude Code surface.
+
 ### Core surfaces
 These surfaces intentionally cover the most common personal workflows first:
 - `onboarding`
@@ -60,6 +63,13 @@ If you add, remove, rename, or materially change a public COG skill:
 5. If the skill is supported natively in Kiro or Gemini, update those files too
 6. Add new framework files to `FRAMEWORK_FILES` in `cog-update.sh`
 7. Run `./scripts/validate-agent-surface.sh`
+
+If you add, remove, or materially change a **worker agent**:
+
+1. Update `.claude/agents/` (Claude Code surface)
+2. Update `.github/agents/` (Copilot CLI surface) — keep in sync, omitting Claude-specific features (`ToolSearch`, `model:` field)
+3. Update `AGENTS.md` worker agent table
+4. Add/update both paths in `FRAMEWORK_FILES` in `cog-update.sh`
 
 ## Validation
 

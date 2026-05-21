@@ -46,10 +46,10 @@ We welcome ideas for new features or improvements:
 
 #### Making Changes
 
-1. **Worker Agents**: New agents should be added to `.claude/agents/` with this format:
-   - YAML frontmatter with `name`, `description`, and `model` (use `sonnet` for I/O tasks, `opus` only if reasoning is required)
-   - Clear capability list and output rule
-   - Add the file to `FRAMEWORK_FILES` in `cog-update.sh`
+1. **Worker Agents**: New agents should be added to `.claude/agents/` (Claude Code) AND `.github/agents/` (Copilot CLI) with this format:
+   - **`.claude/agents/`**: YAML frontmatter with `name`, `description`, and `model` (use `haiku` for I/O tasks, `sonnet` only if reasoning is required). Include `ToolSearch` instructions where MCP tools are needed.
+   - **`.github/agents/`**: Same content but omit `model:` field and `ToolSearch` references — replace with `(if [Platform] MCP is configured)` notes. Copilot CLI discovers tools from its MCP config automatically.
+   - Add both file paths to `FRAMEWORK_FILES` in `cog-update.sh`
    - Document in `AGENTS.md` under "Worker Agents"
 2. **Skills**: New skills should be added in every surface that claims to support them:
    - `.claude/skills/[name]/SKILL.md` - Claude Code format (required; include `roles` and `integrations` in frontmatter)

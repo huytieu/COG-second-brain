@@ -50,15 +50,18 @@ Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) f
 
 ## Agent Support Matrix
 
-COG ships a **full Claude Code surface** plus **core native surfaces** for Kiro and Gemini CLI, with `AGENTS.md` as the universal fallback for Codex and other markdown-reading agents.
+COG ships a **full Claude Code surface** plus **a native Copilot CLI surface**, core surfaces for Kiro and Gemini CLI, and `AGENTS.md` as the universal fallback for Codex and other markdown-reading agents.
 
 | Surface | Current support | Notes |
 |---|---|---|
 | Claude Code | 17 native skills + 6 worker agents | Full first-class surface |
+| GitHub Copilot CLI | 6 worker agents + `/fleet` parallelism | `.github/agents/` — native custom agent surface |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
 | `AGENTS.md` | 17 documented commands | Universal fallback for Codex and other agents |
+
+> **Copilot CLI bonus:** The `/fleet` slash command runs COG worker agents in parallel — equivalent to Claude Code's multi-agent Task tool. Copilot CLI also ships a built-in `rubber-duck` critic agent (cross-model second opinion) that complements COG's verification-first approach.
 
 Before publishing or updating framework files, run `./scripts/validate-agent-surface.sh` to catch drift between manifests, docs, and shipped files. See [docs/AGENT-SUPPORT.md](docs/AGENT-SUPPORT.md) for the detailed support matrix and contributor rules.
 

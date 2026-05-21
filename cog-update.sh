@@ -63,13 +63,21 @@ FRAMEWORK_FILES=(
   ".claude/roles/founder.md"
   ".claude/roles/marketer.md"
 
-  # Worker agents
+  # Worker agents — Claude Code surface
   ".claude/agents/worker-data-collector.md"
   ".claude/agents/worker-researcher.md"
   ".claude/agents/worker-file-ops.md"
   ".claude/agents/worker-executor.md"
   ".claude/agents/worker-publisher.md"
   ".claude/agents/brief-people-updater.md"
+
+  # Worker agents — Copilot CLI surface
+  ".github/agents/worker-data-collector.md"
+  ".github/agents/worker-researcher.md"
+  ".github/agents/worker-file-ops.md"
+  ".github/agents/worker-executor.md"
+  ".github/agents/worker-publisher.md"
+  ".github/agents/brief-people-updater.md"
 
   # People CRM
   "05-knowledge/people/README.md"

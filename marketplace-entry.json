@@ -6,8 +6,8 @@
     "email": "tqhuy1991@gmail.com",
     "url": "https://github.com/huytieu"
   },
-  "description": "Self-evolving second brain with 17 AI skills, 6 worker agents, and people CRM. Inspired by Garry Tan's gstack and gbrain. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex.",
-  "version": "3.5.0",
+  "description": "Self-evolving second brain with 17 AI skills, 6 worker agents, and people CRM. Inspired by Garry Tan's gstack and gbrain. Works with Claude Code, GitHub Copilot CLI, Cursor, Kiro, Gemini CLI, Codex.",
+  "version": "3.6.0",
   "keywords": [
     "second-brain",
     "garry-tan",
@@ -16,6 +16,8 @@
     "ai-agents",
     "obsidian",
     "claude-code",
+    "github-copilot",
+    "copilot-cli",
     "cursor",
     "worker-agents",
     "people-crm",
