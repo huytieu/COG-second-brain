@@ -2,6 +2,37 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.6.0] - 2026-06-22
+
+### Loop Engineering for Iterative Skills
+
+Skills whose work is genuinely iterative now carry explicit loop-engineering structure: a named loop, a deterministic verifier, layered termination conditions, and in-loop context management. This extends COG's verification-first philosophy from "sources required" to "trust mechanical checks, never the agent's own self-report."
+
+### Added
+
+#### New Skill
+- **`loop-engineering`** (`.claude/skills/loop-engineering/SKILL.md`) — canonical COG loop vocabulary and design aid: the act-observe-verify cycle, the five termination conditions (deterministic verifier, hard cap, budget guard, no-progress detection, human escalation), in-loop context management (compaction, pruning, externalize-to-vault, sub-agent isolation), a named-pattern table, and failure modes. Documented in AGENTS.md and registered across all marketplace manifests.
+
+#### Per-Skill Loop Sections
+- **daily-brief**: verify-retry loop. Search → fetch → deterministic verify (7-day window + source tier + 2-source minimum + dedup) → re-search until enough verified items or stop condition. No-progress detection replaces backfilling with stale news.
+- **knowledge-consolidation**: loop-until-dry extraction with a completeness critic. Traceability and coverage are mechanical checks; per-domain worker isolation in team mode.
+- **url-dump**: fetch-retry loop with a quality gate. Retry failed fetches a different way, gate on extraction quality and confidence, escalate to the user instead of filing low-confidence guesses.
+- **weekly-checkin**: per-domain scan loop plus human-in-the-loop reflection, gated by a coverage checklist over active projects and domains.
+
+### Fixed
+
+#### Marketplace Manifest Consistency
+- **`scout`** skill is now registered in `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and `cog-update.sh` (it shipped as a skill but was missing from the manifests, which failed `scripts/validate-agent-surface.sh`).
+- Skill count corrected to **19** across plugin.json, cursor manifest, MARKETPLACE.md, and architecture metadata.
+- `marketplace-entry.json` version realigned with `plugin.json` and `COG-VERSION`.
+
+### Changed
+- Version bumped to **3.6.0** across `COG-VERSION`, `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and `marketplace-entry.json`.
+- Added `loop-engineering` / `agent-loop` keywords to manifests for marketplace discoverability (skills.sh, agentskill.sh, cursor.directory).
+
+### Skills Skipped (loops add little)
+- **braindump** (linear capture), **onboarding** (already conversational human-in-the-loop).
+
 ## [3.5.0] - 2026-04-16
 
 ### Specialist Sessions, People CRM & Worker Agents

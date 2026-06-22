@@ -399,6 +399,28 @@ reviewed: "false"
 
 Always explicitly state confidence levels and reasoning in processing notes.
 
+## Loop Engineering
+
+URL capture is a **fetch-retry loop with a quality gate**, not a single fetch-and-file. See `.claude/skills/loop-engineering/SKILL.md` for the shared vocabulary.
+
+**The loop (per URL):** fetch → if the fetch fails or returns an empty/blocked body, retry a different way (https vs http, reader mode, an archive snapshot) → once content is present, run the quality gate → file it, or escalate to the user / save to inbox with a Review Needed flag.
+
+**The verifier (deterministic):**
+- Fetch returned a non-empty body (not a paywall stub or error page).
+- Required fields are populated: title, at least one key insight, a category.
+- YAML frontmatter is valid (see YAML Formatting Requirements).
+- Category confidence clears the threshold. Below ~70%, the loop does not silently guess.
+
+**Termination conditions (layered):**
+- **Goal met:** content extracted and the quality gate passes → save to the category folder.
+- **Retry cap:** stop after ~3 fetch attempts → save what was extracted with a low-confidence flag (see Uncertainty Handling), do not invent missing fields.
+- **Hard stop on paywall / login wall:** note the limitation, capture the available preview, do not loop forever.
+- **Human escalation:** confidence below threshold → present the best guess and ask the user to confirm category, rather than filing it wrong.
+
+**Patterns:** reflect-retry (each failed fetch picks a different method) + evaluator (the quality gate) + human-in-the-loop (low-confidence escalation).
+
+**In-loop context:** once insights and metadata are extracted, drop the raw page body. For batch input, process each URL as its own independent loop so one bad URL never stalls the rest.
+
 ## Integration with Other Skills
 
 ### Immediate Follow-up

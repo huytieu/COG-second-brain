@@ -332,6 +332,28 @@ After creating the check-in:
 - Offer to review patterns across multiple weeks if helpful
 - Ask if they want to capture any follow-up thoughts via braindump skill
 
+## Loop Engineering
+
+The weekly check-in pairs a **per-domain scan loop** with a **human-in-the-loop reflection**, gated by a coverage checklist. See `.claude/skills/loop-engineering/SKILL.md` for the shared vocabulary.
+
+**The scan loop (gather phase):** scan each domain's recent files → aggregate candidate themes → run the coverage check → if a domain or active project is thin, scan it more deeply before moving on. In `agent_mode: team`, fan this out as one worker per domain (orchestrator-workers); each returns its themes only.
+
+**The reflection loop (guided phase):** this is human-in-the-loop by design. Ask, listen, reflect back, ask the targeted follow-up. The loop continues until the coverage checklist is satisfied or the user signals they are done. Do not rush it and do not force positivity.
+
+**The verifier (deterministic checklist):**
+- Every active project in `MY-PROFILE.md` has a Projects section addressed.
+- Each domain (personal / professional / projects) was actually covered, not skipped.
+- At least the recurring themes the scan surfaced were raised with the user.
+
+**Termination conditions (layered):**
+- **Coverage complete:** checklist satisfied → generate the check-in document.
+- **User signals done:** respect it; generate with what you have and note any thin spots.
+- **No-progress / terse answers:** if follow-ups keep returning little, stop probing that thread and offer to skip it rather than grinding. Escalation here means handing the choice back to the user.
+
+**Patterns:** orchestrator-workers (team-mode domain scans) + human-in-the-loop (reflection) + completeness checklist (the verifier).
+
+**In-loop context:** capture answers into the check-in structure as the conversation goes, so a long reflection does not lose early answers.
+
 ## Conversational Guidelines
 
 ### Do:

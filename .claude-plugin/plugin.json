@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.5.0",
-  "description": "Self-evolving second brain with 17 AI agent skills, 6 worker agents, and people CRM. Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.6.0",
+  "description": "Self-evolving second brain with 19 AI agent skills, 6 worker agents, and people CRM. Iterative skills are loop-engineered (deterministic verifiers, layered termination, in-loop context management). Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -35,7 +35,9 @@
     "self-evolving",
     "personal-intelligence",
     "note-taking",
-    "specialist-sessions"
+    "specialist-sessions",
+    "loop-engineering",
+    "agent-loop"
   ],
   "category": "productivity",
   "tags": [
@@ -85,6 +87,11 @@
       "description": "Quick capture URLs with automatic content extraction, insights, and categorization into knowledge booklets"
     },
     {
+      "name": "loop-engineering",
+      "path": ".claude/skills/loop-engineering/SKILL.md",
+      "description": "Shared loop-engineering reference for iterative skills - the agent loop, deterministic verifiers, termination conditions, in-loop context management, and named patterns"
+    },
+    {
       "name": "team-brief",
       "path": ".claude/skills/team-brief/SKILL.md",
       "description": "Cross-reference GitHub, Linear, Slack, PostHog, meetings, and braindumps into a daily team intelligence brief with Linear sync-back"
@@ -98,6 +105,11 @@
       "name": "comprehensive-analysis",
       "path": ".claude/skills/comprehensive-analysis/SKILL.md",
       "description": "Deep 7-day analysis for weekly reviews, board prep, or strategic planning"
+    },
+    {
+      "name": "scout",
+      "path": ".claude/skills/scout/SKILL.md",
+      "description": "Triage a URL or tool (verify, classify, and check fit) before deciding whether to save it"
     },
     {
       "name": "update-cog",
@@ -158,7 +170,7 @@
     "requirements": {
       "obsidian": "Recommended for markdown file management",
       "git": "Optional but recommended for version control and safe updates",
-      "claudeCode": "Recommended for the full 17-skill native experience",
+      "claudeCode": "Recommended for the full 19-skill native experience",
       "kiro": "Optional - ships 7 native core powers",
       "geminiCli": "Optional - ships 7 native core commands",
       "agentsMd": "Universal fallback surface for Codex and other markdown-reading agents"
@@ -170,7 +182,7 @@
       "validation": "Run ./scripts/validate-agent-surface.sh before publishing or after framework updates"
     },
     "directoryStructure": {
-      ".claude/skills": "17 Claude Code skills (full surface)",
+      ".claude/skills": "19 Claude Code skills (full surface)",
       ".claude/agents": "6 worker agent definitions for specialist sessions",
       ".claude/roles": "7 role packs for personalized skill and integration recommendations",
       ".kiro/powers": "7 Kiro powers (core workflows)",
@@ -186,16 +198,16 @@
     },
     "skillArchitecture": {
       "type": "agent-skills",
-      "skills": 17,
+      "skills": 19,
       "workerAgents": 6,
       "rolePacks": 7,
       "invocation": "model-invoked",
       "progressiveDisclosure": true,
       "nativeSurfaces": {
-        "claudeCode": 17,
+        "claudeCode": 19,
         "kiro": 7,
         "geminiCli": 7,
-        "agentsMd": 17
+        "agentsMd": 19
       },
       "description": "Self-contained skills with worker agent delegation, full Claude Code surface, core native Kiro/Gemini surfaces, and AGENTS.md as the universal fallback"
     }

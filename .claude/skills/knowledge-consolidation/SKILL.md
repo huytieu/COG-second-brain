@@ -775,6 +775,27 @@ After consolidation:
 - Suggest reviewing key frameworks created/updated
 - Offer to explain any specific framework in detail
 
+## Loop Engineering
+
+Consolidation is a **loop-until-dry extraction with a completeness critic**, not a single scan. See `.claude/skills/loop-engineering/SKILL.md` for the shared vocabulary.
+
+**The loop:** scan a batch of in-scope documents → extract themes, patterns, and candidate framework principles → run the completeness critic ("any in-scope doc not yet read? any theme recurring across N+ docs that no framework captures yet?") → if the critic surfaces something new, run another extraction pass → stop when 2 passes in a row surface nothing new (dry). In `agent_mode: team`, the first scan fans out as one worker per domain (personal / professional / per-project / briefs); each returns its conclusions only, and a synthesis pass merges them.
+
+**The verifier (deterministic where it can be):**
+- **Traceability:** every framework principle links at least one source document. A principle with no `[[source]]` is dropped, not published. This is mechanical and is COG's verification-first rule for consolidation.
+- **Coverage:** every in-scope document ends marked `status: "consolidated"` with a `consolidated_in` backlink.
+- **Dedup:** before creating a framework, check `05-knowledge/consolidated/` so an existing framework is updated, not duplicated.
+- The completeness critic ("did we miss a theme?") is the one judgment-based check; keep it explicit and evidence-linked.
+
+**Termination conditions (layered):**
+- **Dry:** K=2 consecutive passes find no new theme or document.
+- **Coverage complete:** all in-scope documents marked consolidated.
+- **Hard cap:** a max number of extraction passes, so a noisy corpus cannot loop forever.
+
+**Patterns:** loop-until-dry (the spine) + plan-execute-verify (each pass) + orchestrator-workers (team-mode domain scans) + completeness critic.
+
+**In-loop context:** write the consolidation report incrementally and dedup new themes against the running set, not against the conversation. Externalizing to the report file is what keeps a large corpus from overflowing the window.
+
 ## Consolidation Guidelines
 
 ### Quality Over Quantity

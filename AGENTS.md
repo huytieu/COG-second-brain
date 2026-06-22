@@ -210,6 +210,28 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ---
 
+### /loop-engineering
+
+**Description:** Shared loop-engineering reference for COG skills - the agent loop, deterministic verifiers, termination conditions, in-loop context management, and named patterns.
+
+**Triggers:**
+- `/loop-engineering`
+- "loop engineering"
+- Designing or debugging a skill that iterates (search-verify-retry, scan-until-dry, fetch-retry-gate)
+
+**Purpose:** Give every iterative COG skill one vocabulary for the act-observe-verify loop, so each one declares its verifier, its termination conditions, and its pattern instead of repeating the rules.
+
+**What it provides:**
+1. The COG loop cycle (gather, act, observe, verify, update, decide)
+2. The five termination conditions (deterministic verifier, hard cap, budget guard, no-progress detection, human escalation)
+3. The verification-first rule applied to loops (trust mechanical checks, never agent self-report)
+4. In-loop context management (compaction, pruning, externalize-to-vault, sub-agent isolation)
+5. A named-pattern table (ReAct, Reflexion, plan-execute-verify, evaluator-optimizer, orchestrator-workers, loop-until-dry, human-in-the-loop) and failure modes
+
+**Used by:** daily-brief, knowledge-consolidation, url-dump, weekly-checkin (and applies to auto-research, scout, team-brief).
+
+---
+
 ### /team-brief
 
 **Description:** Generate a daily team intelligence brief by cross-referencing Linear, Slack, GitHub, PostHog, meetings, and braindumps — then sync the resulting intelligence back into Linear.
