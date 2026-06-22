@@ -422,6 +422,30 @@ Last significant development was [date if known] regarding [topic if known].
 - Optionally show executive summary
 - Ask if they want to explore any topic deeper or capture thoughts via braindump skill
 
+## Loop Engineering
+
+Daily brief is a **verify-retry loop**, not a single search. See `.claude/skills/loop-engineering/SKILL.md` for the shared vocabulary.
+
+**The loop (per interest area):** search → fetch a candidate → run the verifier → keep it or discard and re-search with an adjusted query → repeat until enough verified items or a stop condition fires. In `agent_mode: team`, run one loop per interest cluster as isolated workers (orchestrator-workers), then synthesize.
+
+**The verifier (deterministic, runs every candidate):**
+- Publication date is within the last 7 days. Mechanical date check, not a guess.
+- At least 2 independent credible sources for the claim.
+- Source tier is identified (1 / 2 / 3). Tier 3 needs cross-reference before it survives.
+- Not already seen (story dedup): a candidate whose URL or headline is already in the brief is dropped.
+
+A candidate that fails any check is discarded, not softened. This is COG's verification-first rule applied inside the loop: never let an item in on the agent's own "this looks recent enough."
+
+**Termination conditions (layered):**
+- **Goal met:** target item count reached for the interest area.
+- **Hard cap:** stop after ~5 searches per interest area.
+- **No-progress:** 2 consecutive searches surface nothing new (after dedup) → emit the "No significant news found" block (see Handle Special Cases) and move on. Never backfill with older or fabricated news.
+- **Budget guard:** overall fetch budget across all areas.
+
+**Patterns:** evaluator-optimizer (each item scored against the verifier) + reflect-retry (a failed search informs the next query) + orchestrator-workers (team mode).
+
+**In-loop context:** write verified items straight into the brief file as they pass; drop raw fetched page text once the summary and sources are extracted.
+
 ## Integration with Other Skills
 
 ### Follow-up Actions

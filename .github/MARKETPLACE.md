@@ -18,13 +18,13 @@ COG ships marketplace metadata in multiple formats:
 
 | File | Platform | Purpose |
 |---|---|---|
-| `.claude-plugin/plugin.json` | Claude Code marketplace | Canonical skill manifest (17 skills, 6 agents) |
+| `.claude-plugin/plugin.json` | Claude Code marketplace | Canonical skill manifest (19 skills, 6 agents) |
 | `.cursor-plugin/plugin.json` | cursor.directory | Cursor-compatible manifest |
 | `.cursorrules` | Cursor | Editor rules for Cursor users |
 | `marketplace-entry.json` | General marketplaces | Lightweight catalog entry |
 | `AGENTS.md` | Universal | Command reference for any markdown-reading agent |
 
-Current packaged version: **3.5.0**
+Current packaged version: **3.6.0**
 
 ## Surface Model
 
@@ -32,9 +32,9 @@ COG is a **multi-agent package**, not a single-surface plugin:
 
 | Surface | Coverage |
 |---|---:|
-| Claude Code (`.claude/skills/`) | 17 native skills + 6 worker agents |
+| Claude Code (`.claude/skills/`) | 19 native skills + 6 worker agents |
 | Cursor (`.cursor-plugin/`) | Plugin manifest + rules |
-| Universal docs (`AGENTS.md`) | 17+ documented commands |
+| Universal docs (`AGENTS.md`) | 19+ documented commands |
 | Kiro (`.kiro/powers/`) | 7 core powers |
 | Gemini CLI (`.gemini/commands/`) | 7 core commands |
 
@@ -44,7 +44,7 @@ For the detailed contract, see [`docs/AGENT-SUPPORT.md`](../docs/AGENT-SUPPORT.m
 
 These keywords are set across all manifests and the GitHub repo for discoverability:
 
-`second-brain`, `garry-tan`, `gstack`, `gbrain`, `ai-agents`, `obsidian`, `claude-code`, `cursor`, `kiro`, `gemini-cli`, `codex`, `worker-agents`, `people-crm`, `knowledge-management`, `specialist-sessions`, `agentic`, `self-evolving`, `productivity`
+`second-brain`, `garry-tan`, `gstack`, `gbrain`, `ai-agents`, `obsidian`, `claude-code`, `cursor`, `kiro`, `gemini-cli`, `codex`, `worker-agents`, `people-crm`, `knowledge-management`, `specialist-sessions`, `agentic`, `self-evolving`, `loop-engineering`, `productivity`
 
 ## Before You Publish
 

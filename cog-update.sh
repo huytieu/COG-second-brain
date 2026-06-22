@@ -42,6 +42,8 @@ FRAMEWORK_FILES=(
   ".claude/skills/weekly-checkin/SKILL.md"
   ".claude/skills/knowledge-consolidation/SKILL.md"
   ".claude/skills/url-dump/SKILL.md"
+  ".claude/skills/loop-engineering/SKILL.md"
+  ".claude/skills/scout/SKILL.md"
   ".claude/skills/update-cog/SKILL.md"
   ".claude/skills/team-brief/SKILL.md"
   ".claude/skills/comprehensive-analysis/SKILL.md"

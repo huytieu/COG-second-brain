@@ -44,10 +44,10 @@ That's it! You now have a working second brain.
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
 - COG now exposes a clear multi-agent support matrix:
-  - `.claude/skills/` - 17 Claude Code skills (full surface)
+  - `.claude/skills/` - 19 Claude Code skills (full surface)
   - `.kiro/powers/` - 7 Kiro powers (core workflows)
   - `.gemini/commands/` + `.gemini/skills/` - 7 Gemini CLI commands (core workflows)
-  - `AGENTS.md` - 17 documented commands for Codex and other agents
+  - `AGENTS.md` - 19 documented commands for Codex and other agents
 - Onboarding will create your personalized directory structure
 - You can validate the packaged agent surfaces anytime with `./scripts/validate-agent-surface.sh`
 
@@ -131,7 +131,7 @@ COG-second-brain/              # This is your second brain folder
 ├── .claude/
 │   ├── agents/                # 6 worker agent definitions
 │   ├── roles/                 # 7 role packs for personalized recommendations
-│   └── skills/                # 17 Claude Code skills
+│   └── skills/                # 19 Claude Code skills
 │       ├── onboarding/
 │       ├── braindump/
 │       ├── daily-brief/
