@@ -7,7 +7,7 @@
     "url": "https://github.com/huytieu"
   },
   "description": "Self-evolving second brain with 21 AI skills, 6 worker agents, and people CRM. Runtime-trust release: memory hygiene sweeps, skill post-condition checks, verbatim citations with adversarial verifier pass, autonomous content factory. Iterative skills are loop-engineered with deterministic verifiers and layered termination. Inspired by Garry Tan's gstack and gbrain. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex.",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "keywords": [
     "second-brain",
     "garry-tan",

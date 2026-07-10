@@ -87,6 +87,26 @@ This is opt-in per skill — not a hard rule for every output. Apply it where wr
 
 ---
 
+## Engineering Discipline — ALWAYS APPLY
+
+### Code Comments
+- Never use decorative comment separator blocks of any kind — `// ====`, `// ----`, `// ---- Section Name ----`, `// -----------` full-line dividers, `/* ==== Section Name ==== */`, etc. Use plain single-line comments and blank lines to separate sections instead.
+
+### Git
+- Never `git reset --hard` or `git commit --amend` unless the user explicitly asks. Always create new commits and push normally. If changes get wiped, recover from `git reflog` — do not destroy history.
+- Always commit with commitlint standards (Conventional Commits: `type(scope): subject`).
+- When a command requires interactive input (e.g. `git rebase --continue`, editor prompts), supply the non-interactive flag or set `GIT_EDITOR=true` / `EDITOR=true` / `--no-edit` as appropriate.
+
+### Pull Requests
+- Before opening a PR, check the repository for a PR template (e.g. `.github/PULL_REQUEST_TEMPLATE.md` or similar) and always follow it when composing the PR description.
+- PR review replies must be in-thread via `gh api repos/{owner}/{repo}/pulls/comments/{id}/replies`, never a new parent comment, then resolve the thread via the GraphQL `resolveReviewThread` mutation. No pleasantries ("great catch", etc.) — state what changed, which commit, and why.
+
+### Interaction
+- Read every file the user provides (images, screenshots, code, text) with the read tool before responding — never assume its contents.
+- Answer the user before acting. Explanatory questions should be answered verbally without first invoking tools or editing code. Wait for the user to explicitly request investigation, a fix, or changes.
+
+---
+
 ## Skill Post-Condition Rule — ALWAYS APPLY
 
 Every skill run that **mutates external state** (publishes a page, deploys, posts to Slack/socials, transitions a ticket, pushes commits, fires a webhook) must end with an explicit **post-condition check**: fetch back or observe the mutated artifact and confirm it matches intent before reporting success.

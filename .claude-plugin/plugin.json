@@ -1,6 +1,6 @@
 {
   "name": "cog-second-brain",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "description": "Self-evolving second brain with 21 AI agent skills, 6 worker agents, and people CRM. Runtime-trust release: memory hygiene sweeps (stale-but-confident), skill post-condition checks (confident-but-unchecked), verbatim citations with adversarial verifier pass, and an autonomous content factory. Iterative skills are loop-engineered (deterministic verifiers, layered termination, in-loop context management). Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",

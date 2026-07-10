@@ -2,6 +2,21 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.7.1] - 2026-07-10
+
+### Added
+
+#### Engineering Discipline protocol in CLAUDE.md
+Operating rules for agents doing engineering work through COG:
+
+- **Code comments** — no decorative comment separator blocks (`// ====`, `/* ==== Section ==== */`, full-line dividers); plain comments and blank lines separate sections.
+- **Git** — never `git reset --hard` or `git commit --amend` unless explicitly asked; new commits only, recover via `git reflog`. Commitlint / Conventional Commits standards. Non-interactive flags (`GIT_EDITOR=true`, `--no-edit`) for commands that would prompt.
+- **Pull requests** — check for and follow the repo's PR template; review replies in-thread via `gh api .../pulls/comments/{id}/replies` (never a new parent comment), resolve threads via GraphQL `resolveReviewThread`, no pleasantries — state what changed, which commit, and why.
+- **Interaction** — read every user-provided file before responding; answer explanatory questions verbally before invoking tools, and wait for an explicit request before investigating or changing code.
+
+### Changed
+- Version bumped to **3.7.1** across `COG-VERSION` and all plugin manifests.
+
 ## [3.7.0] - 2026-07-10
 
 ### Runtime Trust
