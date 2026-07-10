@@ -8,7 +8,7 @@ This document is the packaging contract: it tells contributors and maintainers w
 
 | Surface | Shipped format | Coverage | Status |
 |---|---|---:|---|
-| Claude Code | `.claude/skills/*/SKILL.md` | 19 skills | Full native surface |
+| Claude Code | `.claude/skills/*/SKILL.md` | 21 skills | Full native surface |
 | Universal agent docs | `AGENTS.md` | 17 commands | Full documented fallback |
 | Kiro | `.kiro/powers/*/POWER.md` | 7 powers | Core workflows only |
 | Gemini CLI | `.gemini/commands/*.toml` + `.gemini/skills/*.md` | 7 commands | Core workflows only |

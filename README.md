@@ -11,7 +11,7 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[17 Skills]
+    B -- runs --> C[21 Skills]
     C -- delegates to --> W[6 Worker Agents]
     C -- reads & writes --> D[.md Files]
     W -- reads & writes --> D
@@ -54,11 +54,11 @@ COG ships a **full Claude Code surface** plus **core native surfaces** for Kiro 
 
 | Surface | Current support | Notes |
 |---|---|---|
-| Claude Code | 19 native skills + 6 worker agents | Full first-class surface |
+| Claude Code | 21 native skills + 6 worker agents | Full first-class surface |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
-| `AGENTS.md` | 19 documented commands | Universal fallback for Codex and other agents |
+| `AGENTS.md` | 21 documented commands | Universal fallback for Codex and other agents |
 
 Before publishing or updating framework files, run `./scripts/validate-agent-surface.sh` to catch drift between manifests, docs, and shipped files. See [docs/AGENT-SUPPORT.md](docs/AGENT-SUPPORT.md) for the detailed support matrix and contributor rules.
 
@@ -75,6 +75,7 @@ Before publishing or updating framework files, run `./scripts/validate-agent-sur
 | **weekly-checkin** | Cross-domain pattern analysis | "Weekly review" |
 | **knowledge-consolidation** | Build frameworks from scattered notes | "Consolidate my knowledge" |
 | **update-cog** | Update framework files without touching your content | "Update COG" |
+| **memory-hygiene** | Trust sweep of persistent memory — re-verify claims against the live environment, stamp `last_verified` + confidence | "Audit my memories" |
 
 ### Team Intelligence Skills (for Product & Engineering Leads)
 
@@ -102,6 +103,12 @@ Before publishing or updating framework files, run `./scripts/validate-agent-sur
 | Skill | What it does | Try saying... |
 |---|---|---|
 | **auto-research** | Deep strategic research engine — decomposes questions into parallel research threads with multiple agents | "Research the future of AI testing tools" |
+
+### Content Creation
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **content-factory** | Autonomous content pipeline — scout announcements, triage by trend momentum + your unique angle, publish with ledger dedup, hard volume caps, and screenshot-verified posting | "Run the content factory" |
 
 ### Worker Agents (Specialist Sessions)
 
@@ -170,12 +177,13 @@ graph TD
 | **Self-Evolving** — Learns your patterns, auto-organizes content, builds frameworks | **Self-Healing** — Rename files or restructure; cross-references update automatically | **Verification-First** — Sources required, 7-day freshness, confidence levels on all analysis |
 | **Privacy-First** — Local `.md` files, strict domain separation, no external servers | **Multi-Device** — iCloud sync to iPhone/iPad/Mac; Git for version history | **Obsidian Tasks** — `📅 YYYY-MM-DD` emoji format works with Tasks plugin dashboards |
 | **Garry Tan Inspired** — gstack specialist sessions + gbrain knowledge patterns | **Multi-Platform** — Listed on [skills.sh](https://skills.sh), [agentskill.sh](https://agentskill.sh), [cursor.directory](https://cursor.directory) | **Worker Agents** — Sonnet handles I/O, Opus handles thinking |
+| **Runtime Trust** — memory hygiene sweeps re-verify stored facts against the live environment | **Post-Condition Checks** — mutating skills observe the artifact before reporting success | **Skill Distillation** — [explore once, execute cheap](docs/SKILL-DISTILLATION.md) with small models |
 
 ## Your Vault
 
 ```
 COG-second-brain/
-├── .claude/skills/          # Claude Code skills (19)
+├── .claude/skills/          # Claude Code skills (21)
 ├── .claude/agents/          # Worker agent definitions (6)
 ├── .claude/roles/           # Role packs (7) — personalized recommendations
 ├── .kiro/powers/            # Kiro powers
@@ -246,6 +254,8 @@ Git is optional but recommended for version history. COG works fine with just iC
 - [x] ~~Role packs & integration discovery~~ (shipped in v3.3)
 - [x] ~~PM workflow skills & auto-research~~ (shipped in v3.4)
 - [x] ~~Worker agents, people CRM & specialist sessions~~ (shipped in v3.5)
+- [x] ~~Loop engineering for iterative skills~~ (shipped in v3.6)
+- [x] ~~Runtime trust: memory hygiene, post-condition checks, verifier pass, content factory~~ (shipped in v3.7)
 - [ ] Web interface for knowledge graph visualization
 - [ ] Mobile-first commands (optimized for Obsidian mobile)
 - [ ] Team collaboration features (with privacy preservation)

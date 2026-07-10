@@ -32,6 +32,7 @@ FRAMEWORK_FILES=(
   "COG-VERSION"
   "cog-update.sh"
   "docs/AGENT-SUPPORT.md"
+  "docs/SKILL-DISTILLATION.md"
   ".github/MARKETPLACE.md"
   "scripts/validate-agent-surface.sh"
 
@@ -55,6 +56,8 @@ FRAMEWORK_FILES=(
   ".claude/skills/export-open-issues/SKILL.md"
   ".claude/skills/publish-to-confluence/SKILL.md"
   ".claude/skills/update-knowledge-base/SKILL.md"
+  ".claude/skills/memory-hygiene/SKILL.md"
+  ".claude/skills/content-factory/SKILL.md"
 
   # Role packs
   ".claude/roles/_template.md"

@@ -1,8 +1,8 @@
 {
   "name": "cog-second-brain",
   "displayName": "COG: Agentic Second Brain",
-  "version": "3.6.0",
-  "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 19 skills, 6 worker agents, people CRM with tiered enrichment. Iterative skills are loop-engineered with deterministic verifiers and layered termination. Inspired by Garry Tan's gstack and gbrain patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.7.0",
+  "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 21 skills, 6 worker agents, people CRM with tiered enrichment. Runtime-trust release: memory hygiene sweeps, skill post-condition checks, verbatim citations with verifier pass, autonomous content factory. Iterative skills are loop-engineered with deterministic verifiers and layered termination. Inspired by Garry Tan's gstack and gbrain patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "email": "tqhuy1991@gmail.com",
@@ -50,6 +50,8 @@
     "loop-engineering",
     "scout",
     "update-cog",
+    "memory-hygiene",
+    "content-factory",
     "team-brief",
     "meeting-transcript",
     "comprehensive-analysis",

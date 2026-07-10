@@ -2,6 +2,35 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.7.0] - 2026-07-10
+
+### Runtime Trust
+
+v3.6.0 taught iterative skills to trust mechanical checks over self-report. v3.7.0 extends the same philosophy to everything COG stores and everything COG publishes: **trust is a runtime decision, not a property of a stored item or a returned status code.** Two failure modes drive this release (adapted from "From Model Scaling to System Scaling: Scaling the Harness in Agentic AI", Gu, UC Berkeley, arXiv:2605.26112):
+
+- **stale-but-confident** — a memory that was correct when written silently drifts after the environment changes, yet still ranks high at recall and gets acted on.
+- **confident-but-unchecked** — a mutation step returns plausible output that no downstream layer validates.
+
+### Added
+
+#### New Skills
+- **`memory-hygiene`** (`.claude/skills/memory-hygiene/SKILL.md`) — periodic trust sweep of persistent memory and durable knowledge notes. Classifies claims (environment-dependent vs preference/judgment), re-verifies the former against the live environment with cheap checks (`ls`, `curl`, `gh`), stamps `last_verified` + `confidence` into frontmatter, fixes verified-wrong facts in place, and proposes (never auto-applies) archiving obsolete entries. One sweep report per run with a drift scorecard and deltas vs the previous sweep.
+- **`content-factory`** (`.claude/skills/content-factory/SKILL.md`) — autonomous content pipeline designed for unattended scheduled runs: scout → triage (scored 1-5 on trend momentum, beat fit, unique angle) → produce (format ladder decided by substance) → publish (environment gate + mandatory post-condition check) → ledger. Ledger-based dedup, hard per-night volume caps shared across runs, and a voice checklist where any failure deletes the draft. An empty run is a valid run.
+
+#### New Protocols in CLAUDE.md
+- **Skill Post-Condition Rule** — every skill run that mutates external state must end by observing the mutated *artifact* (curl the URL, re-fetch the ticket, screenshot the post), never just the tool's return value. Read-only skills exempt. New mutating skills must ship a "Verify" step.
+- **Citation Verbatim & Verifier Pass** — for skills producing auditable claims about external sources: (1) every citation carries the actual line text in backticks — if you can't quote it verbatim, drop the claim; (2) opt-in adversarial verifier pass that re-fetches each cited URL and tags claims `Verified | Weakened | Falsified` before publishing.
+- **Fresh-Context Isolation** — when fanning out parallel workers, pass each only the digested context it needs; pasting a prior worker's raw output induces *narrativisation* (the worker classifies the orchestrator's framing instead of independently reading the source).
+- **Single-File Deliverable Rule** — one deliverable file per run: fan-out staging is fine mid-run, but the final step consolidates (synthesis on top, appendix of sources) and deletes staging files.
+
+#### New Documentation
+- **`docs/SKILL-DISTILLATION.md`** — the "explore once, execute cheap" meta-pattern: one expensive exploration by a strong model distilled into a layered skill artifact (router / recipes / healing tree / map shards) that a small model executes at a fraction of the cost. Includes the PASS / FAIL-REAL / FAIL-STALE / BLOCKED verdict taxonomy that routes "the world changed" to skill maintenance and "the world is wrong" to real reporting. Field-validated: $4.63 exploration once → $0.11 per execution on a Haiku-class model.
+
+### Changed
+- Skill count 19 → **21** across README, SETUP, AGENTS.md, CLAUDE.md, MARKETPLACE.md, docs/AGENT-SUPPORT.md, and all plugin manifests.
+- CONTRIBUTING.md skill guidelines: mutating skills must ship a Verify step; don't write "show your reasoning" instructions into skills (reasoning models handle it internally — state goals and constraints instead).
+- Version bumped to **3.7.0** across `COG-VERSION`, `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and `marketplace-entry.json`; added runtime-trust keywords for marketplace discoverability.
+
 ## [3.6.0] - 2026-06-22
 
 ### Loop Engineering for Iterative Skills

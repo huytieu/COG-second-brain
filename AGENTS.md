@@ -361,6 +361,52 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ---
 
+### /memory-hygiene
+
+**Description:** Periodic trust sweep of persistent memory and durable knowledge notes - re-verifies environment-dependent claims against the live environment, stamps `last_verified` + `confidence`, and proposes archiving drifted entries.
+
+**Triggers:**
+- `/memory-hygiene`
+- "audit my memories"
+- "check for stale memories"
+- After a memory misfires (a recalled fact turned out wrong)
+
+**Purpose:** Prevent the **stale-but-confident** failure mode: an entry that was correct when written silently drifts after the environment changes, yet still ranks high at recall and gets acted on. Makes trust a runtime decision, not a property of the stored item.
+
+**What it does:**
+1. Sweeps agent memory files and environment-referencing notes in `05-knowledge/`
+2. Classifies claims: environment-dependent (verify with `ls`/`curl`/`gh`) vs preference/judgment (check only for contradiction with newer entries)
+3. Stamps `last_verified` + `confidence` (high/medium/low) into each entry's frontmatter
+4. Fixes verified-wrong facts in place; proposes (never auto-applies) archiving obsolete entries
+5. Writes one sweep report to `01-daily/` with a drift scorecard and deltas vs the previous sweep
+
+**Budget:** ~1 minute per entry. Unverifiable ≠ drifted.
+
+---
+
+### /content-factory
+
+**Description:** Autonomous content pipeline - scout announcements in your field, triage by trend momentum and personal angle, produce posts/blogs/videos in your voice with ledger-based dedup, hard volume caps, and screenshot-verified publishing.
+
+**Triggers:**
+- `/content-factory`
+- "run the content factory"
+- "turn today's news into content"
+- Scheduled runs (e.g. nightly via cron)
+
+**Purpose:** Act as the user's autonomous content creator with zero duplicates, hard per-night volume caps, and verification before anything counts as published. An empty run is a valid run; a low-quality post is not.
+
+**What it does:**
+1. SCOUT — web-search + watchlist fetch for last-24h announcements (timeboxed ~20 min)
+2. TRIAGE — score candidates on trend momentum, beat fit, and unique angle; produce at ≥11/15, park 8-10, ignore <8; dedup against the ledger
+3. PRODUCE — format ladder decided by substance: short post by default, blog only with ≥3 original things or a real PoC, short video only if demo-able
+4. PUBLISH — environment gate, then post-condition check: screenshot/curl the live artifact before recording it as published
+5. LEDGER + LOG — append to `04-projects/content-factory/ledger.md` and the tonight file, even for empty runs
+
+**Output:** Published links in the ledger; parked ideas and proposals in the run log.
+
+---
+
 ### /auto-research
 
 **Description:** Deep strategic research engine — decomposes questions into parallel research threads, spawns multiple agents, and synthesizes into actionable strategic analysis.

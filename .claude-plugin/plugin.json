@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.6.0",
-  "description": "Self-evolving second brain with 19 AI agent skills, 6 worker agents, and people CRM. Iterative skills are loop-engineered (deterministic verifiers, layered termination, in-loop context management). Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.7.0",
+  "description": "Self-evolving second brain with 21 AI agent skills, 6 worker agents, and people CRM. Runtime-trust release: memory hygiene sweeps (stale-but-confident), skill post-condition checks (confident-but-unchecked), verbatim citations with adversarial verifier pass, and an autonomous content factory. Iterative skills are loop-engineered (deterministic verifiers, layered termination, in-loop context management). Inspired by Garry Tan's gstack specialist sessions and gbrain knowledge patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -37,7 +37,12 @@
     "note-taking",
     "specialist-sessions",
     "loop-engineering",
-    "agent-loop"
+    "agent-loop",
+    "memory-hygiene",
+    "runtime-trust",
+    "content-factory",
+    "verification",
+    "skill-distillation"
   ],
   "category": "productivity",
   "tags": [
@@ -117,6 +122,16 @@
       "description": "Check for and apply upstream COG framework updates without touching personal content"
     },
     {
+      "name": "memory-hygiene",
+      "path": ".claude/skills/memory-hygiene/SKILL.md",
+      "description": "Periodic trust sweep of persistent memory - re-verify environment-dependent claims, stamp last_verified + confidence, propose archiving drifted entries"
+    },
+    {
+      "name": "content-factory",
+      "path": ".claude/skills/content-factory/SKILL.md",
+      "description": "Autonomous content pipeline - scout announcements, triage by trend momentum and personal angle, produce and publish with ledger dedup, volume caps, and post-condition verification"
+    },
+    {
       "name": "auto-research",
       "path": ".claude/skills/auto-research/SKILL.md",
       "description": "Deep strategic research engine with parallel research threads and actionable analysis"
@@ -165,12 +180,15 @@
       "Git version control for tracking thinking evolution",
       "Agent-surface validator for manifest/docs consistency",
       "Worker agent architecture with model routing (Sonnet workers, Opus lead)",
-      "People CRM with tiered enrichment and evidence-based profiles"
+      "People CRM with tiered enrichment and evidence-based profiles",
+      "Runtime trust: memory-hygiene sweeps with last_verified + confidence stamps",
+      "Skill post-condition checks - observe the mutated artifact before reporting success",
+      "Skill distillation pattern: explore once with a strong model, execute cheap with a small one"
     ],
     "requirements": {
       "obsidian": "Recommended for markdown file management",
       "git": "Optional but recommended for version control and safe updates",
-      "claudeCode": "Recommended for the full 19-skill native experience",
+      "claudeCode": "Recommended for the full 21-skill native experience",
       "kiro": "Optional - ships 7 native core powers",
       "geminiCli": "Optional - ships 7 native core commands",
       "agentsMd": "Universal fallback surface for Codex and other markdown-reading agents"
@@ -182,7 +200,7 @@
       "validation": "Run ./scripts/validate-agent-surface.sh before publishing or after framework updates"
     },
     "directoryStructure": {
-      ".claude/skills": "19 Claude Code skills (full surface)",
+      ".claude/skills": "21 Claude Code skills (full surface)",
       ".claude/agents": "6 worker agent definitions for specialist sessions",
       ".claude/roles": "7 role packs for personalized skill and integration recommendations",
       ".kiro/powers": "7 Kiro powers (core workflows)",
@@ -198,16 +216,16 @@
     },
     "skillArchitecture": {
       "type": "agent-skills",
-      "skills": 19,
+      "skills": 21,
       "workerAgents": 6,
       "rolePacks": 7,
       "invocation": "model-invoked",
       "progressiveDisclosure": true,
       "nativeSurfaces": {
-        "claudeCode": 19,
+        "claudeCode": 21,
         "kiro": 7,
         "geminiCli": 7,
-        "agentsMd": 19
+        "agentsMd": 21
       },
       "description": "Self-contained skills with worker agent delegation, full Claude Code surface, core native Kiro/Gemini surfaces, and AGENTS.md as the universal fallback"
     }

@@ -58,6 +58,9 @@ We welcome ideas for new features or improvements:
    - `.kiro/powers/cog-[name]/POWER.md` - Kiro format (if Kiro supports the skill)
    - `.gemini/commands/[name].toml` + `.gemini/skills/[name].md` - Gemini CLI format (if Gemini supports the skill)
    - If the skill is role-specific, add it to relevant role packs in `.claude/roles/`
+   - **If the skill mutates external state** (publishes, posts, deploys, transitions tickets), it MUST include a "Verify" step that observes the mutated artifact (curl the URL, screenshot the post) before reporting success — see the Skill Post-Condition Rule in `CLAUDE.md`
+   - **Prompting note for reasoning models**: don't write "show your reasoning" / "think step by step" instructions into SKILL.md files — modern reasoning models handle this internally, and forcing it degrades output. State the goal and the constraints instead.
+   - If the skill iterates, declare its loop per `/loop-engineering`; if it captures reusable environment knowledge, consider the [skill distillation pattern](docs/SKILL-DISTILLATION.md)
 2. **Templates**: Follow existing YAML frontmatter conventions
 3. **Documentation**: Update README.md if adding major features
 4. **Examples**: Provide examples of your feature in action

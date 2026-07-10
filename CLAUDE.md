@@ -44,6 +44,19 @@ Read("/tmp/slack-data.md")
 
 **Applies to:** All `worker-*` agents, all `brief-*` agents, any subagent that collects, extracts, or processes data.
 
+### Single-File Deliverable Rule — ALWAYS APPLY
+
+The user reviews **one file per run**. Multi-file outputs (staging files, per-worker dumps, split reports) make review impossible.
+
+- **Default: work in a single file.** If the task fits in one file, never split it.
+- **Fan-out is allowed mid-run** (parallel workers must write separate staging files to avoid conflicts), **but the final step always consolidates**: one deliverable file with the main content (TL;DR, synthesis, plan) on top, then an `## Appendix — sources` section containing each sub-file's content (or a condensed version + link if a sub-file is bulky raw data).
+- **After consolidating, delete the staging files.** The run folder ends with exactly one file (or zero, if the deliverable lives elsewhere).
+- Never present the user with "see files A, B, C, D" — present one file.
+
+### Fresh-Context Isolation — ALWAYS APPLY when fanning out workers
+
+When the orchestrator dispatches multiple workers in parallel, pass each worker ONLY the digested context it needs — never paste a prior worker's raw output into the next worker's prompt. Pasted context induces *narrativisation*: the worker treats the preamble as "the orchestrator already framed the findings, I just classify them" instead of independently reading the source. Observed failure mode: a 5× speedup coupled with hallucinated findings and mis-cited references.
+
 ---
 
 ## Brain-First Knowledge Protocol (MUST APPLY)
@@ -61,6 +74,29 @@ For factual statements written into durable notes (`05-knowledge/**`, people pro
 `[Source: [[path/to/note]] | YYYY-MM-DD | confidence: high|medium|low]`
 
 Use one citation per distinct factual claim block where practical.
+
+### Citation Verbatim & Verifier Pass — When Accuracy Matters
+
+For skills that produce auditable claims about external sources (Slack threads, tickets, PRs, meeting transcripts — e.g. `team-brief`, `comprehensive-analysis`, `auto-research`), apply two additional disciplines:
+
+1. **Verbatim quote alongside the citation.** Every cited reference should carry the actual line text in backticks, not just a link. Pattern: `[<short>] (<link>) — \`<verbatim quote>\``. If you can't quote the source verbatim, drop the claim — that's the failure mode this discipline prevents.
+
+2. **Opt-in adversarial verifier pass before publishing.** For high-stakes briefs/reviews, after the draft is assembled, spawn one `worker-data-collector` (Sonnet) whose only job is to re-fetch each cited URL and tag every claim `Verified | Weakened | Falsified` against the verbatim quote. Falsified claims are dropped; Weakened are demoted (e.g. "blocker" → "heads up"). Output contract: `CLAIM <id> | <tag> | <one-sentence justification with link>`.
+
+This is opt-in per skill — not a hard rule for every output. Apply it where wrongness costs the most.
+
+---
+
+## Skill Post-Condition Rule — ALWAYS APPLY
+
+Every skill run that **mutates external state** (publishes a page, deploys, posts to Slack/socials, transitions a ticket, pushes commits, fires a webhook) must end with an explicit **post-condition check**: fetch back or observe the mutated artifact and confirm it matches intent before reporting success.
+
+The failure mode this prevents is **confident-but-unchecked**: a step returns plausible output that no downstream layer validates. Rules:
+
+- The check must observe the *artifact*, not the tool's return value (curl the URL, re-fetch the ticket, screenshot the post).
+- Read-only skills are exempt.
+- If the check fails, report the failure plainly — never report success from the mutation call alone.
+- New skills that mutate external state must include a "Verify" step in their SKILL.md.
 
 ---
 
@@ -100,7 +136,7 @@ Role packs live in `.claude/roles/`. New roles can be added by dropping a file f
 - `COMPETITIVE-WATCHLIST.md` — Companies/people being tracked
 
 ### Framework files (updated via `cog-update.sh` or `/update-cog`)
-- `.claude/skills/` — Claude Code skills (17 skills)
+- `.claude/skills/` — Claude Code skills (21 skills)
 - `.claude/agents/` — Worker agent definitions (6 agents)
 - `.claude/roles/` — Role packs for personalized recommendations
 - `.kiro/powers/` — Kiro powers
