@@ -24,7 +24,7 @@ COG ships marketplace metadata in multiple formats:
 | `marketplace-entry.json` | General marketplaces | Lightweight catalog entry |
 | `AGENTS.md` | Universal | Command reference for any markdown-reading agent |
 
-Current packaged version: **3.6.0**
+Current packaged version: **3.8.0**
 
 ## Surface Model
 
@@ -44,7 +44,7 @@ For the detailed contract, see [`docs/AGENT-SUPPORT.md`](../docs/AGENT-SUPPORT.m
 
 These keywords are set across all manifests and the GitHub repo for discoverability:
 
-`second-brain`, `garry-tan`, `gstack`, `gbrain`, `ai-agents`, `obsidian`, `claude-code`, `cursor`, `kiro`, `gemini-cli`, `codex`, `worker-agents`, `people-crm`, `knowledge-management`, `specialist-sessions`, `agentic`, `self-evolving`, `loop-engineering`, `productivity`
+`second-brain`, `garry-tan`, `gstack`, `gbrain`, `ai-agents`, `obsidian`, `claude-code`, `cursor`, `kiro`, `gemini-cli`, `codex`, `worker-agents`, `people-crm`, `knowledge-management`, `specialist-sessions`, `agentic`, `self-evolving`, `loop-engineering`, `productivity`, `v-model`, `closed-loop`, `verification-harness`, `evidence-ledger`, `ultragoal`, `risk-lanes`, `verifier-agents`
 
 ## Before You Publish
 
@@ -87,6 +87,9 @@ Do **not** describe installation as copying only `.claude/` into another folder 
 7. Run `./scripts/validate-agent-surface.sh`
 8. Update GitHub repo topics if keywords changed
 9. Smoke test onboarding from a clean clone
+10. Update `.github/MARKETPLACE.md` "Current packaged version"
+11. Cut a GitHub Release tagged `vX.Y.Z` with the CHANGELOG section as the body
+12. Re-index the directories: skills.sh and agentskill.sh pull from the repo automatically; cursor.directory may need a resubmit if the manifest shape changed
 
 ## Support Links
 
