@@ -42,6 +42,10 @@ Thumbs.db
 # Logs
 *.log
 
+# Harness runtime artifacts (written by .claude/lib/checkpoint.sh and /execute)
+.claude/logs/
+04-projects/harness/runs/
+
 # Backup files
 *.bak
 *~
