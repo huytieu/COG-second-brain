@@ -446,7 +446,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 ### /closed-loop
 
-**Description:** V-model execute pipeline — CP-2 plan → CP-3 build → CP-3v component verify → CP-4 integration verify → CP-5 acceptance. Every verify step emits evidence rows traced to acceptance criterion IDs (`AC-n`).
+**Description:** V-model execute pipeline: CP-2 plan → CP-3 build → CP-3v component verify → CP-4 integration verify → CP-5 acceptance. Every verify step emits evidence rows traced to acceptance criterion IDs (`AC-n`).
 
 **Triggers:**
 - `/execute <task>`
@@ -459,7 +459,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 **What it does:**
 1. Classifies the task into a risk lane (`bash .claude/lib/lane-classify.sh classify "<task>"`)
 2. Runs the worker at CP-3, traced to `AC-n`
-3. Dispatches a fresh-context, read-only `task-verifier` at CP-3v that observes the *artifact* (curl the URL, re-read the file, screenshot the page) — never the worker's summary
+3. Dispatches a fresh-context, read-only `task-verifier` at CP-3v that observes the *artifact* (curl the URL, re-read the file, screenshot the page), never the worker's summary
 4. On `FAIL:fixable`, dispatches `fix-agent` (max 2 retries), then re-verifies; on `FAIL:escalate`, stops
 5. Runs `integration-verifier` at CP-4 for multi-task / `full`-lane work
 6. Records checkpoints and evidence rows to the run's `evidence/ledger.md`
@@ -470,7 +470,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 ### /ultragoal
 
-**Description:** Run a goal too big to ship in one session — a chain of phases, each its own full closed-loop run, with cross-session state and a final north-star acceptance gate.
+**Description:** Run a goal too big to ship in one session: a chain of phases, each its own full closed-loop run, with cross-session state and a final north-star acceptance gate.
 
 **Triggers:**
 - `/ultragoal <goal>`
@@ -502,7 +502,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 - After a correction, a rejected deliverable, or a surprising discovery
 - Nightly self-enhancement runs
 
-**Purpose:** Tacit knowledge dies in the transcript. Corrections you made, workarounds discovered, and patterns that worked are all lost when the session closes. Harvest catches them at the boundary — but stages rather than commits, because auto-promoting session noise into durable knowledge poisons the well.
+**Purpose:** Tacit knowledge dies in the transcript. Corrections you made, workarounds discovered, and patterns that worked are all lost when the session closes. Harvest catches them at the boundary, but stages rather than commits, because auto-promoting session noise into durable knowledge poisons the well.
 
 **What it does:**
 1. Scans the session for corrections, rejected outputs, non-obvious discoveries, and repeated friction
@@ -517,7 +517,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 ### /retro
 
-**Description:** CP-7 retrospective — audit the run's checkpoints, evidence quality, action items, and harvest candidates. Closes the V-model cycle and feeds the next one.
+**Description:** CP-7 retrospective: audit the run's checkpoints, evidence quality, action items, and harvest candidates. Closes the V-model cycle and feeds the next one.
 
 **Triggers:**
 - `/retro <run or spec>`
@@ -528,7 +528,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 **What it does:**
 1. Reads the run's evidence ledger and checkpoint log
-2. Audits evidence *quality* — did each row observe the artifact, or restate a tool return value?
+2. Audits evidence *quality*. Did each row observe the artifact, or restate a tool return value?
 3. Identifies which checkpoints caught real problems and which were ceremony
 4. Extracts action items and harvest candidates
 5. Writes `04-projects/harness/retro/YYYY-MM-DD-<slug>.md`
@@ -539,7 +539,7 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 ### /review-cockpit
 
-**Description:** One living review document per multi-item session — a cockpit header (Progress checklist, Working folder, Context) plus per-item review cards you approve or request changes on directly in the doc.
+**Description:** One living review document per multi-item session: a cockpit header (Progress checklist, Working folder, Context) plus per-item review cards you approve or request changes on directly in the doc.
 
 **Triggers:**
 - Any session with **≥2 deliverables you need to review or approve**
@@ -567,7 +567,7 @@ The following 5 skills raise output quality on writing and visual work. They enc
 
 ### /no-ai-slop
 
-**Description:** Edit drafts into sharper, more human writing while preserving the writer's personal voice — or detect AI-slop patterns without rewriting.
+**Description:** Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 
 **Triggers:**
 - "make this less AI-sounding"
@@ -589,7 +589,7 @@ The following 5 skills raise output quality on writing and visual work. They enc
 
 ### /editorial-illustrations
 
-**Description:** Generate meaning-carrying editorial data-illustrations in a near-black grayscale + single-accent aesthetic. A **generative guide**, not a template gallery — it teaches the "claim → geometry" method.
+**Description:** Generate meaning-carrying editorial data-illustrations in a near-black grayscale + single-accent aesthetic. A **generative guide**, not a template gallery. It teaches the "claim → geometry" method.
 
 **Triggers:**
 - "make a chart/diagram/illustration for this"
@@ -599,7 +599,7 @@ The following 5 skills raise output quality on writing and visual work. They enc
 **Purpose:** Most generated figures decorate; they don't argue. This teaches the session to derive the *right* geometry from what the text actually claims, then render it as a self-contained, theme-aware, reduced-motion-safe HTML/SVG figure.
 
 **What it does:**
-1. Extracts the claim, then asks "where is the point?" — the one element that gets the accent
+1. Extracts the claim, then asks "where is the point?", the one element that gets the accent
 2. Selects geometry from the claim's shape (a rail, a ramp, a bridge, a lane split), not from a chart-type menu
 3. Renders self-contained HTML/SVG with a grayscale ramp plus exactly one accent, AA-safe on both grounds
 4. Runs a pre-flight checklist: one accent on the point, no clipped mono text, no misaligned SVG, theme toggle honored
@@ -610,19 +610,19 @@ The following 5 skills raise output quality on writing and visual work. They enc
 
 ### /data-forms
 
-**Description:** Pick the right way to represent a dataset so a reader gets the finding in three seconds — a catalog of 20+ chart and diagram forms with when-to-use and failure modes, plus the encoding decisions that make any of them readable.
+**Description:** Pick the right way to represent a dataset so a reader gets the finding in three seconds: a catalog of 20+ chart and diagram forms with when-to-use and failure modes, plus the encoding decisions that make any of them readable.
 
 **Triggers:**
 - Charting survey results, benchmark data, usage metrics, or research findings
 - "the default bar chart is burying the point"
 - Building a post, brief, deck, or report with data in it
 
-**Purpose:** A repertoire, not a style. What makes good data illustration work is not the palette — it's form selection and encoding discipline, both of which are portable to any visual language.
+**Purpose:** A repertoire, not a style. What makes good data illustration work is not the palette. It is form selection and encoding discipline, both of which are portable to any visual language.
 
 **What it does:**
 1. Matches the dataset's question to a form from the catalog (with each form's failure modes stated)
 2. Applies the encoding rules that carry across all of them: takeaway headline, direct labels, kill the axis, highlight-and-mute, show the caveat
-3. Stays style-agnostic — hands off to `dataviz` (or your host design system) for palette and accessibility
+3. Stays style-agnostic, handing off to `dataviz` (or your host design system) for palette and accessibility
 
 **References:** `references/forms.md`.
 
@@ -637,13 +637,13 @@ The following 5 skills raise output quality on writing and visual work. They enc
 - Deck backgrounds, social cards, essay figures, spec cover art
 - Any visual that needs aesthetic weight and credibility
 
-**Purpose:** Curated, historically significant art reads as credible and sophisticated; AI-generated imagery reads as slop. Stacks with `/no-ai-slop`. Does **not** replace `/editorial-illustrations`, which owns claim-driven diagrams — museum art is for photographic, hero, decorative, and mood imagery.
+**Purpose:** Curated, historically significant art reads as credible and sophisticated; AI-generated imagery reads as slop. Stacks with `/no-ai-slop`. Does **not** replace `/editorial-illustrations`, which owns claim-driven diagrams. Museum art is for photographic, hero, decorative, and mood imagery.
 
 **What it does:**
 1. Queries museum open-access APIs (verified keyless recipes per institution)
 2. Confirms public-domain status and records the licensing terms
 3. Returns high-res source URLs with attribution metadata
-4. Fetches fresh each time — no reusable image pool, so visuals don't repeat across posts
+4. Fetches fresh each time, so there is no reusable image pool, so visuals don't repeat across posts
 
 **References:** one file per institution under `references/`.
 
@@ -661,7 +661,7 @@ The following 5 skills raise output quality on writing and visual work. They enc
 **Purpose:** Distinct from `/weekly-checkin`, where you supply the input. Here **the agent is the author** and the log accrues in the background, so the record exists even on days you'd never sit down to write one.
 
 **What it does:**
-1. **`log` (default, mostly implicit):** appends one entry after meaningful work — what was done, focus thread, artifacts touched, optional signal
+1. **`log` (default, mostly implicit):** appends one entry after meaningful work: what was done, focus thread, artifacts touched, optional signal
 2. Skips trivia: one-line lookups, scratch work, its own writes, anything you asked to keep out
 3. **`reflect`:** reads the day's log plus recent days, summarizes the day back to you, asks 2-4 light questions adapted to what the log shows, then writes your answers plus a synthesis into the day's file
 4. On request, synthesizes the last 7 files into a week-in-review
@@ -819,7 +819,7 @@ The following 6 skills form a complete product management lifecycle:
 
 COG includes 10 specialized agents (`.claude/agents/`) that handle data-heavy and verification tasks using Sonnet while the lead session (Opus) handles reasoning and synthesis. Inspired by [garrytan/gstack](https://github.com/garrytan/gstack) specialist sessions and [garrytan/gbrain](https://github.com/garrytan/gbrain) knowledge patterns.
 
-**Workers** — do the gathering and the mutating:
+**Workers** handle the gathering and the mutating:
 
 | Agent | What it does | When it's used |
 |---|---|---|
@@ -830,7 +830,7 @@ COG includes 10 specialized agents (`.claude/agents/`) that handle data-heavy an
 | **worker-publisher** | Publishing to Slack, Confluence, Notion, webhooks | Brief publishing, wiki sync |
 | **brief-people-updater** | Batch-update people profiles from meetings/briefs | After team briefs, meeting processing |
 
-**Verifiers** — read-only, fresh-context, and they cannot edit files or mutate external state:
+**Verifiers** are read-only and fresh-context, and they cannot edit files or mutate external state:
 
 | Agent | What it does | Checkpoint |
 |---|---|---|
@@ -841,7 +841,7 @@ COG includes 10 specialized agents (`.claude/agents/`) that handle data-heavy an
 
 **Key rules:**
 - Workers write results to `/tmp/{task-slug}.md` and return only a short status + file path. The lead session reads the file for synthesis.
-- Verifiers receive **paths only** — never paste a worker's output into a verifier's prompt. Pasted context induces narrativisation: the verifier classifies the framing instead of independently reading the source.
+- Verifiers receive **paths only**. Never paste a worker's output into a verifier's prompt. Pasted context induces narrativisation: the verifier classifies the framing instead of independently reading the source.
 
 ---
 

@@ -2,7 +2,7 @@
 
 > Lifecycle: `WORKFLOW.md` (V-model harness) · Universal surface: `AGENTS.md`
 
-## V-Model Checkpoints — ALWAYS APPLY
+## V-Model Checkpoints (ALWAYS APPLY)
 
 Work walks the **V**: decompose left (spec → plan), build at the apex, verify right with **evidence** traced to criterion IDs (`AC-n`). See `WORKFLOW.md` for the full diagram.
 
@@ -21,7 +21,7 @@ Work walks the **V**: decompose left (spec → plan), build at the apex, verify 
 
 **Cross-model flagship gate (`full`+ / ultragoal / irreversible):** overlay a flagship model that is NOT the lead's own as a cross-model advisor at CP-1 and critic at CP-4, CP-5, CP-6. Fresh context, read-only, advisory. Same-family verifiers share the lead's blind spots; a different model catches a different error class. A critical cross-model finding blocks auto-ship. Skip on `tiny`/`normal`.
 
-## Closed-Loop Execute — ALWAYS APPLY (build tasks)
+## Closed-Loop Execute (ALWAYS APPLY, build tasks)
 
 Every **build task** (`normal` lane and above) runs the verification pipeline before reporting success. Skill: `.claude/skills/closed-loop/SKILL.md`. Inspired by [dwarves-kit](https://github.com/dwarvesf/dwarves-kit).
 
@@ -39,13 +39,13 @@ worker → task-verifier (read-only) → fix-agent (max 2 retries) → escalate 
 
 **Rules:**
 - `task-verifier` and `fix-agent` are **fresh-context** subagents (paths only, never paste worker output into a verifier).
-- Verifier agents are **read-only** — they cannot edit files or mutate external state.
-- **Dispatch a verifier subagent when there is external state, or when a fresh pair of eyes is the point** — mutations (publishes, pushes, tracker transitions, deploys), auditable claims, `full`+ lanes, every ultragoal phase.
+- Verifier agents are **read-only**. They cannot edit files or mutate external state.
+- **Dispatch a verifier subagent when there is external state, or when a fresh pair of eyes is the point**: mutations (publishes, pushes, tracker transitions, deploys), auditable claims, `full`+ lanes, every ultragoal phase.
 - **On `normal`-lane read-only work, the lead verifies inline instead.** Spawning a verifier to re-read a file the lead just wrote buys nothing.
 - Verification means **observing the artifact** (curl the URL, screenshot the page, re-fetch the issue, diff the file), never re-reading the worker's own summary of it.
 - Max **2** fix-agent retries per task, then `ESCALATE` with evidence. Log outcomes to `.claude/logs/loop-ledger.tsv`.
 
-## Risk Lanes — ALWAYS APPLY
+## Risk Lanes (ALWAYS APPLY)
 
 Classify before executing: `bash .claude/lib/lane-classify.sh explain "<task>"`.
 
@@ -55,7 +55,7 @@ Classify before executing: `bash .claude/lib/lane-classify.sh explain "<task>"`.
 - **bug**: root cause before patch.
 - **backfill**: no behavior change without approval.
 
-## Ultragoal — ALWAYS APPLY (long-running goals)
+## Ultragoal (ALWAYS APPLY, long-running goals)
 
 An **ultragoal** is a large, multi-session goal that can't ship in one run. It gets the closed loop applied in full and is never lane-downgraded. Skill: `.claude/skills/ultragoal/SKILL.md`.
 
@@ -65,21 +65,21 @@ An **ultragoal** is a large, multi-session goal that can't ship in one run. It g
 - **Two acceptance gates.** Per-phase acceptance (CP-5) AND a final **north-star acceptance verifier** that checks every `AC-n` has a PASS row.
 - **Adversarial by default.** Wrongness compounds across sessions, so verify every phase, not only the end.
 
-## Visual Verification — ALWAYS APPLY (UI/UX tasks)
+## Visual Verification (ALWAYS APPLY, UI/UX tasks)
 
 Any task that **implements or changes a UI/UX flow** is not verified by a DOM/selector check. The DOM can be present and the pixels still wrong: overflow, misalignment, clipped text, wrong contrast, broken responsive layout, z-index overlap.
 
 - **Capture visual evidence.** Screenshot every meaningful state; record multi-step flows.
 - **Actually read the image, then compare** against the intended design (mock, spec wireframe, prior state, house style). Name the discrepancy; never declare pass on "element exists."
-- **Fix the UI error you spot** — part of the task, not a follow-up. Re-capture to prove it.
+- **Fix the UI error you spot**. This is part of the task, not a follow-up. Re-capture to prove it.
 - Evidence lands in the run evidence dir and feeds the CP-5 post-condition row.
 
-## Delegation Cap — ALWAYS APPLY
+## Delegation Cap (ALWAYS APPLY)
 
-Delegation is not free: each subagent re-establishes context, re-explores, and reports back, and the lead then re-reads the report. Delegate when the payoff clearly exceeds that overhead — not by reflex.
+Delegation is not free: each subagent re-establishes context, re-explores, and reports back, and the lead then re-reads the report. Delegate when the payoff clearly exceeds that overhead, not by reflex.
 
 - **Don't delegate work the lead can finish in a handful of tool calls.**
-- **Fan out only for genuinely independent, sizeable tracks** — ≥3 unrelated items, a wide multi-source sweep, or parallel workers that would conflict on the same file.
+- **Fan out only for genuinely independent, sizeable tracks**: ≥3 unrelated items, a wide multi-source sweep, or parallel workers that would conflict on the same file.
 - **If one subagent can do it, use one.** Keep spawn counts low.
 - **Brief precisely the first time.** Avoid launch → wait → re-brief; never redo a subagent's work after it reports.
 - Independent agents launched together go in **one message with multiple tool calls** so they run concurrently.
@@ -244,7 +244,7 @@ Role packs live in `.claude/roles/`. New roles can be added by dropping a file f
 - `COMPETITIVE-WATCHLIST.md` — Companies/people being tracked
 
 ### Framework files (updated via `cog-update.sh` or `/update-cog`)
-- `.claude/skills/` — Claude Code skills (31 skills)
+- `.claude/skills/`: Claude Code skills (31 skills)
 - `.claude/agents/` — Worker agent definitions (6 agents)
 - `.claude/roles/` — Role packs for personalized recommendations
 - `.kiro/powers/` — Kiro powers

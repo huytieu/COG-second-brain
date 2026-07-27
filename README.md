@@ -121,7 +121,7 @@ The enforcement layer that keeps every other skill honest. Work walks a **V**: d
 | **closed-loop** | Plan → build → component verify → integration verify → acceptance. The worker never grades its own homework; verifiers observe the artifact, not the worker's summary | "Run this through the closed loop" |
 | **ultragoal** | A goal too big for one session, run as a chain of phases with cross-session state and a north-star acceptance gate | "Track this as an ultragoal" |
 | **harvest** | Capture session learnings, stage them for approval, propose skill patches. Never writes durable knowledge unapproved | "Harvest what we learned" |
-| **retro** | Audit the run's checkpoints and *evidence quality* — a run can pass every gate on weak observations | "Retro this run" |
+| **retro** | Audit the run's checkpoints and *evidence quality*. A run can pass every gate on weak observations | "Retro this run" |
 | **review-cockpit** | One living doc per multi-item session: progress, per-item cards, and an approval slot you edit in place | "Set up a review cockpit" |
 
 ### Craft Skills (Writing & Visuals)
@@ -158,7 +158,7 @@ COG uses a worker agent architecture inspired by [garrytan/gstack](https://githu
 
 > Workers write results to `/tmp/` files and return only a status + path. The lead reads the file for synthesis. This eliminates slow token generation in agent output.
 >
-> Verifiers receive **paths only** — never a worker's output. Pasted context induces narrativisation: the verifier classifies the framing instead of independently reading the source.
+> Verifiers receive **paths only**, never a worker's output. Pasted context induces narrativisation: the verifier classifies the framing instead of independently reading the source.
 
 ### People CRM (Knowledge-Based Team Profiles)
 
@@ -213,7 +213,7 @@ graph TD
 | **Privacy-First** — Local `.md` files, strict domain separation, no external servers | **Multi-Device** — iCloud sync to iPhone/iPad/Mac; Git for version history | **Obsidian Tasks** — `📅 YYYY-MM-DD` emoji format works with Tasks plugin dashboards |
 | **Garry Tan Inspired** — gstack specialist sessions + gbrain knowledge patterns | **Multi-Platform** — Listed on [skills.sh](https://skills.sh), [agentskill.sh](https://agentskill.sh), [cursor.directory](https://cursor.directory) | **Worker Agents** — Sonnet handles I/O, Opus handles thinking |
 | **Runtime Trust** — memory hygiene sweeps re-verify stored facts against the live environment | **Post-Condition Checks** — mutating skills observe the artifact before reporting success | **Skill Distillation** — [explore once, execute cheap](docs/SKILL-DISTILLATION.md) with small models |
-| **V-Model Closed Loop** — every criterion has a task on the left and an evidence row on the right before ship | **Risk Lanes** — ceremony scales with blast radius instead of applying uniformly | **Cross-Model Gate** — a different model family catches a different error class |
+| **V-Model Closed Loop** — every criterion has a task on the left and an evidence row on the right | **Risk Lanes** — ceremony scales with blast radius | **Cross-Model Gate** — a different model family catches a different error class |
 
 ## Your Vault
 
