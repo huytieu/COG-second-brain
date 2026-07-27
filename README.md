@@ -11,7 +11,7 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[31 Skills]
+    B -- runs --> C[33 Skills]
     C -- delegates to --> W[6 Workers]
     C -- verified by --> V[4 Read-Only Verifiers]
     C -- reads & writes --> D[.md Files]
@@ -56,11 +56,11 @@ COG ships a **full Claude Code surface** plus **core native surfaces** for Kiro 
 
 | Surface | Current support | Notes |
 |---|---|---|
-| Claude Code | 31 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
+| Claude Code | 33 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
-| `AGENTS.md` | 31 documented commands | Universal fallback for Codex and other agents |
+| `AGENTS.md` | 33 documented commands | Universal fallback for Codex and other agents |
 
 Before publishing or updating framework files, run `./scripts/validate-agent-surface.sh` to catch drift between manifests, docs, and shipped files. See [docs/AGENT-SUPPORT.md](docs/AGENT-SUPPORT.md) for the detailed support matrix and contributor rules.
 
@@ -133,6 +133,15 @@ The enforcement layer that keeps every other skill honest. Work walks a **V**: d
 | **data-forms** | 20+ chart and diagram forms with when-to-use, failure modes, and the encoding discipline that makes any of them readable | "The bar chart is burying the point" |
 | **museum-art** | Real public-domain artwork from museum open-access APIs instead of AI-generated or stock imagery | "Find a hero image for this post" |
 | **daily-journal** | A passive work journal the agent keeps for you, plus a guided reflection on request | "Reflect on today" |
+
+### Design Skills (Anti-Slop UI)
+
+A paired set. `taste-skill` owns first-impression surfaces, `product-ui-taste` owns surfaces people use every day. Never run both on the same component.
+
+| Skill | Owns | Try saying... |
+|---|---|---|
+| **taste-skill** | Landing pages, portfolios, marketing, editorial. States a "Design Read" before writing code so it stops defaulting to one house aesthetic | "Build a landing page for this" |
+| **product-ui-taste** | Dashboards, data tables, forms, wizards, settings, admin consoles. Budgets the frame in px first, then survives real data: overflow, long labels, empty/error/permission-denied states | "Build the admin table for this" |
 
 ### Agents (Specialist Sessions)
 
@@ -219,7 +228,7 @@ graph TD
 
 ```
 COG-second-brain/
-├── .claude/skills/          # Claude Code skills (31)
+├── .claude/skills/          # Claude Code skills (33)
 ├── .claude/agents/          # Worker agent definitions (6)
 ├── .claude/roles/           # Role packs (7) — personalized recommendations
 ├── .kiro/powers/            # Kiro powers

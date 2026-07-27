@@ -6,8 +6,8 @@
     "email": "tqhuy1991@gmail.com",
     "url": "https://github.com/huytieu"
   },
-  "description": "Self-evolving second brain with 31 AI skills, 10 agents, and people CRM. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, read-only verifier agents, risk lanes, multi-session ultragoals with a north-star acceptance gate, and craft skills for writing and visuals. Inspired by Garry Tan's gstack and gbrain, and dwarves-kit. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex.",
-  "version": "3.8.0",
+  "description": "Self-evolving second brain with 33 AI skills, 10 agents, and people CRM. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, read-only verifier agents, risk lanes, multi-session ultragoals with a north-star acceptance gate, craft skills for writing and visuals, and paired anti-slop design skills for marketing and product UI. Inspired by Garry Tan's gstack and gbrain, and dwarves-kit. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex.",
+  "version": "3.8.1",
   "keywords": [
     "second-brain",
     "garry-tan",
@@ -29,7 +29,10 @@
     "closed-loop",
     "verification-harness",
     "ultragoal",
-    "evidence-ledger"
+    "evidence-ledger",
+    "design-systems",
+    "anti-slop",
+    "ui-ux"
   ],
   "category": "productivity",
   "homepage": "https://github.com/huytieu/COG-second-brain"

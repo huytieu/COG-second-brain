@@ -2,6 +2,25 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.8.1] - 2026-07-27
+
+### Added
+
+#### Paired anti-slop design skills (2)
+The two skills held back from v3.8.0 pending a provenance check, now confirmed original and shipped. They are a **pair with a hard boundary**, because the two surfaces fail in opposite ways and a single "make it look good" skill gets both wrong.
+
+- **`taste-skill`**: landing pages, portfolios, marketing, editorial. Most model design output is bad because it jumps to a default aesthetic instead of reading the room, so this forces a one-line **Design Read** (page kind, audience, vibe signals, existing brand assets, quiet constraints) before any code. Explicit variance/motion/density dials, real design systems where they apply, audit-first on redesigns, strict pre-flight check.
+- **`product-ui-taste`**: dashboards, data tables, forms, wizards, settings, list/detail, admin consoles, app shells. Marketing UI lives on first impression; product UI lives on the hundredth use, under real data, by someone doing a job. The failure mode is not a templated aesthetic, it is a prototype that dies on contact with real data. Forces a **Product Read** and three dials (`DENSITY`, `DATA_COMPLEXITY`, `CONSEQUENCE`), budgets the frame in pixels top-down before content, and enforces the anti-defaults: rows instead of card-soup, correct scroll ownership, sticky headers, frozen-column offsets, z-index tiers, plus the states marketing UI never has (read-only, permission-denied, plan-locked).
+
+**The boundary is the point.** `taste-skill` hands dense product UI to `product-ui-taste`; never run both on the same component. On a mixed brief (a landing page with an embedded live dashboard), `taste-skill` takes the hero and `product-ui-taste` takes the product surface.
+
+Both resolve the host design system's **real** API before writing UI rather than inventing component props, and map across Carbon, Polaris, Atlaskit, Fluent, Primer, Material 3, Radix/shadcn, and Ant.
+
+### Changed
+- **Skill count 31 → 33** across all manifests, `AGENTS.md`, `README.md`, `SETUP.md`, `.github/MARKETPLACE.md`, and `docs/AGENT-SUPPORT.md`.
+- `.gitignore` now covers harness runtime artifacts (`.claude/logs/`, `04-projects/harness/runs/`), which `checkpoint.sh` and `/execute` write per-user and which should never land in a user's commits.
+- `.github/MARKETPLACE.md` release checklist gained the three steps that were being done by hand: refresh the packaged-version line, cut a GitHub Release, re-index the directories.
+
 ## [3.8.0] - 2026-07-27
 
 ### The Closed-Loop Harness

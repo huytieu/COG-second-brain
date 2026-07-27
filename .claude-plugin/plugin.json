@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.8.0",
-  "description": "Self-evolving second brain with 31 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing and visual work. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.8.1",
+  "description": "Self-evolving second brain with 33 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -52,7 +52,11 @@
     "verifier-agents",
     "retrospective",
     "no-ai-slop",
-    "data-viz"
+    "data-viz",
+    "design-systems",
+    "ui-ux",
+    "anti-slop",
+    "product-design"
   ],
   "category": "productivity",
   "tags": [
@@ -225,6 +229,16 @@
       "name": "daily-journal",
       "path": ".claude/skills/daily-journal/SKILL.md",
       "description": "A passive daily work journal the agent keeps for you - appends entries after meaningful work, runs a guided reflection on request"
+    },
+    {
+      "name": "taste-skill",
+      "path": ".claude/skills/taste-skill/SKILL.md",
+      "description": "Anti-slop frontend skill for landing pages, portfolios, and redesigns - reads the brief, states a design read, and ships interfaces that do not look templated"
+    },
+    {
+      "name": "product-ui-taste",
+      "path": ".claude/skills/product-ui-taste/SKILL.md",
+      "description": "Anti-slop skill for dense product surfaces (dashboards, tables, forms, wizards, admin consoles) - frame-first, correct at every edge case real data produces"
     }
   ],
   "metadata": {
@@ -248,12 +262,13 @@
       "Read-only verifier agents (task-verifier, integration-verifier) that observe artifacts, not worker summaries",
       "Risk lanes: ceremony scales with blast radius instead of applying uniformly",
       "Ultragoals: multi-session goals with per-phase verification and a final north-star acceptance gate",
-      "Cross-model flagship gate - a different model family catches a different error class"
+      "Cross-model flagship gate - a different model family catches a different error class",
+      "Paired anti-slop design skills: taste-skill owns marketing surfaces, product-ui-taste owns dense product UI"
     ],
     "requirements": {
       "obsidian": "Recommended for markdown file management",
       "git": "Optional but recommended for version control and safe updates",
-      "claudeCode": "Recommended for the full 31-skill native experience",
+      "claudeCode": "Recommended for the full 33-skill native experience",
       "kiro": "Optional - ships 7 native core powers",
       "geminiCli": "Optional - ships 7 native core commands",
       "agentsMd": "Universal fallback surface for Codex and other markdown-reading agents"
@@ -265,7 +280,7 @@
       "validation": "Run ./scripts/validate-agent-surface.sh before publishing or after framework updates"
     },
     "directoryStructure": {
-      ".claude/skills": "31 Claude Code skills (full surface)",
+      ".claude/skills": "33 Claude Code skills (full surface)",
       ".claude/agents": "10 agent definitions - 6 workers plus 4 read-only verifiers",
       ".claude/roles": "7 role packs for personalized skill and integration recommendations",
       ".kiro/powers": "7 Kiro powers (core workflows)",
@@ -283,16 +298,16 @@
     },
     "skillArchitecture": {
       "type": "agent-skills",
-      "skills": 31,
+      "skills": 33,
       "workerAgents": 10,
       "rolePacks": 7,
       "invocation": "model-invoked",
       "progressiveDisclosure": true,
       "nativeSurfaces": {
-        "claudeCode": 31,
+        "claudeCode": 33,
         "kiro": 7,
         "geminiCli": 7,
-        "agentsMd": 31
+        "agentsMd": 33
       },
       "description": "Self-contained skills with worker delegation and a read-only verification layer, full Claude Code surface, core native Kiro/Gemini surfaces, and AGENTS.md as the universal fallback"
     }

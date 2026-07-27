@@ -71,6 +71,8 @@ FRAMEWORK_FILES=(
   ".claude/skills/data-forms/SKILL.md"
   ".claude/skills/museum-art/SKILL.md"
   ".claude/skills/daily-journal/SKILL.md"
+  ".claude/skills/taste-skill/SKILL.md"
+  ".claude/skills/product-ui-taste/SKILL.md"
 
   # Role packs
   ".claude/roles/_template.md"

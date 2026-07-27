@@ -561,7 +561,52 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 ### Craft Skills
 
-The following 5 skills raise output quality on writing and visual work. They encode taste as mechanical rules rather than vibes.
+The following 7 skills raise output quality on writing and visual work. They encode taste as mechanical rules rather than vibes.
+
+---
+
+### /taste-skill
+
+**Description:** Anti-slop frontend skill for **landing pages, portfolios, and redesigns**. Reads the brief, infers the right design direction, and ships interfaces that do not look templated.
+
+**Triggers:**
+- Building or redesigning a landing page, portfolio, marketing site, or editorial page
+- "make this look less generic / less templated"
+- A brief that names a vibe ("Linear-style", "brutalist", "editorial", "premium consumer") or links a reference
+
+**Purpose:** Most LLM design output is bad because the model jumps to a default aesthetic instead of reading the room. This forces a **Design Read** first: page kind, audience, vibe signals, existing brand assets, and quiet constraints (accessibility-first, regulated, trust-first commerce) that override aesthetic preference.
+
+**What it does:**
+1. Infers the brief and states a one-line **Design Read** before writing any code
+2. Sets explicit dials (variance, motion, density) rather than defaulting
+3. Picks a real design system when one applies, instead of hand-rolling
+4. Audit-first on redesigns: existing brand assets are starting material, not optional input
+5. Runs a strict pre-flight check before shipping
+
+**Boundary:** Landing, portfolio, marketing, editorial. It hands off dashboards, data tables, and multi-step product UI to `/product-ui-taste`. Never run both on the same component.
+
+---
+
+### /product-ui-taste
+
+**Description:** Anti-slop skill for **dense product surfaces**: dashboards, data tables, forms, wizards, settings, list/detail, admin consoles, app shells. Budgets the frame first and ships interfaces that survive real data.
+
+**Triggers:**
+- Building a dashboard, index table, detail view, settings page, or multi-step flow
+- "the table breaks with real data"
+- Any admin console or internal tool
+
+**Purpose:** Marketing UI lives on first impression. Product UI lives on the **hundredth** use, under real data, by someone doing a job. The slop failure mode is different: not "templated aesthetic" but **a prototype that dies on contact with real data**. A table that scrolls the page sideways, a button that truncates its own label, one grey "no data" box reused for three different situations.
+
+**What it does:**
+1. States a one-line **Product Read** (surface type, user, density, data volume, consequence level, host system)
+2. Sets three dials: `DENSITY`, `DATA_COMPLEXITY`, `CONSEQUENCE`
+3. Resolves the host design system's **real** API before writing UI, never inventing component props
+4. Budgets the frame in pixels top-down before any content
+5. Enforces the anti-defaults: rows not card-soup, real empty/error/loading/permission-denied states, correct scroll ownership, sticky headers, frozen columns, z-index tiers
+6. Covers the states marketing UI never has: read-only, permission-denied, plan-locked
+
+**Boundary:** The counterpart to `/taste-skill`. Maps to Carbon, Polaris, Atlaskit, Fluent, Primer, Material 3, Radix/shadcn, and Ant.
 
 ---
 

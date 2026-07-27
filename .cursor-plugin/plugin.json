@@ -1,8 +1,8 @@
 {
   "name": "cog-second-brain",
   "displayName": "COG: Agentic Second Brain",
-  "version": "3.8.0",
-  "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 31 skills, 10 agents (6 workers + 4 read-only verifiers), people CRM with tiered enrichment. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, risk lanes, multi-session ultragoals with a north-star acceptance gate, and craft skills for writing and visuals. Works with Claude Code, Cursor, Kiro, Gemini CLI, and Codex.",
+  "version": "3.8.1",
+  "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 33 skills, 10 agents (6 workers + 4 read-only verifiers), people CRM with tiered enrichment. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, risk lanes, multi-session ultragoals with a north-star acceptance gate, craft skills for writing and visuals, and paired anti-slop design skills for marketing and product UI. Works with Claude Code, Cursor, Kiro, Gemini CLI, and Codex.",
   "author": {
     "name": "Huy Tieu",
     "email": "tqhuy1991@gmail.com",
@@ -195,6 +195,16 @@
       "name": "daily-journal",
       "path": ".claude/skills/daily-journal/SKILL.md",
       "description": "A passive daily work journal the agent keeps for you - appends entries after meaningful work, runs a guided reflection on request"
+    },
+    {
+      "name": "taste-skill",
+      "path": ".claude/skills/taste-skill/SKILL.md",
+      "description": "Anti-slop frontend skill for landing pages, portfolios, and redesigns - reads the brief, states a design read, and ships interfaces that do not look templated"
+    },
+    {
+      "name": "product-ui-taste",
+      "path": ".claude/skills/product-ui-taste/SKILL.md",
+      "description": "Anti-slop skill for dense product surfaces (dashboards, tables, forms, wizards, admin consoles) - frame-first, correct at every edge case real data produces"
     }
   ],
   "agents": [
