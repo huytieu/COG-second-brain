@@ -2,6 +2,65 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.8.0] - 2026-07-27
+
+### The Closed-Loop Harness
+
+v3.7.0 made trust a runtime decision for stored facts and mutations. v3.8.0 asks the harder question: **who checks the checker?**
+
+The unit of work in v3.7.0 was a skill run. A skill run reports success. Nothing above it decides whether that success was real, because the only thing that ever looked at the result was the agent that produced it. That is not a verification problem, it is a *structural* one — the worker grades its own homework.
+
+v3.8.0 replaces the flat skill run with a **V-model lifecycle**. Work descends the left arm (goal → falsifiable criteria → tasks), builds at the apex, and ascends the right arm through gates that each demand **evidence traced back to a criterion ID**. A criterion with no evidence row does not ship. An evidence row with no criterion is noise. The verifier is a separate agent, read-only, with fresh context and no access to the worker's narrative — it looks at the artifact.
+
+Two ideas do most of the work:
+
+- **The worker never grades its own homework.** Verification is a different agent, observing the artifact (curl the URL, re-read the file on disk, screenshot the page), never the summary the worker wrote about it.
+- **Ceremony scales with blast radius.** Five risk lanes mean a one-line fix doesn't pay for a spec and an integration verifier, while a publish does.
+
+Closed-loop execution and the risk-lane concept are adapted from [dwarves-kit](https://github.com/dwarvesf/dwarves-kit); the V-model framing comes from SDLC practice.
+
+### Added
+
+#### New Skills — Verification Harness (5)
+- **`closed-loop`** — the execute pipeline: CP-2 plan → CP-3 build → CP-3v component verify → CP-4 integration verify → CP-5 acceptance. Dispatches a fresh-context, read-only `task-verifier`, routes `FAIL:fixable` to `fix-agent` (max 2 retries), escalates otherwise. Every verify step emits `EVIDENCE <AC-id> | <CP> | PASS|FAIL | <observation> | <artifact>`.
+- **`ultragoal`** — for goals too big to ship in one session. One spec with a north-star and `AC-n` criteria, decomposed into phases, each phase a complete closed-loop run with its own evidence bundle. A living `STATUS.md` lets a cold session resume without re-reading history. Two acceptance gates: per-phase, and a final north-star verifier that checks every criterion has a PASS row. Ultragoals never downgrade the lane, because wrongness compounds across sessions.
+- **`harvest`** — captures durable session learnings (corrections, rejected outputs, non-obvious discoveries, repeated friction) at the session boundary and **stages** them. Auto-promoting session noise into durable knowledge poisons the well, so nothing reaches `05-knowledge/` without approval.
+- **`retro`** — CP-7. Audits not just whether checkpoints passed but whether the **evidence was any good**: did each row observe an artifact, or restate a tool return value? Identifies which gates caught real problems and which were ceremony.
+- **`review-cockpit`** — one living review doc per multi-item session. Cockpit header (Progress / Working folder / Context) plus per-item cards with a **🗒 Your call** approval slot you edit in place. The doc is the interaction surface, not a summary of it.
+
+#### New Skills — Craft (5)
+- **`no-ai-slop`** — edit a draft sharper while preserving voice, or detect slop without rewriting. Guards both failure directions: leaving AI patterns in, and stripping distinctive voice out along with them. Vendored from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT, with `LICENSE` and `SOURCE.md`).
+- **`editorial-illustrations`** — a generative guide, not a template gallery. Teaches the **claim → geometry** method: extract what the text argues, find where the point is, derive the right geometry from the claim's shape, then render a self-contained, theme-aware, reduced-motion-safe HTML/SVG figure with a grayscale ramp and exactly one accent.
+- **`data-forms`** — 20+ chart and diagram forms with when-to-use and failure modes, plus the encoding decisions that carry across all of them (takeaway headline, direct labels, kill the axis, highlight-and-mute, show the caveat). Style-agnostic: a repertoire, not a palette.
+- **`museum-art`** — source real public-domain artwork from museum open-access APIs (Met, Cleveland, SMK, Rijksmuseum, NGA, Art Institute of Chicago, Getty, Smithsonian) instead of AI-generated or stock imagery. Keyless recipes per institution, licensing rules included, fetched fresh so visuals don't repeat.
+- **`daily-journal`** — a passive work journal the agent keeps *for* you. Appends entries after meaningful work; the record exists even on days you'd never sit down to write one.
+
+#### New Agents (4)
+All read-only except `fix-agent`, all fresh-context, none can mutate external state:
+- **`task-verifier`** (CP-3v) — checks worker output against acceptance criteria by observing the artifact.
+- **`integration-verifier`** (CP-4) — cross-task wiring and global acceptance for multi-task specs.
+- **`fix-agent`** — targeted fixes after a `FAIL:fixable` verdict; implements only what the verifier flagged, max 2 attempts.
+- **`harvest-curator`** (CP-7) — shapes session learnings into adoption notes; propose-only.
+
+#### New Framework Files
+- **`WORKFLOW.md`** — the V-model lifecycle: checkpoint table, gate classes (blocking vs advisory), the evidence row contract, risk-lane checkpoint depth, the verification pipeline, and file homes for specs, evidence bundles, and retro output.
+- **`.claude/lib/checkpoint.sh`** — records checkpoint results to a run's evidence ledger.
+- **`.claude/lib/lane-classify.sh`** — classifies a task into a risk lane (`classify` for the verdict, `explain` for the reasoning).
+
+#### New Protocols in CLAUDE.md
+- **V-Model Checkpoints** — CP-1 through CP-7 with per-lane blocking rules, the two-way verification requirement, and the **cross-model flagship gate**: on high-stakes runs, overlay a flagship model that is *not* the lead's own as advisor at CP-1 and critic at CP-4/5/6. Same-family verifiers share the lead's blind spots; a different family catches a different error class.
+- **Closed-Loop Execute** — the pipeline, the five lanes, and when a verifier subagent is actually warranted. Notably: on `normal`-lane read-only work the lead verifies inline, because spawning an agent to re-read a file the lead just wrote buys nothing.
+- **Risk Lanes** — `tiny` / `normal` / `full` / `bug` / `backfill`, classified before executing.
+- **Ultragoal** — one spec, phases as full closed-loop runs, a living status ledger, two acceptance gates.
+- **Visual Verification** — UI/UX work is not verified by a DOM check. The DOM can be present and the pixels still wrong. Capture the render, *read the image*, name the discrepancy, fix it, re-capture.
+- **Delegation Cap** — delegation costs context re-establishment on both ends. Fan out only for genuinely independent, sizeable tracks; if one subagent can do it, use one.
+
+### Changed
+- **Skill count 21 → 31**, **agents 6 → 10** across `plugin.json`, `.cursor-plugin/plugin.json`, `marketplace-entry.json`, `AGENTS.md`, `README.md`, `SETUP.md`, `.cursorrules`, `.github/MARKETPLACE.md`, and `docs/AGENT-SUPPORT.md`.
+- **Model Routing table** extended with the four new agents (all Sonnet).
+- **`cog-update.sh`** — `FRAMEWORK_FILES` now covers the 10 new skills, 4 new agents, `WORKFLOW.md`, and both `.claude/lib/` scripts.
+- Version bumped to **3.8.0** across `COG-VERSION` and all manifests.
+
 ## [3.7.1] - 2026-07-10
 
 ### Added

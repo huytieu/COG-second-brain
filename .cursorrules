@@ -9,7 +9,7 @@ COG exposes 17 skills via `.claude/skills/*/SKILL.md`. Each skill has a `name` a
 
 ## Worker Agents
 
-6 worker agents live in `.claude/agents/`. Workers handle data-heavy tasks; the lead session handles reasoning and synthesis.
+10 agents live in `.claude/agents/`: 6 workers handle data-heavy tasks, 4 read-only verifiers check the result against acceptance criteria by observing the artifact. The lead session handles reasoning and synthesis.
 
 - worker-data-collector: Structured extraction from GitHub, Slack, Jira, Linear
 - worker-researcher: Web research with source citations

@@ -1,8 +1,8 @@
 {
   "name": "cog-second-brain",
   "displayName": "COG: Agentic Second Brain",
-  "version": "3.7.1",
-  "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 21 skills, 6 worker agents, people CRM with tiered enrichment. Runtime-trust release: memory hygiene sweeps, skill post-condition checks, verbatim citations with verifier pass, autonomous content factory. Iterative skills are loop-engineered with deterministic verifiers and layered termination. Inspired by Garry Tan's gstack and gbrain patterns. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.8.0",
+  "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 31 skills, 10 agents (6 workers + 4 read-only verifiers), people CRM with tiered enrichment. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, risk lanes, multi-session ultragoals with a north-star acceptance gate, and craft skills for writing and visuals. Works with Claude Code, Cursor, Kiro, Gemini CLI, and Codex.",
   "author": {
     "name": "Huy Tieu",
     "email": "tqhuy1991@gmail.com",
@@ -41,27 +41,161 @@
   ],
   "category": "productivity",
   "skills": [
-    "onboarding",
-    "braindump",
-    "daily-brief",
-    "weekly-checkin",
-    "knowledge-consolidation",
-    "url-dump",
-    "loop-engineering",
-    "scout",
-    "update-cog",
-    "memory-hygiene",
-    "content-factory",
-    "team-brief",
-    "meeting-transcript",
-    "comprehensive-analysis",
-    "auto-research",
-    "create-user-story",
-    "generate-prd",
-    "generate-release-notes",
-    "export-open-issues",
-    "publish-to-confluence",
-    "update-knowledge-base"
+    {
+      "name": "onboarding",
+      "path": ".claude/skills/onboarding/SKILL.md",
+      "description": "Personalize COG for your workflow - creates profile, interests, and watchlist files (run this first!)"
+    },
+    {
+      "name": "braindump",
+      "path": ".claude/skills/braindump/SKILL.md",
+      "description": "Quick capture of raw thoughts with intelligent domain classification and competitive intelligence extraction"
+    },
+    {
+      "name": "daily-brief",
+      "path": ".claude/skills/daily-brief/SKILL.md",
+      "description": "Generate personalized news intelligence with verified sources (7-day freshness requirement)"
+    },
+    {
+      "name": "weekly-checkin",
+      "path": ".claude/skills/weekly-checkin/SKILL.md",
+      "description": "Cross-domain pattern analysis and strategic reflection for weekly review"
+    },
+    {
+      "name": "knowledge-consolidation",
+      "path": ".claude/skills/knowledge-consolidation/SKILL.md",
+      "description": "Build frameworks from scattered insights across all braindumps and notes"
+    },
+    {
+      "name": "url-dump",
+      "path": ".claude/skills/url-dump/SKILL.md",
+      "description": "Quick capture URLs with automatic content extraction, insights, and categorization into knowledge booklets"
+    },
+    {
+      "name": "loop-engineering",
+      "path": ".claude/skills/loop-engineering/SKILL.md",
+      "description": "Shared loop-engineering reference for iterative skills - the agent loop, deterministic verifiers, termination conditions, in-loop context management, and named patterns"
+    },
+    {
+      "name": "team-brief",
+      "path": ".claude/skills/team-brief/SKILL.md",
+      "description": "Cross-reference GitHub, Linear, Slack, PostHog, meetings, and braindumps into a daily team intelligence brief with Linear sync-back"
+    },
+    {
+      "name": "meeting-transcript",
+      "path": ".claude/skills/meeting-transcript/SKILL.md",
+      "description": "Process meeting recordings into structured decisions, action items, and team dynamics"
+    },
+    {
+      "name": "comprehensive-analysis",
+      "path": ".claude/skills/comprehensive-analysis/SKILL.md",
+      "description": "Deep 7-day analysis for weekly reviews, board prep, or strategic planning"
+    },
+    {
+      "name": "scout",
+      "path": ".claude/skills/scout/SKILL.md",
+      "description": "Triage a URL or tool (verify, classify, and check fit) before deciding whether to save it"
+    },
+    {
+      "name": "update-cog",
+      "path": ".claude/skills/update-cog/SKILL.md",
+      "description": "Check for and apply upstream COG framework updates without touching personal content"
+    },
+    {
+      "name": "memory-hygiene",
+      "path": ".claude/skills/memory-hygiene/SKILL.md",
+      "description": "Periodic trust sweep of persistent memory - re-verify environment-dependent claims, stamp last_verified + confidence, propose archiving drifted entries"
+    },
+    {
+      "name": "content-factory",
+      "path": ".claude/skills/content-factory/SKILL.md",
+      "description": "Autonomous content pipeline - scout announcements, triage by trend momentum and personal angle, produce and publish with ledger dedup, volume caps, and post-condition verification"
+    },
+    {
+      "name": "auto-research",
+      "path": ".claude/skills/auto-research/SKILL.md",
+      "description": "Deep strategic research engine with parallel research threads and actionable analysis"
+    },
+    {
+      "name": "create-user-story",
+      "path": ".claude/skills/create-user-story/SKILL.md",
+      "description": "Create user stories with duplicate checking across Linear, GitHub Issues, or Jira"
+    },
+    {
+      "name": "generate-prd",
+      "path": ".claude/skills/generate-prd/SKILL.md",
+      "description": "Draft PRDs with approval gate before publishing to Confluence or Notion"
+    },
+    {
+      "name": "generate-release-notes",
+      "path": ".claude/skills/generate-release-notes/SKILL.md",
+      "description": "Generate release notes from GitHub milestones, Linear cycles, or manual input"
+    },
+    {
+      "name": "export-open-issues",
+      "path": ".claude/skills/export-open-issues/SKILL.md",
+      "description": "Audit and export open issues from any project tracker"
+    },
+    {
+      "name": "publish-to-confluence",
+      "path": ".claude/skills/publish-to-confluence/SKILL.md",
+      "description": "Publish vault markdown files to Confluence"
+    },
+    {
+      "name": "update-knowledge-base",
+      "path": ".claude/skills/update-knowledge-base/SKILL.md",
+      "description": "Maintain product knowledge base from releases and feature updates"
+    },
+    {
+      "name": "closed-loop",
+      "path": ".claude/skills/closed-loop/SKILL.md",
+      "description": "V-model execute pipeline - plan, build, component verify, integration verify, acceptance; the worker never grades its own homework and every evidence row traces to an AC-n criterion"
+    },
+    {
+      "name": "ultragoal",
+      "path": ".claude/skills/ultragoal/SKILL.md",
+      "description": "Run a goal too big for one session as a chain of phases, each its own full closed-loop run, with cross-session state and a final north-star acceptance gate"
+    },
+    {
+      "name": "harvest",
+      "path": ".claude/skills/harvest/SKILL.md",
+      "description": "Capture durable session learnings, stage them for human promotion into knowledge, and propose skill/CLAUDE.md patches - never writes durable knowledge unapproved"
+    },
+    {
+      "name": "retro",
+      "path": ".claude/skills/retro/SKILL.md",
+      "description": "CP-7 retrospective - audit checkpoints, evidence quality, and action items; closes the V-model cycle and feeds the next run"
+    },
+    {
+      "name": "review-cockpit",
+      "path": ".claude/skills/review-cockpit/SKILL.md",
+      "description": "One living review document per multi-item session - cockpit header plus per-item cards you approve or request changes on directly in the doc"
+    },
+    {
+      "name": "no-ai-slop",
+      "path": ".claude/skills/no-ai-slop/SKILL.md",
+      "description": "Edit drafts into sharper, more human writing while preserving personal voice, or detect AI-slop patterns without rewriting"
+    },
+    {
+      "name": "editorial-illustrations",
+      "path": ".claude/skills/editorial-illustrations/SKILL.md",
+      "description": "Generative guide for meaning-carrying editorial data-illustrations - teaches the claim-to-geometry method, renders self-contained theme-aware HTML/SVG figures"
+    },
+    {
+      "name": "data-forms",
+      "path": ".claude/skills/data-forms/SKILL.md",
+      "description": "Pick the right form for a dataset so the finding lands in three seconds - 20+ chart and diagram forms with when-to-use, failure modes, and encoding discipline"
+    },
+    {
+      "name": "museum-art",
+      "path": ".claude/skills/museum-art/SKILL.md",
+      "description": "Source authentic high-res public-domain artwork from museum open-access APIs instead of AI-generated or generic-stock imagery"
+    },
+    {
+      "name": "daily-journal",
+      "path": ".claude/skills/daily-journal/SKILL.md",
+      "description": "A passive daily work journal the agent keeps for you - appends entries after meaningful work, runs a guided reflection on request"
+    }
   ],
   "agents": [
     "worker-data-collector",

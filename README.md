@@ -11,10 +11,12 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[21 Skills]
-    C -- delegates to --> W[6 Worker Agents]
+    B -- runs --> C[31 Skills]
+    C -- delegates to --> W[6 Workers]
+    C -- verified by --> V[4 Read-Only Verifiers]
     C -- reads & writes --> D[.md Files]
     W -- reads & writes --> D
+    V -- observes --> D
     C -- syncs with --> G[GitHub / Linear / Slack / PostHog]
     D --> E[Git]
     D --> F[iCloud]
@@ -54,11 +56,11 @@ COG ships a **full Claude Code surface** plus **core native surfaces** for Kiro 
 
 | Surface | Current support | Notes |
 |---|---|---|
-| Claude Code | 21 native skills + 6 worker agents | Full first-class surface |
+| Claude Code | 31 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
-| `AGENTS.md` | 21 documented commands | Universal fallback for Codex and other agents |
+| `AGENTS.md` | 31 documented commands | Universal fallback for Codex and other agents |
 
 Before publishing or updating framework files, run `./scripts/validate-agent-surface.sh` to catch drift between manifests, docs, and shipped files. See [docs/AGENT-SUPPORT.md](docs/AGENT-SUPPORT.md) for the detailed support matrix and contributor rules.
 
@@ -110,7 +112,29 @@ Before publishing or updating framework files, run `./scripts/validate-agent-sur
 |---|---|---|
 | **content-factory** | Autonomous content pipeline — scout announcements, triage by trend momentum + your unique angle, publish with ledger dedup, hard volume caps, and screenshot-verified posting | "Run the content factory" |
 
-### Worker Agents (Specialist Sessions)
+### Verification Harness
+
+The enforcement layer that keeps every other skill honest. Work walks a **V**: decompose left into falsifiable criteria, build at the apex, verify right with evidence traced back to each criterion. Full lifecycle in [WORKFLOW.md](WORKFLOW.md).
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **closed-loop** | Plan → build → component verify → integration verify → acceptance. The worker never grades its own homework; verifiers observe the artifact, not the worker's summary | "Run this through the closed loop" |
+| **ultragoal** | A goal too big for one session, run as a chain of phases with cross-session state and a north-star acceptance gate | "Track this as an ultragoal" |
+| **harvest** | Capture session learnings, stage them for approval, propose skill patches. Never writes durable knowledge unapproved | "Harvest what we learned" |
+| **retro** | Audit the run's checkpoints and *evidence quality* — a run can pass every gate on weak observations | "Retro this run" |
+| **review-cockpit** | One living doc per multi-item session: progress, per-item cards, and an approval slot you edit in place | "Set up a review cockpit" |
+
+### Craft Skills (Writing & Visuals)
+
+| Skill | What it does | Try saying... |
+|---|---|---|
+| **no-ai-slop** | Sharpen a draft without flattening its voice, or just detect AI-slop patterns | "Make this less AI-sounding" |
+| **editorial-illustrations** | Claim → geometry: derive the *right* figure from what the text argues, render it as self-contained theme-aware HTML/SVG | "Make a diagram for this argument" |
+| **data-forms** | 20+ chart and diagram forms with when-to-use, failure modes, and the encoding discipline that makes any of them readable | "The bar chart is burying the point" |
+| **museum-art** | Real public-domain artwork from museum open-access APIs instead of AI-generated or stock imagery | "Find a hero image for this post" |
+| **daily-journal** | A passive work journal the agent keeps for you, plus a guided reflection on request | "Reflect on today" |
+
+### Agents (Specialist Sessions)
 
 COG uses a worker agent architecture inspired by [garrytan/gstack](https://github.com/garrytan/gstack) specialist sessions and [garrytan/gbrain](https://github.com/garrytan/gbrain) knowledge patterns. Workers handle data-heavy tasks cheaply (Sonnet) while the lead session does reasoning (Opus).
 
@@ -123,7 +147,18 @@ COG uses a worker agent architecture inspired by [garrytan/gstack](https://githu
 | **worker-publisher** | Publishing to Slack, Confluence, Notion | Sonnet |
 | **brief-people-updater** | Batch-update people profiles from meetings/briefs | Sonnet |
 
+**Read-only verifiers** (they cannot edit files or mutate external state):
+
+| Agent | What it does | Checkpoint |
+|---|---|---|
+| **task-verifier** | Checks output against acceptance criteria by observing the artifact | CP-3v |
+| **integration-verifier** | Cross-task wiring and global acceptance | CP-4 |
+| **fix-agent** | Targeted fixes after a `FAIL:fixable` verdict; max 2 attempts | CP-3v retry |
+| **harvest-curator** | Shapes session learnings into adoption notes; propose-only | CP-7 |
+
 > Workers write results to `/tmp/` files and return only a status + path. The lead reads the file for synthesis. This eliminates slow token generation in agent output.
+>
+> Verifiers receive **paths only** — never a worker's output. Pasted context induces narrativisation: the verifier classifies the framing instead of independently reading the source.
 
 ### People CRM (Knowledge-Based Team Profiles)
 
@@ -178,12 +213,13 @@ graph TD
 | **Privacy-First** — Local `.md` files, strict domain separation, no external servers | **Multi-Device** — iCloud sync to iPhone/iPad/Mac; Git for version history | **Obsidian Tasks** — `📅 YYYY-MM-DD` emoji format works with Tasks plugin dashboards |
 | **Garry Tan Inspired** — gstack specialist sessions + gbrain knowledge patterns | **Multi-Platform** — Listed on [skills.sh](https://skills.sh), [agentskill.sh](https://agentskill.sh), [cursor.directory](https://cursor.directory) | **Worker Agents** — Sonnet handles I/O, Opus handles thinking |
 | **Runtime Trust** — memory hygiene sweeps re-verify stored facts against the live environment | **Post-Condition Checks** — mutating skills observe the artifact before reporting success | **Skill Distillation** — [explore once, execute cheap](docs/SKILL-DISTILLATION.md) with small models |
+| **V-Model Closed Loop** — every criterion has a task on the left and an evidence row on the right before ship | **Risk Lanes** — ceremony scales with blast radius instead of applying uniformly | **Cross-Model Gate** — a different model family catches a different error class |
 
 ## Your Vault
 
 ```
 COG-second-brain/
-├── .claude/skills/          # Claude Code skills (21)
+├── .claude/skills/          # Claude Code skills (31)
 ├── .claude/agents/          # Worker agent definitions (6)
 ├── .claude/roles/           # Role packs (7) — personalized recommendations
 ├── .kiro/powers/            # Kiro powers

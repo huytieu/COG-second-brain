@@ -33,6 +33,9 @@ FRAMEWORK_FILES=(
   "cog-update.sh"
   "docs/AGENT-SUPPORT.md"
   "docs/SKILL-DISTILLATION.md"
+  "WORKFLOW.md"
+  ".claude/lib/checkpoint.sh"
+  ".claude/lib/lane-classify.sh"
   ".github/MARKETPLACE.md"
   "scripts/validate-agent-surface.sh"
 
@@ -58,6 +61,16 @@ FRAMEWORK_FILES=(
   ".claude/skills/update-knowledge-base/SKILL.md"
   ".claude/skills/memory-hygiene/SKILL.md"
   ".claude/skills/content-factory/SKILL.md"
+  ".claude/skills/closed-loop/SKILL.md"
+  ".claude/skills/ultragoal/SKILL.md"
+  ".claude/skills/harvest/SKILL.md"
+  ".claude/skills/retro/SKILL.md"
+  ".claude/skills/review-cockpit/SKILL.md"
+  ".claude/skills/no-ai-slop/SKILL.md"
+  ".claude/skills/editorial-illustrations/SKILL.md"
+  ".claude/skills/data-forms/SKILL.md"
+  ".claude/skills/museum-art/SKILL.md"
+  ".claude/skills/daily-journal/SKILL.md"
 
   # Role packs
   ".claude/roles/_template.md"
@@ -75,6 +88,10 @@ FRAMEWORK_FILES=(
   ".claude/agents/worker-executor.md"
   ".claude/agents/worker-publisher.md"
   ".claude/agents/brief-people-updater.md"
+  ".claude/agents/task-verifier.md"
+  ".claude/agents/integration-verifier.md"
+  ".claude/agents/fix-agent.md"
+  ".claude/agents/harvest-curator.md"
 
   # People CRM
   "05-knowledge/people/README.md"

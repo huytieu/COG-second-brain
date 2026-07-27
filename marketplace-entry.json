@@ -6,8 +6,8 @@
     "email": "tqhuy1991@gmail.com",
     "url": "https://github.com/huytieu"
   },
-  "description": "Self-evolving second brain with 21 AI skills, 6 worker agents, and people CRM. Runtime-trust release: memory hygiene sweeps, skill post-condition checks, verbatim citations with adversarial verifier pass, autonomous content factory. Iterative skills are loop-engineered with deterministic verifiers and layered termination. Inspired by Garry Tan's gstack and gbrain. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex.",
-  "version": "3.7.1",
+  "description": "Self-evolving second brain with 31 AI skills, 10 agents, and people CRM. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, read-only verifier agents, risk lanes, multi-session ultragoals with a north-star acceptance gate, and craft skills for writing and visuals. Inspired by Garry Tan's gstack and gbrain, and dwarves-kit. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex.",
+  "version": "3.8.0",
   "keywords": [
     "second-brain",
     "garry-tan",
@@ -24,7 +24,12 @@
     "loop-engineering",
     "memory-hygiene",
     "runtime-trust",
-    "content-factory"
+    "content-factory",
+    "v-model",
+    "closed-loop",
+    "verification-harness",
+    "ultragoal",
+    "evidence-ledger"
   ],
   "category": "productivity",
   "homepage": "https://github.com/huytieu/COG-second-brain"

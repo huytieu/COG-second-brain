@@ -18,7 +18,7 @@ COG ships marketplace metadata in multiple formats:
 
 | File | Platform | Purpose |
 |---|---|---|
-| `.claude-plugin/plugin.json` | Claude Code marketplace | Canonical skill manifest (21 skills, 6 agents) |
+| `.claude-plugin/plugin.json` | Claude Code marketplace | Canonical skill manifest (31 skills, 10 agents) |
 | `.cursor-plugin/plugin.json` | cursor.directory | Cursor-compatible manifest |
 | `.cursorrules` | Cursor | Editor rules for Cursor users |
 | `marketplace-entry.json` | General marketplaces | Lightweight catalog entry |
@@ -32,9 +32,9 @@ COG is a **multi-agent package**, not a single-surface plugin:
 
 | Surface | Coverage |
 |---|---:|
-| Claude Code (`.claude/skills/`) | 21 native skills + 6 worker agents |
+| Claude Code (`.claude/skills/`) | 31 native skills + 10 agents (6 workers + 4 verifiers) |
 | Cursor (`.cursor-plugin/`) | Plugin manifest + rules |
-| Universal docs (`AGENTS.md`) | 21+ documented commands |
+| Universal docs (`AGENTS.md`) | 31+ documented commands |
 | Kiro (`.kiro/powers/`) | 7 core powers |
 | Gemini CLI (`.gemini/commands/`) | 7 core commands |
 
