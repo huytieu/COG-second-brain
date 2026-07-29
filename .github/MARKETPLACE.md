@@ -66,7 +66,7 @@ Preferred install flow:
 ```bash
 git clone https://github.com/huytieu/COG-second-brain.git
 cd COG-second-brain
-# Open in Claude Code, Cursor, Kiro, Gemini CLI, Codex, or another AGENTS-compatible agent
+# Open in Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, or another AGENTS-compatible agent
 ```
 
 Skills.sh install:

@@ -4,7 +4,7 @@
 
 [Quick Start](#quick-start) | [Skills](#skills) | [Features](#features-at-a-glance) | [FAQ](#faq) | [SETUP.md](SETUP.md)
 
-> Works with [Claude Code](https://claude.ai/download) &bull; [Cursor](https://cursor.com/) &bull; [Kiro](https://kiro.dev/) &bull; [Gemini CLI](https://github.com/google-gemini/gemini-cli) &bull; [OpenAI Codex](https://github.com/openai/codex) &bull; any AI that reads markdown
+> Works with [Claude Code](https://claude.ai/download) &bull; Antigravity &bull; [Cursor](https://cursor.com/) &bull; [Kiro](https://kiro.dev/) &bull; [Gemini CLI](https://github.com/google-gemini/gemini-cli) &bull; [OpenAI Codex](https://github.com/openai/codex) &bull; any AI that reads markdown
 >
 > Inspired by [Garry Tan's gstack](https://github.com/garrytan/gstack) and [gbrain](https://github.com/garrytan/gbrain)
 
@@ -37,6 +37,7 @@ cd COG-second-brain
 | Agent | Command | How it finds skills |
 |---|---|---|
 | Claude Code | `code .` → "Run onboarding" | `.claude/skills/` |
+| Antigravity | Open folder → "Run onboarding" | `.agents/skills/` + `.agents/rules/cog.md` |
 | Cursor | Open folder → "Run onboarding" | `.cursor-plugin/` + `.cursorrules` |
 | Kiro | Open folder → "setup COG" | `.kiro/powers/` |
 | Gemini CLI | `gemini` → `/onboarding` | `GEMINI.md` + `.gemini/commands/` |
@@ -52,11 +53,12 @@ Done — COG is personalized and ready in ~2 minutes. See [SETUP.md](SETUP.md) f
 
 ## Agent Support Matrix
 
-COG ships a **full Claude Code surface** plus **core native surfaces** for Kiro and Gemini CLI, with `AGENTS.md` as the universal fallback for Codex and other markdown-reading agents.
+COG ships a **full Claude Code surface**, a **full Antigravity surface**, plus **core native surfaces** for Kiro and Gemini CLI, with `AGENTS.md` as the universal fallback for Codex and other markdown-reading agents.
 
 | Surface | Current support | Notes |
 |---|---|---|
 | Claude Code | 33 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
+| Antigravity | 33 skills + 10 agents (pointer-stub format) | Full surface — thin stubs in `.agents/` delegate to the `.claude/` playbooks, which stay authoritative |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
@@ -231,6 +233,7 @@ COG-second-brain/
 ├── .claude/skills/          # Claude Code skills (33)
 ├── .claude/agents/          # Worker agent definitions (6)
 ├── .claude/roles/           # Role packs (7) — personalized recommendations
+├── .agents/                 # Antigravity (agy CLI + IDE) — pointer stubs to .claude/
 ├── .kiro/powers/            # Kiro powers
 ├── .gemini/commands/        # Gemini CLI commands
 ├── AGENTS.md                # Universal agent docs

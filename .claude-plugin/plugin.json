@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.8.1",
-  "description": "Self-evolving second brain with 33 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.9.0",
+  "description": "Self-evolving second brain with 33 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -27,6 +27,7 @@
     "daily-brief",
     "team-intelligence",
     "claude-code",
+    "antigravity",
     "cursor",
     "kiro",
     "gemini-cli",
@@ -305,11 +306,12 @@
       "progressiveDisclosure": true,
       "nativeSurfaces": {
         "claudeCode": 33,
+        "antigravity": 33,
         "kiro": 7,
         "geminiCli": 7,
         "agentsMd": 33
       },
-      "description": "Self-contained skills with worker delegation and a read-only verification layer, full Claude Code surface, core native Kiro/Gemini surfaces, and AGENTS.md as the universal fallback"
+      "description": "Self-contained skills with worker delegation and a read-only verification layer, full Claude Code and Antigravity surfaces, core native Kiro/Gemini surfaces, and AGENTS.md as the universal fallback"
     }
   }
 }
