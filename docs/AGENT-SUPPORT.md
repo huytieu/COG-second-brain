@@ -9,6 +9,7 @@ This document is the packaging contract: it tells contributors and maintainers w
 | Surface | Shipped format | Coverage | Status |
 |---|---|---:|---|
 | Claude Code | `.claude/skills/*/SKILL.md` | 33 skills | Full native surface |
+| Antigravity | `.agents/skills/*/SKILL.md` + `.agents/agents/*.md` | 33 skills + 10 agents | Full surface (pointer-stub format — delegates to `.claude/`, which stays authoritative) |
 | Universal agent docs | `AGENTS.md` | 17 commands | Full documented fallback |
 | Kiro | `.kiro/powers/*/POWER.md` | 7 powers | Core workflows only |
 | Gemini CLI | `.gemini/commands/*.toml` + `.gemini/skills/*.md` | 7 commands | Core workflows only |
@@ -35,7 +36,7 @@ These surfaces should expose the complete public COG command set:
 - `publish-to-confluence`
 - `update-knowledge-base`
 
-Today, **Claude Code** and **`AGENTS.md`** are the full surfaces.
+Today, **Claude Code**, **Antigravity**, and **`AGENTS.md`** are the full surfaces.
 
 ### Core surfaces
 These surfaces intentionally cover the most common personal workflows first:
@@ -54,12 +55,13 @@ Today, **Kiro** and **Gemini CLI** are core surfaces.
 If you add, remove, rename, or materially change a public COG skill:
 
 1. Update the **Claude skill** in `.claude/skills/`
-2. Update **`AGENTS.md`** for the universal surface
-3. Update **`.claude-plugin/plugin.json`** so marketplace metadata stays truthful
-4. Update **README / SETUP / this file** if counts or support levels change
-5. If the skill is supported natively in Kiro or Gemini, update those files too
-6. Add new framework files to `FRAMEWORK_FILES` in `cog-update.sh`
-7. Run `./scripts/validate-agent-surface.sh`
+2. Update the matching **Antigravity pointer stub** in `.agents/skills/<name>/SKILL.md` (same template as the existing stubs — `name` + `description` only change, the body always points back at `.claude/skills/<name>/SKILL.md` as authoritative)
+3. Update **`AGENTS.md`** for the universal surface
+4. Update **`.claude-plugin/plugin.json`** so marketplace metadata stays truthful
+5. Update **README / SETUP / this file** if counts or support levels change
+6. If the skill is supported natively in Kiro or Gemini, update those files too
+7. Add new framework files to `FRAMEWORK_FILES` in `cog-update.sh`
+8. Run `./scripts/validate-agent-surface.sh`
 
 ## Validation
 

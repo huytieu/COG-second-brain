@@ -2,6 +2,25 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.9.0] - 2026-07-29
+
+### Added
+
+#### Antigravity agent format support
+A full native surface for Antigravity (agy CLI + IDE), matching Claude Code's coverage: all 33 skills and all 10 agents (6 workers + 4 verifiers).
+
+- **`.agents/skills/<name>/SKILL.md`** — one pointer stub per skill. Each stub carries the same `name`/`description` frontmatter as its Claude Code counterpart, then delegates: "Read `.claude/skills/<name>/SKILL.md` and execute it exactly as written — that file is the authoritative playbook." `.claude/skills/` stays the single source of truth; the Antigravity surface never forks the playbook content.
+- **`.agents/agents/<name>.md`** — one pointer stub per agent, same pattern. Read-only verification gates (`task-verifier`, `integration-verifier`) get accurate, non-templated pointer text rather than the generic worker "Output Rule" line, since they don't write files.
+- **`.agents/rules/cog.md`** — the Antigravity operating-policy entry point. Reads `CLAUDE.md` at the repo root and applies it, with explicit substitutions: `.claude/agents/<name>` workers → `.agents/agents/<name>.md` via `invoke_subagent`; the Model Routing table's `sonnet` → `model: flash`.
+
+### Changed
+- **Agent Support Matrix** (`README.md`, `docs/AGENT-SUPPORT.md`) now lists Antigravity as a full surface alongside Claude Code and `AGENTS.md`.
+- `cog-update.sh` `FRAMEWORK_FILES` gained all 44 `.agents/*` paths, so `/update-cog` keeps the Antigravity surface current going forward.
+- Packaging rule 2 in `docs/AGENT-SUPPORT.md` now requires updating the matching Antigravity stub whenever a Claude Code skill changes.
+
+### Known follow-up
+- `scripts/validate-agent-surface.sh` does not yet check `.agents/` parity against `.claude/skills/` — drift between the two surfaces would currently go undetected by the validator. Left out of this change to keep it scoped to adding the surface itself.
+
 ## [3.8.1] - 2026-07-27
 
 ### Added
