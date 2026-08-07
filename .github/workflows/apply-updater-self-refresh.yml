@@ -1,14 +1,16 @@
-name: Apply updater self refresh fix
+name: Normalize updater self refresh formatting
 
 on:
-  pull_request:
+  push:
+    branches:
+      - fix/updater-self-refresh
 
 permissions:
   contents: write
 
 jobs:
   patch:
-    if: github.head_ref == 'fix/updater-self-refresh' && github.actor != 'github-actions[bot]'
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Check out feature branch
@@ -24,29 +26,6 @@ jobs:
           path = Path('cog-update.sh')
           text = path.read_text(encoding='utf-8')
 
-          force_bad = '''    if [[ $self_updated -eq 1 ]]; then
-          if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
-            err "Updater changed again after its one allowed restart; refusing a restart loop."
-            return 1
-          fi
-          info "Updater changed; restarting once to load the new framework file list..."
-          export COG_UPDATE_REEXEC=1
-          exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
-        fi
-          '''.replace('          ', '')
-          force_good = '''    if [[ $self_updated -eq 1 ]]; then
-              if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
-                err "Updater changed again after its one allowed restart; refusing a restart loop."
-                return 1
-              fi
-              info "Updater changed; restarting once to load the new framework file list..."
-              export COG_UPDATE_REEXEC=1
-              exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
-            fi
-          '''.replace('          ', '')
-
-          # The first patch intentionally favored robust insertion over formatting.
-          # Replace exact current blocks with normal shell indentation.
           force_bad = '''    if [[ $self_updated -eq 1 ]]; then
     if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
       err "Updater changed again after its one allowed restart; refusing a restart loop."
