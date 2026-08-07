@@ -57,6 +57,7 @@ FRAMEWORK_FILES=(
   "tests/test-cog-update-path-safety.sh"
   "tests/test-cog-update-trust-boundaries.sh"
   "tests/test-cog-update-validator-failure.sh"
+  "tests/test-cog-update-self-refresh.sh"
   "tests/test-harness-report-renderer.py"
   "04-projects/harness/templates/evidence-ledger.md"
   "04-projects/harness/templates/SPEC-template.md"
@@ -489,6 +490,8 @@ run_validator() {
 # ── Main logic ───────────────────────────────────────────────────────
 main() {
   local mode="interactive"
+  local -a original_args=("$@")
+  local self_updated=0
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -609,7 +612,19 @@ main() {
       update_file "$f"
       ok "Updated: $f"
       updated=$((updated + 1))
+      [[ "$f" == "cog-update.sh" ]] && self_updated=1
     done
+
+    if [[ $self_updated -eq 1 ]]; then
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+
     echo ""
     ok "Updated ${updated} file(s) to v${uv}"
     info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
@@ -634,6 +649,7 @@ main() {
         update_file "$f"
         ok "Added: $f"
         updated=$((updated + 1))
+        [[ "$f" == "cog-update.sh" ]] && self_updated=1
       else
         warn "Skipped: $f"
         skipped=$((skipped + 1))
@@ -657,12 +673,14 @@ main() {
             update_file "$f"
             ok "Updated: $f"
             updated=$((updated + 1))
+            [[ "$f" == "cog-update.sh" ]] && self_updated=1
           elif [[ "$answer2" =~ ^[Bb] ]]; then
             local bk
             bk=$(backup_file "$f")
             update_file "$f"
             ok "Updated: $f (backup: $bk)"
             updated=$((updated + 1))
+            [[ "$f" == "cog-update.sh" ]] && self_updated=1
           else
             warn "Skipped: $f"
             skipped=$((skipped + 1))
@@ -674,6 +692,7 @@ main() {
           update_file "$f"
           ok "Updated: $f (backup: $bk)"
           updated=$((updated + 1))
+          [[ "$f" == "cog-update.sh" ]] && self_updated=1
           ;;
         n|N)
           warn "Skipped: $f"
@@ -683,10 +702,25 @@ main() {
           update_file "$f"
           ok "Updated: $f"
           updated=$((updated + 1))
+          [[ "$f" == "cog-update.sh" ]] && self_updated=1
           ;;
       esac
     done
   fi
+
+  if [[ $self_updated -eq 1 ]]; then
+  if [[ $skipped -gt 0 ]]; then
+    err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+    return 1
+  fi
+  if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+    err "Updater changed again after its one allowed restart; refusing a restart loop."
+    return 1
+  fi
+  info "Updater changed; restarting once to load the new framework file list..."
+  export COG_UPDATE_REEXEC=1
+  exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+fi
 
   echo ""
   echo -e "${BOLD}Summary:${RESET}"
