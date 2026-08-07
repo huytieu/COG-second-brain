@@ -1,0 +1,229 @@
+name: Apply updater path safety fix
+
+on:
+  push:
+    branches:
+      - fix/updater-path-safety
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+        with:
+          ref: fix/updater-path-safety
+
+      - name: Apply guarded updater safety edits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          updater = Path('cog-update.sh')
+          text = updater.read_text(encoding='utf-8')
+
+          test_marker = '  "tests/test-harness-bootstrap-contract.sh"\n'
+          test_line = '  "tests/test-cog-update-path-safety.sh"\n'
+          if test_line not in text:
+              if text.count(test_marker) != 1:
+                  raise SystemExit('updater test marker not found exactly once')
+              text = text.replace(test_marker, test_marker + test_line, 1)
+
+          set_marker = 'set -euo pipefail\n'
+          script_root = '''set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO_ROOT=""
+'''
+          if 'SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"' not in text:
+              if text.count(set_marker) != 1:
+                  raise SystemExit('set -euo pipefail marker not found exactly once')
+              text = text.replace(set_marker, script_root, 1)
+
+          helper_marker = 'err()   { echo -e "${RED}✗${RESET}  $*" >&2; }\n'
+          helpers = r'''err()   { echo -e "${RED}✗${RESET}  $*" >&2; }
+
+assert_safe_framework_path() {
+  local file="$1"
+  local current="" component
+  local -a components
+
+  case "$file" in
+    ""|/*|.|..|../*|*/../*|*/..)
+      err "Refusing unsafe framework path: $file"
+      return 1
+      ;;
+  esac
+
+  IFS='/' read -r -a components <<< "$file"
+  for component in "${components[@]}"; do
+    if [[ -z "$component" || "$component" == "." || "$component" == ".." ]]; then
+      err "Refusing unsafe framework path component in: $file"
+      return 1
+    fi
+    current="${current:+$current/}$component"
+    if [[ -L "$current" ]]; then
+      err "Refusing framework path containing symlink: $current (for $file)"
+      return 1
+    fi
+  done
+}
+
+preflight_framework_paths() {
+  local file
+  for file in "${FRAMEWORK_FILES[@]}"; do
+    assert_safe_framework_path "$file" || return 1
+  done
+}
+
+assert_parent_inside_repo() {
+  local file="$1"
+  local dir physical_dir
+  dir=$(dirname "$file")
+  physical_dir=$(cd "$dir" 2>/dev/null && pwd -P) || {
+    err "Could not resolve framework parent directory: $dir"
+    return 1
+  }
+  case "$physical_dir/" in
+    "$REPO_ROOT/"*) return 0 ;;
+    *)
+      err "Refusing framework path outside repository root: $file"
+      return 1
+      ;;
+  esac
+}
+'''
+          if 'assert_safe_framework_path() {' not in text:
+              if text.count(helper_marker) != 1:
+                  raise SystemExit('helper insertion marker not found exactly once')
+              text = text.replace(helper_marker, helpers, 1)
+
+          old_update = r'''# ── Update a single file from upstream ───────────────────────────────
+update_file() {
+  local file="$1"
+  local dir
+  dir=$(dirname "$file")
+  [[ "$dir" != "." ]] && mkdir -p "$dir"
+  git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$file" 2>/dev/null
+
+  case "$(upstream_file_mode "$file")" in
+    100755) chmod +x "$file" ;;
+    100644) chmod -x "$file" ;;
+  esac
+}
+
+# ── Backup a file before overwriting ─────────────────────────────────
+backup_file() {
+  local file="$1"
+  if [[ -f "$file" ]]; then
+    local backup="${file}.backup-$(date +%Y%m%d-%H%M%S)"
+    cp "$file" "$backup"
+    echo "$backup"
+  fi
+}
+'''
+          new_update = r'''# ── Update a single file from upstream ───────────────────────────────
+update_file() {
+  local file="$1"
+  local dir mode tmp
+
+  assert_safe_framework_path "$file" || return 1
+  dir=$(dirname "$file")
+  [[ "$dir" != "." ]] && mkdir -p "$dir"
+  assert_safe_framework_path "$file" || return 1
+  assert_parent_inside_repo "$file" || return 1
+
+  tmp=$(mktemp "${dir}/.cog-update.XXXXXX") || return 1
+  if ! git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$tmp" 2>/dev/null; then
+    rm -f "$tmp"
+    return 1
+  fi
+
+  mode=$(upstream_file_mode "$file")
+  case "$mode" in
+    100755) chmod +x "$tmp" || { rm -f "$tmp"; return 1; } ;;
+    100644) chmod -x "$tmp" || { rm -f "$tmp"; return 1; } ;;
+    *)
+      rm -f "$tmp"
+      err "Unsupported upstream file mode for $file: ${mode:-unknown}"
+      return 1
+      ;;
+  esac
+
+  assert_safe_framework_path "$file" || { rm -f "$tmp"; return 1; }
+  assert_parent_inside_repo "$file" || { rm -f "$tmp"; return 1; }
+  mv -f "$tmp" "$file"
+}
+
+# ── Backup a file before overwriting ─────────────────────────────────
+backup_file() {
+  local file="$1"
+  assert_safe_framework_path "$file" || return 1
+  assert_parent_inside_repo "$file" || return 1
+  if [[ -f "$file" && ! -L "$file" ]]; then
+    local backup="${file}.backup-$(date +%Y%m%d-%H%M%S)"
+    cp "$file" "$backup"
+    echo "$backup"
+  fi
+}
+'''
+          if new_update not in text:
+              if text.count(old_update) != 1:
+                  raise SystemExit('update/backup function block not found exactly once')
+              text = text.replace(old_update, new_update, 1)
+
+          old_sanity = r'''  # Sanity check — are we in a git repo?
+  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    err "Not inside a git repository. Run this from your COG folder."
+    exit 1
+  fi
+
+  if [[ "$mode" == "validate" ]]; then
+'''
+          new_sanity = r'''  # Anchor all relative framework paths to the checkout that owns this script.
+  if ! REPO_ROOT=$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null); then
+    err "cog-update.sh is not inside a Git checkout. Run the copy shipped with your COG repository."
+    exit 1
+  fi
+  REPO_ROOT=$(cd "$REPO_ROOT" && pwd -P)
+  cd "$REPO_ROOT"
+
+  if ! preflight_framework_paths; then
+    err "Framework path safety preflight failed; no update was attempted."
+    exit 1
+  fi
+
+  if [[ "$mode" == "validate" ]]; then
+'''
+          if new_sanity not in text:
+              if text.count(old_sanity) != 1:
+                  raise SystemExit('main sanity block not found exactly once')
+              text = text.replace(old_sanity, new_sanity, 1)
+
+          updater.write_text(text, encoding='utf-8')
+
+          workflow = Path('.github/workflows/agent-surface-validation.yml')
+          text = workflow.read_text(encoding='utf-8')
+          ci_marker = '      - name: Preserve updater executable modes\n        run: bash tests/test-cog-update-file-mode.sh\n'
+          ci_step = '      - name: Test updater path safety\n        run: bash tests/test-cog-update-path-safety.sh\n\n'
+          if ci_step not in text:
+              if text.count(ci_marker) != 1:
+                  raise SystemExit('CI insertion marker not found exactly once')
+              text = text.replace(ci_marker, ci_step + ci_marker, 1)
+          workflow.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit guarded edits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cog-update.sh tests/test-cog-update-path-safety.sh .github/workflows/agent-surface-validation.yml
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: harden updater path safety"
+            git push origin HEAD:fix/updater-path-safety
+          fi
