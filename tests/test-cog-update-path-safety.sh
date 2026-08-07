@@ -51,7 +51,7 @@ git -C "$symlink_consumer" add README.md
 git -C "$symlink_consumer" commit -q -m "fixture: symlinked framework path"
 
 set +e
-symlink_output="$(cd "$symlink_consumer" && bash cog-update.sh --force 2>&1)"
+symlink_output="$(cd "$symlink_consumer" && COG_UPSTREAM_URL="$symlink_upstream" bash cog-update.sh --force 2>&1)"
 symlink_status=$?
 set -e
 
@@ -78,7 +78,7 @@ git -C "$parent_consumer" add .claude
 git -C "$parent_consumer" commit -q -m "fixture: symlinked framework parent"
 
 set +e
-parent_output="$(cd "$parent_consumer" && bash cog-update.sh --force 2>&1)"
+parent_output="$(cd "$parent_consumer" && COG_UPSTREAM_URL="$parent_upstream" bash cog-update.sh --force 2>&1)"
 parent_status=$?
 set -e
 
@@ -97,7 +97,7 @@ make_consumer "$root_consumer" "$root_upstream"
 mkdir -p "$root_consumer/nested/work"
 
 set +e
-root_output="$(cd "$root_consumer/nested/work" && bash ../../cog-update.sh --force 2>&1)"
+root_output="$(cd "$root_consumer/nested/work" && COG_UPSTREAM_URL="$root_upstream" bash ../../cog-update.sh --force 2>&1)"
 root_status=$?
 set -e
 
@@ -129,7 +129,7 @@ git -C "$caller_repo" add README.md
 git -C "$caller_repo" commit -q -m "fixture: caller repo"
 
 set +e
-foreign_output="$(cd "$caller_repo" && bash "$foreign_consumer/cog-update.sh" --force 2>&1)"
+foreign_output="$(cd "$caller_repo" && COG_UPSTREAM_URL="$foreign_upstream" bash "$foreign_consumer/cog-update.sh" --force 2>&1)"
 foreign_status=$?
 set -e
 
@@ -152,4 +152,4 @@ if [[ $failures -gt 0 ]]; then
   exit 1
 fi
 
-echo "cog-update anchors writes to its own checkout and rejects framework symlink traversal"
+echo "cog-update anchors writes to its own checkout, accepts explicit fixture upstreams, and rejects framework symlink traversal"
