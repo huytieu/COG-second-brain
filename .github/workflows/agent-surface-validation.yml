@@ -31,6 +31,9 @@ jobs:
       - name: Check closed-loop harness assets
         run: bash tests/test-harness-assets.sh
 
+      - name: Test harness bootstrap contract
+        run: bash tests/test-harness-bootstrap-contract.sh
+
       - name: Test safe harness report rendering
         run: python3 tests/test-harness-report-renderer.py
 

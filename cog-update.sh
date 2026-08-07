@@ -48,6 +48,7 @@ FRAMEWORK_FILES=(
   "tests/test-lane-classify.sh"
   "tests/test-checkpoint.sh"
   "tests/test-harness-assets.sh"
+  "tests/test-harness-bootstrap-contract.sh"
   "tests/test-harness-report-renderer.py"
   "04-projects/harness/templates/evidence-ledger.md"
   "04-projects/harness/templates/SPEC-template.md"
