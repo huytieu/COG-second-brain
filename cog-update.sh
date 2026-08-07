@@ -9,7 +9,7 @@
 #   ./cog-update.sh --force    Update all framework files without prompting
 #   ./cog-update.sh --validate Run packaging validator only
 #   ./cog-update.sh --help     Show this help message
-  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
+#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
 
 set -euo pipefail
 
@@ -300,6 +300,7 @@ Usage:
   ./cog-update.sh --force    Update all framework files without prompting
   ./cog-update.sh --validate Run packaging validator only
   ./cog-update.sh --help     Show this help message
+  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
 
 How it works:
   1. Adds/fetches the upstream remote (cog-upstream)
