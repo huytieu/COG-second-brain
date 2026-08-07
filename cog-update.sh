@@ -56,6 +56,7 @@ FRAMEWORK_FILES=(
   "tests/test-harness-bootstrap-contract.sh"
   "tests/test-cog-update-path-safety.sh"
   "tests/test-cog-update-trust-boundaries.sh"
+  "tests/test-cog-update-validator-failure.sh"
   "tests/test-harness-report-renderer.py"
   "04-projects/harness/templates/evidence-ledger.md"
   "04-projects/harness/templates/SPEC-template.md"
@@ -613,7 +614,10 @@ main() {
     ok "Updated ${updated} file(s) to v${uv}"
     info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
     rebuild_agent_plugin
-    run_validator || true
+    if ! run_validator; then
+      err "Update applied, but packaging validation failed. Review the working tree before committing."
+      return 1
+    fi
     exit 0
   fi
 
@@ -692,7 +696,10 @@ main() {
 
   if [[ $updated -gt 0 ]]; then
     rebuild_agent_plugin
-    run_validator || true
+    if ! run_validator; then
+      err "Update applied, but packaging validation failed. Review the working tree before committing."
+      return 1
+    fi
     info "Review changes with ${BOLD}git diff${RESET}, then commit when ready:"
     echo "  git add -A && git commit -m \"Update COG framework to v${uv}\""
   fi
