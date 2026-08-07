@@ -1,0 +1,166 @@
+name: Apply updater self refresh fix
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/updater-self-refresh' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v6
+        with:
+          ref: fix/updater-self-refresh
+
+      - name: Apply guarded updater self-refresh edits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('cog-update.sh')
+          text = path.read_text(encoding='utf-8')
+
+          test_marker = '  "tests/test-cog-update-validator-failure.sh"\n'
+          test_line = '  "tests/test-cog-update-self-refresh.sh"\n'
+          if test_line not in text:
+              if text.count(test_marker) != 1:
+                  raise SystemExit('self-refresh test marker not found exactly once')
+              text = text.replace(test_marker, test_marker + test_line, 1)
+
+          main_old = '''main() {
+            local mode="interactive"
+
+            while [[ $# -gt 0 ]]; do'''.replace('            ', '')
+          main_new = '''main() {
+            local mode="interactive"
+            local -a original_args=("$@")
+            local self_updated=0
+
+            while [[ $# -gt 0 ]]; do'''.replace('            ', '')
+          if main_new not in text:
+              if text.count(main_old) != 1:
+                  raise SystemExit('main argument marker not found exactly once')
+              text = text.replace(main_old, main_new, 1)
+
+          force_update_old = '''      update_file "$f"
+              ok "Updated: $f"
+              updated=$((updated + 1))
+            done
+            echo ""
+            ok "Updated ${updated} file(s) to v${uv}"'''.replace('              ', '')
+          force_update_new = '''      update_file "$f"
+              ok "Updated: $f"
+              updated=$((updated + 1))
+              [[ "$f" == "cog-update.sh" ]] && self_updated=1
+            done
+
+            if [[ $self_updated -eq 1 ]]; then
+              if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+                err "Updater changed again after its one allowed restart; refusing a restart loop."
+                return 1
+              fi
+              info "Updater changed; restarting once to load the new framework file list..."
+              export COG_UPDATE_REEXEC=1
+              exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+            fi
+
+            echo ""
+            ok "Updated ${updated} file(s) to v${uv}"'''.replace('              ', '')
+          if force_update_new not in text:
+              if text.count(force_update_old) != 1:
+                  raise SystemExit('force update loop marker not found exactly once')
+              text = text.replace(force_update_old, force_update_new, 1)
+
+          interactive_markers = [
+              ('''        update_file "$f"
+                        ok "Added: $f"
+                        updated=$((updated + 1))'''.replace('                        ', ''),
+               '''        update_file "$f"
+                        ok "Added: $f"
+                        updated=$((updated + 1))
+                        [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                        ', '')),
+              ('''            update_file "$f"
+                            ok "Updated: $f"
+                            updated=$((updated + 1))'''.replace('                            ', ''),
+               '''            update_file "$f"
+                            ok "Updated: $f"
+                            updated=$((updated + 1))
+                            [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                            ', '')),
+              ('''            local bk
+                            bk=$(backup_file "$f")
+                            update_file "$f"
+                            ok "Updated: $f (backup: $bk)"
+                            updated=$((updated + 1))'''.replace('                            ', ''),
+               '''            local bk
+                            bk=$(backup_file "$f")
+                            update_file "$f"
+                            ok "Updated: $f (backup: $bk)"
+                            updated=$((updated + 1))
+                            [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                            ', '')),
+              ('''          local bk
+                          bk=$(backup_file "$f")
+                          update_file "$f"
+                          ok "Updated: $f (backup: $bk)"
+                          updated=$((updated + 1))'''.replace('                          ', ''),
+               '''          local bk
+                          bk=$(backup_file "$f")
+                          update_file "$f"
+                          ok "Updated: $f (backup: $bk)"
+                          updated=$((updated + 1))
+                          [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                          ', '')),
+              ('''          update_file "$f"
+                          ok "Updated: $f"
+                          updated=$((updated + 1))'''.replace('                          ', ''),
+               '''          update_file "$f"
+                          ok "Updated: $f"
+                          updated=$((updated + 1))
+                          [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                          ', '')),
+          ]
+          for old, new in interactive_markers:
+              if new not in text:
+                  if text.count(old) != 1:
+                      raise SystemExit(f'interactive self-update marker not found exactly once: {old!r}')
+                  text = text.replace(old, new, 1)
+
+          summary_old = '''  echo ""
+            echo -e "${BOLD}Summary:${RESET}"
+            ok "${updated} file(s) updated"'''.replace('            ', '')
+          summary_new = '''  if [[ $self_updated -eq 1 ]]; then
+            if [[ $skipped -gt 0 ]]; then
+              err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+              return 1
+            fi
+            if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+              err "Updater changed again after its one allowed restart; refusing a restart loop."
+              return 1
+            fi
+            info "Updater changed; restarting once to load the new framework file list..."
+            export COG_UPDATE_REEXEC=1
+            exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+          fi
+
+          echo ""
+            echo -e "${BOLD}Summary:${RESET}"
+            ok "${updated} file(s) updated"'''.replace('            ', '')
+          if summary_new not in text:
+              if text.count(summary_old) != 1:
+                  raise SystemExit('interactive summary marker not found exactly once')
+              text = text.replace(summary_old, summary_new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit updater code only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cog-update.sh
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: refresh updater file list after self-update"
+            git push origin HEAD:fix/updater-self-refresh
+          fi
