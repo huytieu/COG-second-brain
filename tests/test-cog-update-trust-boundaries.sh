@@ -85,9 +85,21 @@ if [[ -e "$helper_consumer/scripts/owned.sh" ]]; then
   fail "sourced update_file created a framework file before repository-root initialization: $helper_output"
 fi
 
+# Regression 3: common GitHub SSH aliases must normalize to the same trusted repository identity.
+if ! (
+  # shellcheck disable=SC1090
+  source <(sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh")
+  remote_urls_match "git@github.com:huytieu/COG-second-brain.git" "$DEFAULT_REMOTE_URL" &&
+    remote_urls_match "ssh://git@github.com/huytieu/COG-second-brain.git" "$DEFAULT_REMOTE_URL" &&
+    remote_urls_match "https://github.com/huytieu/COG-second-brain/" "$DEFAULT_REMOTE_URL" &&
+    ! remote_urls_match "https://github.com/example/COG-second-brain.git" "$DEFAULT_REMOTE_URL"
+); then
+  fail "remote URL normalization does not preserve the intended GitHub repository identity"
+fi
+
 if [[ $failures -gt 0 ]]; then
   echo "$failures updater trust-boundary regression(s) remain" >&2
   exit 1
 fi
 
-echo "cog-update rejects untrusted remotes and uninitialized write-helper roots"
+echo "cog-update rejects untrusted remotes, fails closed for uninitialized writes, and accepts trusted GitHub URL aliases"
