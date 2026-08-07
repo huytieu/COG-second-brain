@@ -16,38 +16,25 @@ jobs:
         with:
           ref: fix/updater-self-refresh
 
-      - name: Apply guarded updater self-refresh edits
+      - name: Normalize self-refresh block formatting
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
 
           path = Path('cog-update.sh')
           text = path.read_text(encoding='utf-8')
 
-          test_marker = '  "tests/test-cog-update-validator-failure.sh"\n'
-          test_line = '  "tests/test-cog-update-self-refresh.sh"\n'
-          if test_line not in text:
-              if text.count(test_marker) != 1:
-                  raise SystemExit('self-refresh test marker not found exactly once')
-              text = text.replace(test_marker, test_marker + test_line, 1)
-
-          main_marker = 'main() {\n  local mode="interactive"\n'
-          main_replacement = 'main() {\n  local mode="interactive"\n  local -a original_args=("$@")\n  local self_updated=0\n'
-          if main_replacement not in text:
-              if text.count(main_marker) != 1:
-                  raise SystemExit('main marker not found exactly once')
-              text = text.replace(main_marker, main_replacement, 1)
-
-          self_marker = '[[ "$f" == "cog-update.sh" ]] && self_updated=1'
-          if self_marker not in text:
-              pattern = re.compile(r'^(\s*)updated=\$\(\(updated \+ 1\)\)$', re.MULTILINE)
-              matches = list(pattern.finditer(text))
-              if len(matches) != 6:
-                  raise SystemExit(f'expected 6 updater mutation counters, found {len(matches)}')
-              text = pattern.sub(lambda m: m.group(0) + '\n' + m.group(1) + self_marker, text)
-
-          force_restart = '''    if [[ $self_updated -eq 1 ]]; then
+          force_bad = '''    if [[ $self_updated -eq 1 ]]; then
+          if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+            err "Updater changed again after its one allowed restart; refusing a restart loop."
+            return 1
+          fi
+          info "Updater changed; restarting once to load the new framework file list..."
+          export COG_UPDATE_REEXEC=1
+          exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+        fi
+          '''.replace('          ', '')
+          force_good = '''    if [[ $self_updated -eq 1 ]]; then
               if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
                 err "Updater changed again after its one allowed restart; refusing a restart loop."
                 return 1
@@ -57,36 +44,66 @@ jobs:
               exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
             fi
           '''.replace('          ', '')
-          force_start = text.index('  # ── Force mode')
-          force_end = text.index('  # ── Interactive mode')
-          force_section = text[force_start:force_end]
-          if force_restart not in force_section:
-              marker = '    done\n    echo ""\n    ok "Updated ${updated} file(s) to v${uv}"'
-              if force_section.count(marker) != 1:
-                  raise SystemExit('force restart insertion marker not found exactly once')
-              replacement = '    done\n\n' + force_restart + '\n    echo ""\n    ok "Updated ${updated} file(s) to v${uv}"'
-              force_section = force_section.replace(marker, replacement, 1)
-              text = text[:force_start] + force_section + text[force_end:]
 
-          interactive_restart = '''  if [[ $self_updated -eq 1 ]]; then
-            if [[ $skipped -gt 0 ]]; then
-              err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
-              return 1
-            fi
-            if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
-              err "Updater changed again after its one allowed restart; refusing a restart loop."
-              return 1
-            fi
-            info "Updater changed; restarting once to load the new framework file list..."
-            export COG_UPDATE_REEXEC=1
-            exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
-          fi
-          '''.replace('          ', '')
-          if interactive_restart not in text:
-              summary_marker = '  echo ""\n  echo -e "${BOLD}Summary:${RESET}"'
-              if text.count(summary_marker) != 1:
-                  raise SystemExit('interactive summary marker not found exactly once')
-              text = text.replace(summary_marker, interactive_restart + '\n' + summary_marker, 1)
+          # The first patch intentionally favored robust insertion over formatting.
+          # Replace exact current blocks with normal shell indentation.
+          force_bad = '''    if [[ $self_updated -eq 1 ]]; then
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+'''
+          force_good = '''    if [[ $self_updated -eq 1 ]]; then
+      if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+        err "Updater changed again after its one allowed restart; refusing a restart loop."
+        return 1
+      fi
+      info "Updater changed; restarting once to load the new framework file list..."
+      export COG_UPDATE_REEXEC=1
+      exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+    fi
+'''
+          if force_bad in text:
+              text = text.replace(force_bad, force_good, 1)
+          elif force_good not in text:
+              raise SystemExit('force self-refresh block is neither expected old nor formatted form')
+
+          interactive_bad = '''  if [[ $self_updated -eq 1 ]]; then
+  if [[ $skipped -gt 0 ]]; then
+    err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+    return 1
+  fi
+  if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+    err "Updater changed again after its one allowed restart; refusing a restart loop."
+    return 1
+  fi
+  info "Updater changed; restarting once to load the new framework file list..."
+  export COG_UPDATE_REEXEC=1
+  exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+fi
+'''
+          interactive_good = '''  if [[ $self_updated -eq 1 ]]; then
+    if [[ $skipped -gt 0 ]]; then
+      err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+      return 1
+    fi
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+'''
+          if interactive_bad in text:
+              text = text.replace(interactive_bad, interactive_good, 1)
+          elif interactive_good not in text:
+              raise SystemExit('interactive self-refresh block is neither expected old nor formatted form')
 
           path.write_text(text, encoding='utf-8')
           PY
@@ -98,6 +115,6 @@ jobs:
           git add cog-update.sh
           git diff --cached --check
           if ! git diff --cached --quiet; then
-            git commit -m "fix: refresh updater file list after self-update"
+            git commit -m "style: normalize updater self-refresh blocks"
             git push origin HEAD:fix/updater-self-refresh
           fi
