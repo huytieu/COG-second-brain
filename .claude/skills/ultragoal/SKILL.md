@@ -17,7 +17,7 @@ An **ultragoal** is the term for a north-star that spans many sessions: fork the
 
 - `/ultragoal <name>` — resume or advance an existing ultragoal
 - `/ultragoal new "<north-star>"` — charter a new one
-- `/ultragoal status` — report all ultragoals from the registry
+- `/ultragoal status` — report all ultragoals from the registry; if the registry does not exist yet, report that no ultragoals are registered without creating a file
 - Trigger phrases: "make this an ultragoal", "this is a long-running goal", "combine these into one product over time"
 
 Do **not** use for single-run work — that is `/execute`. Rule of thumb: if it needs a phase decomposition and won't finish today, it is an ultragoal.
@@ -26,12 +26,28 @@ Do **not** use for single-run work — that is `/execute`. Rule of thumb: if it 
 
 | File | Role |
 |---|---|
-| `04-projects/harness/ultragoals.md` | Registry: every ultragoal, status, current phase |
+| `04-projects/harness/ultragoals.md` | Mutable user registry. Created on the first `/ultragoal new`; never overwrite an existing registry |
 | `04-projects/<goal>/spec.md` | Contract: north-star + `AC-n` acceptance criteria + phases `P0…Pn` + traceability matrix |
 | `04-projects/<goal>/STATUS.md` | Living ledger: phase state, current phase, open `AC-n`, next action (resume from here) |
 | `04-projects/<goal>/evidence/P<n>/` | Per-phase evidence bundle (ledger.md + CP-* files) |
 
 Code, if any, lives outside the vault (e.g. `~/code/<goal>/`) — the spec/status/evidence stay in the vault.
+
+## Registry bootstrap contract
+
+The registry is user state, not a framework file. Do not add it to `cog-update.sh` `FRAMEWORK_FILES` and never replace an existing copy.
+
+- **`/ultragoal status`:** if `04-projects/harness/ultragoals.md` is absent, return `No registered ultragoals.` and stop. This command stays read-only.
+- **`/ultragoal new`:** before the first registry write, create `04-projects/harness/` if needed. If the registry is absent, create it exactly once with this starter shape, then append the new goal row. If it exists, preserve all existing rows.
+
+```markdown
+# Ultragoal Registry
+
+| Goal | Overall status | Current phase | Updated | Goal folder |
+|---|---|---|---|---|
+```
+
+Registry rows point to each goal's `STATUS.md`; `STATUS.md` remains the detailed source of truth.
 
 ## Phase 0 — Charter (`/ultragoal new`)
 
@@ -41,7 +57,7 @@ Code, if any, lives outside the vault (e.g. `~/code/<goal>/`) — the spec/statu
    - Falsifiable `AC-n` acceptance criteria (these define done for the *whole* goal)
    - Phase decomposition `P0…Pn` — each phase is a shippable increment mapped to a subset of `AC-n`
    - Traceability matrix (`AC-n` ↔ phase ↔ status)
-3. Create `STATUS.md` (see template below) and add a row to the registry.
+3. Apply the Registry bootstrap contract above. Create `STATUS.md` (see template below), then append one registry row for the new goal without changing unrelated rows.
 
 Record: `bash .claude/lib/checkpoint.sh record 04-projects/<goal>/evidence/P0 CP-1 PASS "N criteria, M phases"`
 
@@ -95,12 +111,14 @@ North-star acceptance:
 
 ## The HTML report (regenerate at every phase gate + final)
 
-Every ultragoal carries a single self-contained HTML report that **covers everything**: north-star, live status, all phases, the full `AC-n` traceability table with pass/open/fail, evidence rows per phase (with screenshots embedded as `data:` URIs), and the open-items / next-action block. It is the human-readable face of the evidence ledger.
+Every ultragoal carries a single self-contained HTML report that **covers everything**: north-star, live status, all phases, the full `AC-n` traceability table with pass/open/fail, evidence rows per phase, and the open-items / next-action block.
 
-- **Template:** `04-projects/harness/templates/report.html` (house style, theme-aware, rows-not-cards). Copy it, then fill every `{{token}}` and `<!-- FILL -->` / `<!-- REPEAT -->` block from `spec.md` + `STATUS.md` + `evidence/P*/`. You fill it by editing — do not build a parser.
-- **Deliverable path:** `04-projects/<goal>/report.html`. One file, overwritten each phase (it always reflects current truth).
-- **When:** regenerate at each phase gate (CP-6) and again at final north-star acceptance. The final report must show every `AC-n` with a PASS row — if any pill is `open`, the goal is not done.
-- **Self-contained only:** inline everything, embed screenshots as `data:` URIs, so it also works when published as an Artifact (external hosts are blocked). Before publishing as an Artifact, load the `artifact-design` skill.
+- **Renderer:** build structured JSON using the Safe report data contract in `closed-loop`, then run `python3 scripts/render-harness-report.py --data <report-data.json> --output 04-projects/<goal>/report.html`. The renderer reads `04-projects/harness/templates/report.html` by default.
+- **No manual token substitution:** never copy the template and paste raw project/evidence text into HTML. The renderer HTML-escapes every text field and derives CSS classes from fixed mappings.
+- **Media:** screenshots may be supplied only as validated base64 `data:image/png`, `jpeg`, `webp`, or `gif` entries in the structured `media` list. Arbitrary HTML and non-image data URIs are rejected.
+- **Deliverable path:** `04-projects/<goal>/report.html`. One file, overwritten each phase so it reflects current truth.
+- **When:** regenerate at each phase gate (CP-6) and again at final north-star acceptance. The final report must show every `AC-n` with a PASS row — if any status is open, the goal is not done.
+- **Self-contained only:** inline permitted image data so the report also works when published as an Artifact. Before publishing as an Artifact, load the `artifact-design` skill.
 - **Surface it:** `SendUserFile 04-projects/<goal>/report.html` (display: render) so the user can open it, or publish via `Artifact` for a shareable link.
 
 ## STATUS.md template
@@ -154,4 +172,4 @@ Decision needed: <one question>
 
 ## Registered ultragoals
 
-Live list: `04-projects/harness/ultragoals.md`. Each ultragoal gets its own `04-projects/<goal>/` folder holding `spec.md`, `STATUS.md`, `evidence/`, and `report.html`.
+`04-projects/harness/ultragoals.md` is created on the first `/ultragoal new`. If it does not exist yet, `/ultragoal status` reports no registered ultragoals without mutating the vault. Each registry row points to a goal folder containing `spec.md`, `STATUS.md`, `evidence/`, and `report.html`.

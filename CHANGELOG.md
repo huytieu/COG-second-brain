@@ -2,6 +2,46 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.10.3] - 2026-08-07
+
+### Fixed
+
+- `checkpoint.sh init` now succeeds from a clean checkout because the evidence-ledger template is shipped.
+- `checkpoint.sh record` now rejects results outside `PASS`, `FAIL`, and `SKIP` before writing evidence.
+- Checkpoint TSV serialization now keeps free-text notes and run paths on one row by normalizing tabs and newlines and using `printf` instead of `echo -e`.
+- Closed-loop and ultragoal flows now ship the `SPEC-template.md` and self-contained `report.html` assets they already reference.
+- Harness HTML reports now render from structured JSON through `scripts/render-harness-report.py`; text fields are HTML-escaped and media is restricted to validated base64 image data URIs.
+
+### Added
+
+- Regression coverage for checkpoint initialization, result validation, TSV row integrity, and required closed-loop harness assets.
+
+## [3.10.2] - 2026-08-07
+
+### Fixed
+
+- `lane-classify.sh explain` now returns structured `lane`, `score`, and hard-gate reason output for security, bug, and backfill gates, matching the existing tiny-gate behavior.
+- `classify` output and hard-gate precedence remain unchanged.
+
+### Added
+
+- Regression coverage for `classify` and `explain` output across all four hard-gate families.
+
+## [3.10.1] - 2026-08-07
+
+### Fixed
+
+- Packaging validation now enforces exact Claude, Antigravity, and Cursor skill/agent parity, manifest paths, Agent Plugins mirror parity, updater coverage, and published-version consistency.
+- Restored the four verification/repair agents missing from `.cursor-plugin/plugin.json` since the 10-agent release.
+- `cog-update.sh` now preserves upstream executable bits and detects mode-only drift for tracked framework files.
+- `cog-update.sh` no longer exits after the first update or skip under `set -e` because counters now use errexit-safe arithmetic assignment.
+- Packaging documentation and Cursor guidance now match the shipped 33-skill, 10-agent surfaces.
+
+### Added
+
+- GitHub Actions framework validation on pull requests and `main` pushes.
+- Regression coverage for Antigravity drift, Cursor agent drift, marketplace version drift, updater file modes, and multi-file force updates.
+
 ## [3.10.0] - 2026-08-07
 
 ### Added

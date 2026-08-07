@@ -93,8 +93,29 @@ Record: `checkpoint.sh record <run-dir> CP-5 PASS|FAIL`
 
 - Append to `.claude/logs/loop-ledger.tsv`
 - Update spec traceability matrix statuses to `verified`
-- **`full` lane / big task:** generate an HTML rollup from `04-projects/harness/templates/report.html` → `04-projects/harness/runs/<id>/report.html`, filled from `criteria.md` + `evidence/ledger.md` (criteria, AC traceability, verifier verdicts, post-condition observations). Self-contained; `SendUserFile` it or publish as an Artifact. Skip for `normal`/`tiny`.
+- **`full` lane / big task:** write structured report data to `evidence/report-data.json`, then render the self-contained HTML report with `python3 scripts/render-harness-report.py --data evidence/report-data.json --output report.html`. The renderer HTML-escapes every text field, derives CSS classes from fixed status mappings, and accepts only validated base64 `data:image` media. Never substitute report template tokens or arbitrary HTML by hand. Skip report generation for `normal`/`tiny`.
 - Suggest `/retro <run-dir>` for CP-7
+
+### Safe report data contract
+
+Use this shape for `report-data.json`. Values come from criteria, STATUS, and evidence artifacts; do not put raw HTML in any field.
+
+```json
+{
+  "goal": "<goal>",
+  "north_star": "<north-star>",
+  "overall_status": "in-progress",
+  "current_phase": "P1",
+  "updated_at": "<ISO-8601>",
+  "phases": [{"id":"P1","goal":"<phase>","ac":"AC-1","state":"done","evidence":"evidence/P1/"}],
+  "criteria": [{"id":"AC-1","text":"<criterion>","owner":"P1","evidence":"CP-5","status":"PASS"}],
+  "evidence": [{"ac":"AC-1","checkpoint":"CP-5","result":"PASS","observation":"<observed fact>","artifact":"<path-or-command>","media":[]}],
+  "open_items": [],
+  "next_action": "<next action>"
+}
+```
+
+For screenshots, add media entries only as `{ "data_uri": "data:image/png;base64,...", "alt": "...", "caption": "..." }`. The renderer rejects non-image data URIs, invalid base64, and oversized media.
 
 ## Integration
 

@@ -155,7 +155,6 @@ orchestrator (/execute or skill)
 | Report template | `04-projects/harness/templates/report.html` |
 | Spec template | `04-projects/harness/templates/SPEC-template.md` |
 | Retro outputs | `04-projects/harness/retro/YYYY-MM-DD-<slug>.md` |
-| Harness backlog | `04-projects/harness/BACKLOG.md` |
 | Harvest staging | `04-projects/harness/harvest/staging-<date>.md` |
 | Checkpoint + loop logs | `.claude/logs/checkpoint-ledger.tsv`, `loop-ledger.tsv` |
 
@@ -169,9 +168,12 @@ orchestrator (/execute or skill)
 | `/ultragoal` | full V per phase, across sessions |
 | `/memory-hygiene` | CP-5 on memory |
 
-## Install
+## Validate the shipped harness
+
+The harness ships as part of COG; there is no separate installer. Validate the checked-out framework with:
 
 ```bash
-bash .claude/lib/install-harness.sh
-bash .claude/lib/install-harness.sh --check
+bash tests/test-harness-assets.sh
+bash tests/test-harness-bootstrap-contract.sh
+bash scripts/validate-agent-surface.sh
 ```

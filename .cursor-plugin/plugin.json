@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
   "displayName": "COG: Agentic Second Brain",
-  "version": "3.10.0",
+  "version": "3.10.3",
   "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 33 skills, 10 agents (6 workers + 4 read-only verifiers), people CRM with tiered enrichment. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, risk lanes, multi-session ultragoals with a north-star acceptance gate, craft skills for writing and visuals, and paired anti-slop design skills for marketing and product UI. Works with Claude Code, Cursor, Kiro, Gemini CLI, and Codex.",
   "author": {
     "name": "Huy Tieu",
@@ -213,6 +213,10 @@
     "worker-file-ops",
     "worker-executor",
     "worker-publisher",
-    "brief-people-updater"
+    "brief-people-updater",
+    "task-verifier",
+    "integration-verifier",
+    "fix-agent",
+    "harvest-curator"
   ]
 }

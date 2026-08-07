@@ -9,12 +9,17 @@
 #   ./cog-update.sh --force    Update all framework files without prompting
 #   ./cog-update.sh --validate Run packaging validator only
 #   ./cog-update.sh --help     Show this help message
+#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO_ROOT=""
+
 # ── Configuration ────────────────────────────────────────────────────
 REMOTE_NAME="cog-upstream"
-REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
+DEFAULT_REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
+REMOTE_URL="${COG_UPSTREAM_URL:-$DEFAULT_REMOTE_URL}"
 BRANCH="main"
 VERSION_FILE="COG-VERSION"
 VALIDATOR_SCRIPT="scripts/validate-agent-surface.sh"
@@ -37,7 +42,27 @@ FRAMEWORK_FILES=(
   ".claude/lib/checkpoint.sh"
   ".claude/lib/lane-classify.sh"
   ".github/MARKETPLACE.md"
+  ".github/workflows/agent-surface-validation.yml"
   "scripts/validate-agent-surface.sh"
+  "scripts/render-harness-report.py"
+  "tests/test-agent-surface-validator.sh"
+  "tests/test-cog-update-file-mode.sh"
+  "tests/test-cog-update-mode-drift.sh"
+  "tests/test-cog-update-force.sh"
+  "tests/test-cursor-agent-parity.sh"
+  "tests/test-lane-classify.sh"
+  "tests/test-checkpoint.sh"
+  "tests/test-harness-assets.sh"
+  "tests/test-harness-bootstrap-contract.sh"
+  "tests/test-cog-update-path-safety.sh"
+  "tests/test-cog-update-trust-boundaries.sh"
+  "tests/test-cog-update-validator-failure.sh"
+  "tests/test-cog-update-plugin-rebuild-failure.sh"
+  "tests/test-cog-update-self-refresh.sh"
+  "tests/test-harness-report-renderer.py"
+  "04-projects/harness/templates/evidence-ledger.md"
+  "04-projects/harness/templates/SPEC-template.md"
+  "04-projects/harness/templates/report.html"
 
   # Claude Code skills
   ".claude/skills/onboarding/SKILL.md"
@@ -198,6 +223,72 @@ ok()    { echo -e "${GREEN}✓${RESET}  $*"; }
 warn()  { echo -e "${YELLOW}⚠${RESET}  $*"; }
 err()   { echo -e "${RED}✗${RESET}  $*" >&2; }
 
+assert_safe_framework_path() {
+  local file="$1"
+  local current="" component
+  local -a components
+
+  case "$file" in
+    ""|/*|.|..|../*|*/../*|*/..)
+      err "Refusing unsafe framework path: $file"
+      return 1
+      ;;
+  esac
+
+  IFS='/' read -r -a components <<< "$file"
+  for component in "${components[@]}"; do
+    if [[ -z "$component" || "$component" == "." || "$component" == ".." ]]; then
+      err "Refusing unsafe framework path component in: $file"
+      return 1
+    fi
+    current="${current:+$current/}$component"
+    if [[ -L "$current" ]]; then
+      err "Refusing framework path containing symlink: $current (for $file)"
+      return 1
+    fi
+  done
+}
+
+preflight_framework_paths() {
+  local file
+  for file in "${FRAMEWORK_FILES[@]}"; do
+    assert_safe_framework_path "$file" || return 1
+  done
+}
+
+assert_parent_inside_repo() {
+  local file="$1"
+  local dir physical_dir trusted_root
+
+  if [[ -z "${REPO_ROOT:-}" || "$REPO_ROOT" != /* ]]; then
+    err "Repository root is not initialized for framework writes"
+    return 1
+  fi
+
+  trusted_root=$(git -C "$REPO_ROOT" rev-parse --show-toplevel 2>/dev/null) || {
+    err "Repository root is not a valid Git checkout: $REPO_ROOT"
+    return 1
+  }
+  trusted_root=$(cd "$trusted_root" && pwd -P) || return 1
+  if [[ "$trusted_root" != "$REPO_ROOT" ]]; then
+    err "Repository root must be a physical checkout path: $REPO_ROOT"
+    return 1
+  fi
+
+  dir=$(dirname "$file")
+  physical_dir=$(cd "$dir" 2>/dev/null && pwd -P) || {
+    err "Could not resolve framework parent directory: $dir"
+    return 1
+  }
+  case "$physical_dir/" in
+    "$trusted_root/"*) return 0 ;;
+    *)
+      err "Refusing framework path outside repository root: $file"
+      return 1
+      ;;
+  esac
+}
+
 usage() {
   cat <<'EOF'
 COG Upstream Update Script
@@ -212,6 +303,7 @@ Usage:
   ./cog-update.sh --force    Update all framework files without prompting
   ./cog-update.sh --validate Run packaging validator only
   ./cog-update.sh --help     Show this help message
+  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
 
 How it works:
   1. Adds/fetches the upstream remote (cog-upstream)
@@ -226,11 +318,51 @@ EOF
 }
 
 # ── Ensure remote exists & fetch ─────────────────────────────────────
+normalize_remote_url() {
+  local url="$1"
+  url="${url%/}"
+
+  case "$url" in
+    https://github.com/*)
+      url="${url%.git}"
+      printf '%s\n' "$url"
+      ;;
+    git@github.com:*)
+      url="${url#git@github.com:}"
+      url="${url%.git}"
+      printf 'https://github.com/%s\n' "$url"
+      ;;
+    ssh://git@github.com/*)
+      url="${url#ssh://git@github.com/}"
+      url="${url%.git}"
+      printf 'https://github.com/%s\n' "$url"
+      ;;
+    *)
+      printf '%s\n' "$url"
+      ;;
+  esac
+}
+
+remote_urls_match() {
+  local actual="$1" expected="$2"
+  [[ "$(normalize_remote_url "$actual")" == "$(normalize_remote_url "$expected")" ]]
+}
+
 ensure_remote() {
-  if ! git remote get-url "$REMOTE_NAME" &>/dev/null; then
+  local actual_url
+
+  if actual_url=$(git remote get-url "$REMOTE_NAME" 2>/dev/null); then
+    if ! remote_urls_match "$actual_url" "$REMOTE_URL"; then
+      err "Refusing to fetch: remote ${REMOTE_NAME} points to ${actual_url}"
+      err "Expected trusted upstream: ${REMOTE_URL}"
+      err "Set COG_UPSTREAM_URL explicitly only when a different upstream is intentional"
+      return 1
+    fi
+  else
     info "Adding remote ${BOLD}${REMOTE_NAME}${RESET} → ${REMOTE_URL}"
     git remote add "$REMOTE_NAME" "$REMOTE_URL"
   fi
+
   info "Fetching latest from ${BOLD}${REMOTE_NAME}/${BRANCH}${RESET}..."
   git fetch "$REMOTE_NAME" "$BRANCH" --quiet
 }
@@ -248,6 +380,11 @@ upstream_version() {
   git show "${REMOTE_NAME}/${BRANCH}:${VERSION_FILE}" 2>/dev/null | tr -d '[:space:]' || echo "unknown"
 }
 
+upstream_file_mode() {
+  local file="$1"
+  git ls-tree "${REMOTE_NAME}/${BRANCH}" -- "$file" | awk 'NR == 1 {print $1}'
+}
+
 # ── Diff a single file ──────────────────────────────────────────────
 file_has_changes() {
   local file="$1"
@@ -257,7 +394,15 @@ file_has_changes() {
   fi
   # File differs from upstream?
   if [[ -f "$file" ]]; then
-    ! diff -q <(git show "${REMOTE_NAME}/${BRANCH}:${file}" 2>/dev/null) "$file" &>/dev/null
+    if ! diff -q <(git show "${REMOTE_NAME}/${BRANCH}:${file}" 2>/dev/null) "$file" &>/dev/null; then
+      return 0
+    fi
+
+    case "$(upstream_file_mode "$file")" in
+      100755) [[ ! -x "$file" ]] ;;
+      100644) [[ -x "$file" ]] ;;
+      *) return 1 ;;
+    esac
   else
     return 0  # file missing locally → counts as changed
   fi
@@ -266,16 +411,42 @@ file_has_changes() {
 # ── Update a single file from upstream ───────────────────────────────
 update_file() {
   local file="$1"
-  local dir
+  local dir mode tmp
+
+  assert_safe_framework_path "$file" || return 1
   dir=$(dirname "$file")
   [[ "$dir" != "." ]] && mkdir -p "$dir"
-  git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$file" 2>/dev/null
+  assert_safe_framework_path "$file" || return 1
+  assert_parent_inside_repo "$file" || return 1
+
+  tmp=$(mktemp "${dir}/.cog-update.XXXXXX") || return 1
+  if ! git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$tmp" 2>/dev/null; then
+    rm -f "$tmp"
+    return 1
+  fi
+
+  mode=$(upstream_file_mode "$file")
+  case "$mode" in
+    100755) chmod +x "$tmp" || { rm -f "$tmp"; return 1; } ;;
+    100644) chmod -x "$tmp" || { rm -f "$tmp"; return 1; } ;;
+    *)
+      rm -f "$tmp"
+      err "Unsupported upstream file mode for $file: ${mode:-unknown}"
+      return 1
+      ;;
+  esac
+
+  assert_safe_framework_path "$file" || { rm -f "$tmp"; return 1; }
+  assert_parent_inside_repo "$file" || { rm -f "$tmp"; return 1; }
+  mv -f "$tmp" "$file"
 }
 
 # ── Backup a file before overwriting ─────────────────────────────────
 backup_file() {
   local file="$1"
-  if [[ -f "$file" ]]; then
+  assert_safe_framework_path "$file" || return 1
+  assert_parent_inside_repo "$file" || return 1
+  if [[ -f "$file" && ! -L "$file" ]]; then
     local backup="${file}.backup-$(date +%Y%m%d-%H%M%S)"
     cp "$file" "$backup"
     echo "$backup"
@@ -296,8 +467,12 @@ warn_if_dirty() {
 # updates so it never drifts from the updated .claude/skills/.
 rebuild_agent_plugin() {
   if [[ -x "scripts/build-agent-plugin.sh" ]]; then
-    ./scripts/build-agent-plugin.sh || warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
+    if ! ./scripts/build-agent-plugin.sh; then
+      warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
+      return 1
+    fi
   fi
+  return 0
 }
 
 run_validator() {
@@ -320,6 +495,8 @@ run_validator() {
 # ── Main logic ───────────────────────────────────────────────────────
 main() {
   local mode="interactive"
+  local -a original_args=("$@")
+  local self_updated=0
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -332,9 +509,16 @@ main() {
     esac
   done
 
-  # Sanity check — are we in a git repo?
-  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
-    err "Not inside a git repository. Run this from your COG folder."
+  # Anchor all relative framework paths to the checkout that owns this script.
+  if ! REPO_ROOT=$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null); then
+    err "cog-update.sh is not inside a Git checkout. Run the copy shipped with your COG repository."
+    exit 1
+  fi
+  REPO_ROOT=$(cd "$REPO_ROOT" && pwd -P)
+  cd "$REPO_ROOT"
+
+  if ! preflight_framework_paths; then
+    err "Framework path safety preflight failed; no update was attempted."
     exit 1
   fi
 
@@ -426,19 +610,37 @@ main() {
   # ── Force mode ───────────────────────────────────────────────────
   if [[ "$mode" == "force" ]]; then
     local updated=0
-    for f in "${changed[@]}" "${new_files[@]}"; do
+    for f in "${changed[@]}" ${new_files:+"${new_files[@]}"}; do
       if [[ -f "$f" ]]; then
         backup_file "$f" >/dev/null
       fi
       update_file "$f"
       ok "Updated: $f"
-      ((updated++))
+      updated=$((updated + 1))
+      [[ "$f" == "cog-update.sh" ]] && self_updated=1
     done
+
+    if [[ $self_updated -eq 1 ]]; then
+      if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+        err "Updater changed again after its one allowed restart; refusing a restart loop."
+        return 1
+      fi
+      info "Updater changed; restarting once to load the new framework file list..."
+      export COG_UPDATE_REEXEC=1
+      exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+    fi
+
     echo ""
     ok "Updated ${updated} file(s) to v${uv}"
     info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
-    rebuild_agent_plugin
-    run_validator || true
+    if ! rebuild_agent_plugin; then
+      err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+      return 1
+    fi
+    if ! run_validator; then
+      err "Update applied, but packaging validation failed. Review the working tree before committing."
+      return 1
+    fi
     exit 0
   fi
 
@@ -454,10 +656,11 @@ main() {
       if [[ -z "$answer" || "$answer" =~ ^[Yy] ]]; then
         update_file "$f"
         ok "Added: $f"
-        ((updated++))
+        updated=$((updated + 1))
+        [[ "$f" == "cog-update.sh" ]] && self_updated=1
       else
         warn "Skipped: $f"
-        ((skipped++))
+        skipped=$((skipped + 1))
       fi
     done
     echo ""
@@ -477,16 +680,18 @@ main() {
           if [[ -z "$answer2" || "$answer2" =~ ^[Yy] ]]; then
             update_file "$f"
             ok "Updated: $f"
-            ((updated++))
+            updated=$((updated + 1))
+            [[ "$f" == "cog-update.sh" ]] && self_updated=1
           elif [[ "$answer2" =~ ^[Bb] ]]; then
             local bk
             bk=$(backup_file "$f")
             update_file "$f"
             ok "Updated: $f (backup: $bk)"
-            ((updated++))
+            updated=$((updated + 1))
+            [[ "$f" == "cog-update.sh" ]] && self_updated=1
           else
             warn "Skipped: $f"
-            ((skipped++))
+            skipped=$((skipped + 1))
           fi
           ;;
         b|B)
@@ -494,19 +699,35 @@ main() {
           bk=$(backup_file "$f")
           update_file "$f"
           ok "Updated: $f (backup: $bk)"
-          ((updated++))
+          updated=$((updated + 1))
+          [[ "$f" == "cog-update.sh" ]] && self_updated=1
           ;;
         n|N)
           warn "Skipped: $f"
-          ((skipped++))
+          skipped=$((skipped + 1))
           ;;
         *)
           update_file "$f"
           ok "Updated: $f"
-          ((updated++))
+          updated=$((updated + 1))
+          [[ "$f" == "cog-update.sh" ]] && self_updated=1
           ;;
       esac
     done
+  fi
+
+  if [[ $self_updated -eq 1 ]]; then
+    if [[ $skipped -gt 0 ]]; then
+      err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+      return 1
+    fi
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" ${original_args:+"${original_args[@]}"}
   fi
 
   echo ""
@@ -516,8 +737,14 @@ main() {
   echo ""
 
   if [[ $updated -gt 0 ]]; then
-    rebuild_agent_plugin
-    run_validator || true
+    if ! rebuild_agent_plugin; then
+      err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+      return 1
+    fi
+    if ! run_validator; then
+      err "Update applied, but packaging validation failed. Review the working tree before committing."
+      return 1
+    fi
     info "Review changes with ${BOLD}git diff${RESET}, then commit when ready:"
     echo "  git add -A && git commit -m \"Update COG framework to v${uv}\""
   fi

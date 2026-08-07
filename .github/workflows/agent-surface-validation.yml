@@ -1,0 +1,65 @@
+name: Framework Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Run agent-surface regression tests
+        run: bash tests/test-agent-surface-validator.sh
+
+      - name: Check Cursor agent parity
+        run: bash tests/test-cursor-agent-parity.sh
+
+      - name: Test lane classifier hard gates
+        run: bash tests/test-lane-classify.sh
+
+      - name: Test checkpoint evidence integrity
+        run: bash tests/test-checkpoint.sh
+
+      - name: Check closed-loop harness assets
+        run: bash tests/test-harness-assets.sh
+
+      - name: Test harness bootstrap contract
+        run: bash tests/test-harness-bootstrap-contract.sh
+
+      - name: Test safe harness report rendering
+        run: python3 tests/test-harness-report-renderer.py
+
+      - name: Detect updater mode drift
+        run: bash tests/test-cog-update-mode-drift.sh
+
+      - name: Test updater path safety
+        run: bash tests/test-cog-update-path-safety.sh
+
+      - name: Test updater trust boundaries
+        run: bash tests/test-cog-update-trust-boundaries.sh
+
+      - name: Test updater validator failure propagation
+        run: bash tests/test-cog-update-validator-failure.sh
+
+      - name: Test updater plugin rebuild failure propagation
+        run: bash tests/test-cog-update-plugin-rebuild-failure.sh
+
+      - name: Test updater self refresh
+        run: bash tests/test-cog-update-self-refresh.sh
+
+      - name: Preserve updater executable modes
+        run: bash tests/test-cog-update-file-mode.sh
+
+      - name: Exercise force-mode multi-file updates
+        run: bash tests/test-cog-update-force.sh
+
+      - name: Validate packaged agent surfaces
+        run: bash scripts/validate-agent-surface.sh
