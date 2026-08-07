@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Risk lane classifier — adapted from dwarves-kit lane-classify pattern.
+# Risk lane classifier adapted from dwarves-kit lane-classify pattern.
 # Usage:
 #   lane-classify.sh classify "<task summary>"
 #   lane-classify.sh explain "<task summary>"
@@ -12,29 +12,32 @@ text="${*:-}"
 score=0
 reasons=()
 
+emit_hard_gate() {
+  local lane="$1"
+  local reason="$2"
+  if [[ "$cmd" == "explain" ]]; then
+    printf 'lane=%s score=0 reasons=%s\n' "$lane" "$reason"
+  else
+    echo "$lane"
+  fi
+  exit 0
+}
+
 # Hard gates
 if echo "$text" | grep -qiE 'security|credential|secret|prod(uction)?|delete all|rm -rf'; then
-  echo "full"
-  exit 0
+  emit_hard_gate "full" "hard-security"
 fi
 
 if echo "$text" | grep -qiE 'bug|broken|regression|fails|error 5|root cause'; then
-  echo "bug"
-  exit 0
+  emit_hard_gate "bug" "hard-bug"
 fi
 
 if echo "$text" | grep -qiE 'backfill|retrofit|audit only|document existing|no behavior change'; then
-  echo "backfill"
-  exit 0
+  emit_hard_gate "backfill" "hard-backfill"
 fi
 
 if echo "$text" | grep -qiE 'typo|one line|single word|label only|status reply|fix typo'; then
-  if [[ "$cmd" == "explain" ]]; then
-    echo "lane=tiny score=0 reasons=hard-tiny"
-  else
-    echo "tiny"
-  fi
-  exit 0
+  emit_hard_gate "tiny" "hard-tiny"
 fi
 
 # Soft signals

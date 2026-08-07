@@ -2,6 +2,17 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.10.2] - 2026-08-07
+
+### Fixed
+
+- `lane-classify.sh explain` now returns structured `lane`, `score`, and hard-gate reason output for security, bug, and backfill gates, matching the existing tiny-gate behavior.
+- `classify` output and hard-gate precedence remain unchanged.
+
+### Added
+
+- Regression coverage for `classify` and `explain` output across all four hard-gate families.
+
 ## [3.10.1] - 2026-08-07
 
 ### Fixed
