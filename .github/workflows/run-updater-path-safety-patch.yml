@@ -29,11 +29,11 @@ jobs:
           exec(payload, {})
           PY
 
-      - name: Commit patch
+      - name: Commit updater patch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cog-update.sh tests/test-cog-update-path-safety.sh .github/workflows/agent-surface-validation.yml
+          git add cog-update.sh
           git diff --cached --check
           if ! git diff --cached --quiet; then
             git commit -m "fix: harden updater path safety"
