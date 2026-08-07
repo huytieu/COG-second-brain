@@ -12,6 +12,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO_ROOT=""
+
 # ── Configuration ────────────────────────────────────────────────────
 REMOTE_NAME="cog-upstream"
 REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
@@ -49,6 +52,7 @@ FRAMEWORK_FILES=(
   "tests/test-checkpoint.sh"
   "tests/test-harness-assets.sh"
   "tests/test-harness-bootstrap-contract.sh"
+  "tests/test-cog-update-path-safety.sh"
   "tests/test-harness-report-renderer.py"
   "04-projects/harness/templates/evidence-ledger.md"
   "04-projects/harness/templates/SPEC-template.md"
@@ -213,6 +217,56 @@ ok()    { echo -e "${GREEN}✓${RESET}  $*"; }
 warn()  { echo -e "${YELLOW}⚠${RESET}  $*"; }
 err()   { echo -e "${RED}✗${RESET}  $*" >&2; }
 
+assert_safe_framework_path() {
+  local file="$1"
+  local current="" component
+  local -a components
+
+  case "$file" in
+    ""|/*|.|..|../*|*/../*|*/..)
+      err "Refusing unsafe framework path: $file"
+      return 1
+      ;;
+  esac
+
+  IFS='/' read -r -a components <<< "$file"
+  for component in "${components[@]}"; do
+    if [[ -z "$component" || "$component" == "." || "$component" == ".." ]]; then
+      err "Refusing unsafe framework path component in: $file"
+      return 1
+    fi
+    current="${current:+$current/}$component"
+    if [[ -L "$current" ]]; then
+      err "Refusing framework path containing symlink: $current (for $file)"
+      return 1
+    fi
+  done
+}
+
+preflight_framework_paths() {
+  local file
+  for file in "${FRAMEWORK_FILES[@]}"; do
+    assert_safe_framework_path "$file" || return 1
+  done
+}
+
+assert_parent_inside_repo() {
+  local file="$1"
+  local dir physical_dir
+  dir=$(dirname "$file")
+  physical_dir=$(cd "$dir" 2>/dev/null && pwd -P) || {
+    err "Could not resolve framework parent directory: $dir"
+    return 1
+  }
+  case "$physical_dir/" in
+    "$REPO_ROOT/"*) return 0 ;;
+    *)
+      err "Refusing framework path outside repository root: $file"
+      return 1
+      ;;
+  esac
+}
+
 usage() {
   cat <<'EOF'
 COG Upstream Update Script
@@ -294,21 +348,42 @@ file_has_changes() {
 # ── Update a single file from upstream ───────────────────────────────
 update_file() {
   local file="$1"
-  local dir
+  local dir mode tmp
+
+  assert_safe_framework_path "$file" || return 1
   dir=$(dirname "$file")
   [[ "$dir" != "." ]] && mkdir -p "$dir"
-  git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$file" 2>/dev/null
+  assert_safe_framework_path "$file" || return 1
+  assert_parent_inside_repo "$file" || return 1
 
-  case "$(upstream_file_mode "$file")" in
-    100755) chmod +x "$file" ;;
-    100644) chmod -x "$file" ;;
+  tmp=$(mktemp "${dir}/.cog-update.XXXXXX") || return 1
+  if ! git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$tmp" 2>/dev/null; then
+    rm -f "$tmp"
+    return 1
+  fi
+
+  mode=$(upstream_file_mode "$file")
+  case "$mode" in
+    100755) chmod +x "$tmp" || { rm -f "$tmp"; return 1; } ;;
+    100644) chmod -x "$tmp" || { rm -f "$tmp"; return 1; } ;;
+    *)
+      rm -f "$tmp"
+      err "Unsupported upstream file mode for $file: ${mode:-unknown}"
+      return 1
+      ;;
   esac
+
+  assert_safe_framework_path "$file" || { rm -f "$tmp"; return 1; }
+  assert_parent_inside_repo "$file" || { rm -f "$tmp"; return 1; }
+  mv -f "$tmp" "$file"
 }
 
 # ── Backup a file before overwriting ─────────────────────────────────
 backup_file() {
   local file="$1"
-  if [[ -f "$file" ]]; then
+  assert_safe_framework_path "$file" || return 1
+  assert_parent_inside_repo "$file" || return 1
+  if [[ -f "$file" && ! -L "$file" ]]; then
     local backup="${file}.backup-$(date +%Y%m%d-%H%M%S)"
     cp "$file" "$backup"
     echo "$backup"
@@ -365,9 +440,16 @@ main() {
     esac
   done
 
-  # Sanity check — are we in a git repo?
-  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
-    err "Not inside a git repository. Run this from your COG folder."
+  # Anchor all relative framework paths to the checkout that owns this script.
+  if ! REPO_ROOT=$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null); then
+    err "cog-update.sh is not inside a Git checkout. Run the copy shipped with your COG repository."
+    exit 1
+  fi
+  REPO_ROOT=$(cd "$REPO_ROOT" && pwd -P)
+  cd "$REPO_ROOT"
+
+  if ! preflight_framework_paths; then
+    err "Framework path safety preflight failed; no update was attempted."
     exit 1
   fi
 
