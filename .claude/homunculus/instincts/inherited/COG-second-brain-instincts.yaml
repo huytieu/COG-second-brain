@@ -1,0 +1,127 @@
+# Instincts generated from https://github.com/imMamdouhaboammar/COG-second-brain
+# Generated: 2026-08-07T06:52:30.765Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: COG-second-brain-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/imMamdouhaboammar/COG-second-brain
+---
+
+# COG Second Brain Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: fix, test, ci
+
+## Evidence
+
+- 4 commits analyzed
+- Detected conventional commit pattern
+- Examples: fix: harden agent surface validation, test: cover Antigravity skill drift
+
+---
+id: COG-second-brain-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/imMamdouhaboammar/COG-second-brain
+---
+
+# COG Second Brain Commit Length
+
+## Action
+
+Keep commit messages concise (~37 characters)
+
+## Evidence
+
+- Average commit message length: 37 chars
+- Based on 4 commits
+
+---
+id: COG-second-brain-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/imMamdouhaboammar/COG-second-brain
+---
+
+# COG Second Brain Naming Files
+
+## Action
+
+Use kebab-case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: kebab-case
+
+---
+id: COG-second-brain-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/imMamdouhaboammar/COG-second-brain
+---
+
+# COG Second Brain Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: COG-second-brain-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/imMamdouhaboammar/COG-second-brain
+---
+
+# COG Second Brain Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: COG-second-brain-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/imMamdouhaboammar/COG-second-brain
+---
+
+# COG Second Brain Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
