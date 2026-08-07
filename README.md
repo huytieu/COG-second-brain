@@ -22,7 +22,7 @@ graph LR
     D --> F[iCloud]
 ```
 
-> **New to COG?** Watch the [2-minute walkthrough](https://youtube.com/PLACEHOLDER) to see it in action.
+> **New to COG?** Watch the [2-minute walkthrough](https://www.youtube.com/watch?v=jYMhDEzNAN0) to see it in action.
 
 ## Quick Start
 
