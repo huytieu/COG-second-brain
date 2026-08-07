@@ -2,6 +2,21 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.10.1] - 2026-08-07
+
+### Fixed
+
+- Packaging validation now enforces exact Claude, Antigravity, and Cursor skill/agent parity, manifest paths, Agent Plugins mirror parity, updater coverage, and published-version consistency.
+- Restored the four verification/repair agents missing from `.cursor-plugin/plugin.json` since the 10-agent release.
+- `cog-update.sh` now preserves upstream executable bits and detects mode-only drift for tracked framework files.
+- `cog-update.sh` no longer exits after the first update or skip under `set -e` because counters now use errexit-safe arithmetic assignment.
+- Packaging documentation and Cursor guidance now match the shipped 33-skill, 10-agent surfaces.
+
+### Added
+
+- GitHub Actions framework validation on pull requests and `main` pushes.
+- Regression coverage for Antigravity drift, Cursor agent drift, marketplace version drift, updater file modes, and multi-file force updates.
+
 ## [3.10.0] - 2026-08-07
 
 ### Added

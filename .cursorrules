@@ -1,22 +1,32 @@
-# COG Second Brain — Cursor Rules
-# This is the Cursor-compatible version of CLAUDE.md
-# COG: Cognition + Obsidian + Git — a self-evolving agentic second brain
-# Inspired by Garry Tan's gstack and gbrain patterns
+# COG Second Brain - Cursor Rules
+# This is the Cursor-compatible operating guide for the COG framework.
+# COG: Cognition + Obsidian + Git
 
 ## Skills
 
-COG exposes 17 skills via `.claude/skills/*/SKILL.md`. Each skill has a `name` and `description` in YAML frontmatter. Use AGENTS.md as the universal command reference.
+COG exposes 33 skills through `.claude/skills/*/SKILL.md`. Each skill carries `name` and `description` frontmatter. The same 33 skills are declared in `.cursor-plugin/plugin.json`. Use `AGENTS.md` as the universal command reference.
 
-## Worker Agents
+## Agents
 
-10 agents live in `.claude/agents/`: 6 workers handle data-heavy tasks, 4 read-only verifiers check the result against acceptance criteria by observing the artifact. The lead session handles reasoning and synthesis.
+10 agents live in `.claude/agents/` and are declared in the Cursor plugin manifest.
+
+### Workers
 
 - worker-data-collector: Structured extraction from GitHub, Slack, Jira, Linear
 - worker-researcher: Web research with source citations
 - worker-file-ops: Vault file operations, metadata, profiles
-- worker-executor: Pre-approved mutations (Jira, Linear, APIs)
-- worker-publisher: Publishing to Slack, Confluence, Notion
-- brief-people-updater: Batch-update people profiles
+- worker-executor: Pre-approved mutations for Jira, Linear, APIs, and build commands
+- worker-publisher: Publishing to Slack, Confluence, Notion, and webhooks
+- brief-people-updater: Batch updates for people profiles
+
+### Verification and repair
+
+- task-verifier: Read-only component verification against acceptance criteria
+- integration-verifier: Read-only cross-task and global acceptance verification
+- fix-agent: Targeted repair for verifier-identified gaps
+- harvest-curator: Propose-only curation of durable session learnings
+
+The lead session handles reasoning and synthesis. Verification agents observe the artifact rather than trusting worker summaries.
 
 ## Brain-First Protocol
 
@@ -35,13 +45,13 @@ Check `00-inbox/MY-INTEGRATIONS.md` before using any external integration:
 ## Vault Structure
 
 ```
-00-inbox/          — Profiles, interests, integrations
-01-daily/          — Briefs and check-ins
-02-personal/       — Personal braindumps (private)
-03-professional/   — Professional braindumps and strategy
-04-projects/       — Per-project tracking
-05-knowledge/      — Consolidated insights, people CRM, patterns
-06-templates/      — Document templates
+00-inbox/          - Profiles, interests, integrations
+01-daily/          - Briefs and check-ins
+02-personal/       - Personal braindumps (private)
+03-professional/   - Professional braindumps and strategy
+04-projects/       - Per-project tracking
+05-knowledge/      - Consolidated insights, people CRM, patterns
+06-templates/      - Document templates
 ```
 
 ## Citation Rule

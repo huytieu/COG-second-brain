@@ -7,7 +7,9 @@ Complete step-by-step instructions for setting up your COG (Cognition + Obsidian
 ### What You Need
 
 1. **AI Agent** (choose one or more):
-   - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/` (full 17-skill native surface)
+   - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/` + `.claude/agents/` (33 skills + 10 agents)
+   - **Antigravity** - Uses `.agents/skills/` + `.agents/agents/` (33 skills + 10 agents)
+   - **Cursor** - Uses `.cursor-plugin/plugin.json` + `.cursorrules` (33 skills + 10 agents)
    - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/` (7 core native powers)
    - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Uses `GEMINI.md` + `.gemini/commands/` (7 core native commands)
    - Any OpenAI-compatible or markdown-reading agent - Uses `AGENTS.md`
@@ -44,7 +46,10 @@ That's it! You now have a working second brain.
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
 - COG now exposes a clear multi-agent support matrix:
-  - `.claude/skills/` - 33 Claude Code skills (full surface)
+  - `.claude/skills/` + `.claude/agents/` - 33 Claude Code skills + 10 agents
+  - `.agents/skills/` + `.agents/agents/` - 33 Antigravity skill stubs + 10 agent stubs
+  - `.cursor-plugin/plugin.json` + `.cursorrules` - Cursor package with 33 skills + 10 agents
+  - `plugin.json` + `skills/` - Agent Plugins 1.0.0 manifest + generated 33-skill mirror
   - `.kiro/powers/` - 7 Kiro powers (core workflows)
   - `.gemini/commands/` + `.gemini/skills/` - 7 Gemini CLI commands (core workflows)
   - `AGENTS.md` - 33 documented commands for Codex and other agents
@@ -129,7 +134,7 @@ After running onboarding, you'll have this structure:
 COG-second-brain/              # This is your second brain folder
 ├── AGENTS.md                  # Universal agent documentation
 ├── .claude/
-│   ├── agents/                # 6 worker agent definitions
+│   ├── agents/                # 10 agents (6 workers + 4 verifiers)
 │   ├── roles/                 # 7 role packs for personalized recommendations
 │   └── skills/                # 33 Claude Code skills
 │       ├── onboarding/

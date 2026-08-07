@@ -37,7 +37,13 @@ FRAMEWORK_FILES=(
   ".claude/lib/checkpoint.sh"
   ".claude/lib/lane-classify.sh"
   ".github/MARKETPLACE.md"
+  ".github/workflows/agent-surface-validation.yml"
   "scripts/validate-agent-surface.sh"
+  "tests/test-agent-surface-validator.sh"
+  "tests/test-cog-update-file-mode.sh"
+  "tests/test-cog-update-mode-drift.sh"
+  "tests/test-cog-update-force.sh"
+  "tests/test-cursor-agent-parity.sh"
 
   # Claude Code skills
   ".claude/skills/onboarding/SKILL.md"
@@ -248,6 +254,11 @@ upstream_version() {
   git show "${REMOTE_NAME}/${BRANCH}:${VERSION_FILE}" 2>/dev/null | tr -d '[:space:]' || echo "unknown"
 }
 
+upstream_file_mode() {
+  local file="$1"
+  git ls-tree "${REMOTE_NAME}/${BRANCH}" -- "$file" | awk 'NR == 1 {print $1}'
+}
+
 # ── Diff a single file ──────────────────────────────────────────────
 file_has_changes() {
   local file="$1"
@@ -257,7 +268,15 @@ file_has_changes() {
   fi
   # File differs from upstream?
   if [[ -f "$file" ]]; then
-    ! diff -q <(git show "${REMOTE_NAME}/${BRANCH}:${file}" 2>/dev/null) "$file" &>/dev/null
+    if ! diff -q <(git show "${REMOTE_NAME}/${BRANCH}:${file}" 2>/dev/null) "$file" &>/dev/null; then
+      return 0
+    fi
+
+    case "$(upstream_file_mode "$file")" in
+      100755) [[ ! -x "$file" ]] ;;
+      100644) [[ -x "$file" ]] ;;
+      *) return 1 ;;
+    esac
   else
     return 0  # file missing locally → counts as changed
   fi
@@ -270,6 +289,11 @@ update_file() {
   dir=$(dirname "$file")
   [[ "$dir" != "." ]] && mkdir -p "$dir"
   git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$file" 2>/dev/null
+
+  case "$(upstream_file_mode "$file")" in
+    100755) chmod +x "$file" ;;
+    100644) chmod -x "$file" ;;
+  esac
 }
 
 # ── Backup a file before overwriting ─────────────────────────────────
@@ -432,7 +456,7 @@ main() {
       fi
       update_file "$f"
       ok "Updated: $f"
-      ((updated++))
+      updated=$((updated + 1))
     done
     echo ""
     ok "Updated ${updated} file(s) to v${uv}"
@@ -454,10 +478,10 @@ main() {
       if [[ -z "$answer" || "$answer" =~ ^[Yy] ]]; then
         update_file "$f"
         ok "Added: $f"
-        ((updated++))
+        updated=$((updated + 1))
       else
         warn "Skipped: $f"
-        ((skipped++))
+        skipped=$((skipped + 1))
       fi
     done
     echo ""
@@ -477,16 +501,16 @@ main() {
           if [[ -z "$answer2" || "$answer2" =~ ^[Yy] ]]; then
             update_file "$f"
             ok "Updated: $f"
-            ((updated++))
+            updated=$((updated + 1))
           elif [[ "$answer2" =~ ^[Bb] ]]; then
             local bk
             bk=$(backup_file "$f")
             update_file "$f"
             ok "Updated: $f (backup: $bk)"
-            ((updated++))
+            updated=$((updated + 1))
           else
             warn "Skipped: $f"
-            ((skipped++))
+            skipped=$((skipped + 1))
           fi
           ;;
         b|B)
@@ -494,16 +518,16 @@ main() {
           bk=$(backup_file "$f")
           update_file "$f"
           ok "Updated: $f (backup: $bk)"
-          ((updated++))
+          updated=$((updated + 1))
           ;;
         n|N)
           warn "Skipped: $f"
-          ((skipped++))
+          skipped=$((skipped + 1))
           ;;
         *)
           update_file "$f"
           ok "Updated: $f"
-          ((updated++))
+          updated=$((updated + 1))
           ;;
       esac
     done

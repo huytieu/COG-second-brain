@@ -1,0 +1,35 @@
+name: Framework Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Run agent-surface regression tests
+        run: bash tests/test-agent-surface-validator.sh
+
+      - name: Check Cursor agent parity
+        run: bash tests/test-cursor-agent-parity.sh
+
+      - name: Detect updater mode drift
+        run: bash tests/test-cog-update-mode-drift.sh
+
+      - name: Preserve updater executable modes
+        run: bash tests/test-cog-update-file-mode.sh
+
+      - name: Exercise force-mode multi-file updates
+        run: bash tests/test-cog-update-force.sh
+
+      - name: Validate packaged agent surfaces
+        run: bash scripts/validate-agent-surface.sh
