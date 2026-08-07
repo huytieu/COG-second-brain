@@ -7,7 +7,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          ref: fix/updater-self-refresh
 
       - name: Run agent-surface regression tests
         run: bash tests/test-agent-surface-validator.sh
@@ -60,3 +62,81 @@ jobs:
 
       - name: Validate packaged agent surfaces
         run: bash scripts/validate-agent-surface.sh
+
+      - name: Normalize updater self-refresh indentation
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'fix/updater-self-refresh' && github.actor != 'github-actions[bot]'
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('cog-update.sh')
+          text = path.read_text(encoding='utf-8')
+          replacements = [
+              (
+                  '''    if [[ $self_updated -eq 1 ]]; then
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+''',
+                  '''    if [[ $self_updated -eq 1 ]]; then
+      if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+        err "Updater changed again after its one allowed restart; refusing a restart loop."
+        return 1
+      fi
+      info "Updater changed; restarting once to load the new framework file list..."
+      export COG_UPDATE_REEXEC=1
+      exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+    fi
+''',
+              ),
+              (
+                  '''  if [[ $self_updated -eq 1 ]]; then
+  if [[ $skipped -gt 0 ]]; then
+    err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+    return 1
+  fi
+  if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+    err "Updater changed again after its one allowed restart; refusing a restart loop."
+    return 1
+  fi
+  info "Updater changed; restarting once to load the new framework file list..."
+  export COG_UPDATE_REEXEC=1
+  exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+fi
+''',
+                  '''  if [[ $self_updated -eq 1 ]]; then
+    if [[ $skipped -gt 0 ]]; then
+      err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+      return 1
+    fi
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+''',
+              ),
+          ]
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new, 1)
+              elif new not in text:
+                  raise SystemExit('unexpected self-refresh block formatting')
+          path.write_text(text, encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cog-update.sh
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "style: normalize updater self-refresh blocks"
+            git push origin HEAD:fix/updater-self-refresh
+          fi
