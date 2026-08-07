@@ -32,6 +32,7 @@ chmod +x "$consumer/scripts/regular-helper.sh"
   source <(sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh")
   REMOTE_NAME="fixture"
   BRANCH="main"
+  REPO_ROOT="$(pwd -P)"
 
   update_file "scripts/executable-helper.sh"
   update_file "scripts/regular-helper.sh"
@@ -47,4 +48,4 @@ chmod +x "$consumer/scripts/regular-helper.sh"
   fi
 )
 
-echo "cog-update applies both supported upstream file modes"
+echo "cog-update applies both supported upstream file modes with an initialized repository root"
