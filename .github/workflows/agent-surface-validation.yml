@@ -40,6 +40,9 @@ jobs:
       - name: Detect updater mode drift
         run: bash tests/test-cog-update-mode-drift.sh
 
+      - name: Test updater path safety
+        run: bash tests/test-cog-update-path-safety.sh
+
       - name: Preserve updater executable modes
         run: bash tests/test-cog-update-file-mode.sh
 
