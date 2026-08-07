@@ -47,6 +47,27 @@ else
   record_failure "marketplace-entry.json is not valid JSON"
 fi
 
+# Agent Plugins standard surface (agent-plugins.org, spec 1.0.0):
+# root plugin.json manifest + root skills/ mirror of .claude/skills/.
+if python3 - <<'PY' >/dev/null 2>&1
+import json
+with open('plugin.json') as f:
+    data = json.load(f)
+assert data['$schema'] == 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json'
+assert data['name'] == 'cog-second-brain'
+PY
+then
+  ok "plugin.json is valid JSON and declares the Agent Plugins 1.0.0 schema"
+else
+  record_failure "plugin.json is missing, invalid JSON, or missing \$schema/name (Agent Plugins spec 1.0.0)"
+fi
+
+if [[ -d skills ]] && diff -r .claude/skills skills >/dev/null 2>&1; then
+  ok "skills/ mirror matches .claude/skills (Agent Plugins surface in sync)"
+else
+  record_failure "skills/ mirror is missing or drifted from .claude/skills — run ./scripts/build-agent-plugin.sh"
+fi
+
 manifest_tmp="$(mktemp)"
 python3 - <<'PY' > "$manifest_tmp"
 import json
@@ -96,11 +117,17 @@ with open('marketplace-entry.json') as f:
 PY
 )
 cog_version=$(tr -d '[:space:]' < COG-VERSION)
+agent_plugin_version=$(python3 - <<'PY'
+import json
+with open('plugin.json') as f:
+    print(json.load(f)['version'])
+PY
+)
 
-if [[ "$plugin_version" == "$marketplace_version" && "$plugin_version" == "$cog_version" ]]; then
-  ok "Version is aligned across plugin.json, marketplace-entry.json, and COG-VERSION ($cog_version)"
+if [[ "$plugin_version" == "$marketplace_version" && "$plugin_version" == "$cog_version" && "$plugin_version" == "$agent_plugin_version" ]]; then
+  ok "Version is aligned across .claude-plugin/plugin.json, plugin.json, marketplace-entry.json, and COG-VERSION ($cog_version)"
 else
-  record_failure "Version mismatch: plugin.json=$plugin_version marketplace-entry.json=$marketplace_version COG-VERSION=$cog_version"
+  record_failure "Version mismatch: .claude-plugin/plugin.json=$plugin_version plugin.json=$agent_plugin_version marketplace-entry.json=$marketplace_version COG-VERSION=$cog_version"
 fi
 
 if rg -n "agents\.md" README.md SETUP.md CONTRIBUTING.md .github/MARKETPLACE.md >/dev/null 2>&1; then

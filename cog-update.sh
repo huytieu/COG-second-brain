@@ -178,6 +178,8 @@ FRAMEWORK_FILES=(
   ".cursor-plugin/plugin.json"
   ".cursorrules"
   "marketplace-entry.json"
+  "plugin.json"
+  "scripts/build-agent-plugin.sh"
 
   # Git infrastructure
   ".gitignore"
@@ -287,6 +289,14 @@ worktree_is_dirty() {
 warn_if_dirty() {
   if worktree_is_dirty; then
     warn "Your working tree has uncommitted changes. Framework updates are still safe, but review carefully before committing."
+  fi
+}
+
+# Regenerate the Agent Plugins standard mirror (root skills/) after framework
+# updates so it never drifts from the updated .claude/skills/.
+rebuild_agent_plugin() {
+  if [[ -x "scripts/build-agent-plugin.sh" ]]; then
+    ./scripts/build-agent-plugin.sh || warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
   fi
 }
 
@@ -427,6 +437,7 @@ main() {
     echo ""
     ok "Updated ${updated} file(s) to v${uv}"
     info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
+    rebuild_agent_plugin
     run_validator || true
     exit 0
   fi
@@ -505,6 +516,7 @@ main() {
   echo ""
 
   if [[ $updated -gt 0 ]]; then
+    rebuild_agent_plugin
     run_validator || true
     info "Review changes with ${BOLD}git diff${RESET}, then commit when ready:"
     echo "  git add -A && git commit -m \"Update COG framework to v${uv}\""

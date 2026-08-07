@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cog-second-brain",
+  "version": "3.10.0",
+  "description": "Self-evolving second brain with 33 AI agent skills, 10 agents, and people CRM. Closed-loop harness: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Works with Claude Code, Cursor, Kiro, Gemini CLI, Codex, and any Agent Plugins conformant client.",
+  "author": {
+    "name": "Huy Tieu",
+    "email": "tqhuy1991@gmail.com",
+    "url": "https://github.com/huytieu"
+  },
+  "homepage": "https://github.com/huytieu/COG-second-brain",
+  "repository": "https://github.com/huytieu/COG-second-brain",
+  "license": "MIT",
+  "keywords": [
+    "second-brain",
+    "knowledge-management",
+    "obsidian",
+    "ai-agents",
+    "productivity",
+    "people-crm",
+    "claude-code",
+    "cursor",
+    "kiro",
+    "gemini-cli",
+    "codex",
+    "closed-loop",
+    "verification-harness",
+    "ultragoal",
+    "no-ai-slop",
+    "agent-plugins"
+  ]
+}

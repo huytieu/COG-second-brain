@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editorial illustrations — claim → geometry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;480;540&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#080807; --ground-deep:#030303; --surface:#080807cc; --surface-solid:#0c0c0b;
+  --ink:#f2f2ed; --ink-soft:#d0d0c9; --muted:#92928a; --quiet:#5f5f59;
+  --line:#292925; --line-strong:#54544e;
+  --accent:#D97757; --accent-soft:#e6a488;
+  --sans:"Inter","Inter Variable",system-ui,sans-serif;
+  --mono:"JetBrains Mono","JetBrains Mono Variable",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+:root[data-theme="light"]{
+  --ground:#f7f7f2; --ground-deep:#ecece6; --surface:#f7f7f2cc; --surface-solid:#fbfbf7;
+  --ink:#191917; --ink-soft:#3d3d38; --muted:#6a6a62; --quiet:#9a9a90;
+  --line:#deded6; --line-strong:#b7b7ad;
+  --accent:#c15f3c; --accent-soft:#d97757;
+}
+:root[data-accent="mono"]{ --accent:var(--ink); --accent-soft:var(--ink-soft); }
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;line-height:1.5;transition:background .3s,color .3s}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 120px}
+header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;
+  padding:56px 0 40px;flex-wrap:wrap}
+h1{font-family:var(--sans);font-weight:480;letter-spacing:-.04em;font-size:clamp(30px,5vw,52px);
+  line-height:1;margin:0 0 14px}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{color:var(--muted);font-size:15px;max-width:44ch;margin:0}
+.kicker{font:8px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--quiet);
+  margin:0 0 16px}
+.controls{display:flex;gap:8px;flex-shrink:0}
+.controls button{font:8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);background:transparent;border:1px solid var(--line);padding:9px 12px;
+  cursor:pointer;transition:.15s}
+.controls button:hover{color:var(--ink);border-color:var(--line-strong)}
+.method{border:1px solid var(--line);padding:22px;margin:0 0 8px;
+  background:color-mix(in srgb,var(--surface) 60%,transparent)}
+.method p{margin:0 0 12px;color:var(--ink-soft);font-size:14px}
+.method p:last-child{margin:0}
+.method b{color:var(--accent);font-weight:540}
+.method code{font:11px var(--mono);color:var(--muted)}
+.sec-label{font:8px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);
+  border-top:1px solid var(--line);padding-top:14px;margin:56px 0 -34px}
+.claim{font:8px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent-soft);
+  margin:52px 0 -38px}
+.claim span{color:var(--quiet)}
+
+/* ---------- base framed figure ---------- */
+.fig{border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 72%,transparent);
+  backdrop-filter:blur(16px);margin:52px 0;padding:20px}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{border-top:1px solid var(--line);color:var(--quiet);font:8px/1.6 var(--mono);
+  letter-spacing:.04em;text-transform:uppercase;margin-top:18px;padding-top:13px}
+
+/* ---------- 5a cells (spectrum / pipeline) ---------- */
+.cells .axis,.cells .stakes{display:flex;justify-content:space-between;align-items:center;
+  color:var(--quiet);font:7px/1 var(--mono);text-transform:uppercase}
+.cells .axis i{flex:1;height:1px;margin-inline:12px;background:linear-gradient(90deg,var(--quiet),var(--accent))}
+.cells .stakes b{color:var(--ink-soft);font-weight:450}
+.cells .row{display:grid;grid-template-columns:repeat(var(--n,5),1fr);margin-block:18px}
+.cells .row section{position:relative;overflow:hidden;display:flex;flex-direction:column;
+  min-height:145px;padding:12px;border:1px solid var(--line);border-right:0}
+.cells .row section:last-child{border-right:1px solid var(--line)}
+.cells .row section>span{color:var(--quiet);font:8px/1 var(--mono)}
+.cells .row section>b{margin-top:auto;color:var(--ink);font-size:11px;font-weight:540}
+.cells .row section>small{margin-top:5px;min-height:32px;color:var(--muted);font:7px/1.4 var(--mono)}
+.cells .row section>i{position:absolute;inset:auto 0 0;height:calc(var(--v)*100%);
+  background:var(--accent);opacity:calc(.10 + var(--v)*.5);transition:height .4s,opacity .4s}
+.cells .row section:hover>i{opacity:calc(.28 + var(--v)*.55)}
+
+/* ---------- 5b bars ---------- */
+.bars .grid line{stroke:var(--line);stroke-width:1}
+.bars .grid text{fill:var(--quiet);font:8px var(--mono)}
+.bars .track{fill:var(--ground-deep)}
+.bars .fill{fill:var(--ink-soft);transition:opacity .18s}
+.bars .row--accent .fill{fill:var(--accent)}
+.bars .row:hover .fill,.bars .row:focus .fill{opacity:.72}
+.bars .row:focus{outline:none}
+.bars .label{fill:var(--muted);font:10px var(--mono)}
+.bars .value{fill:var(--ink);font:700 8px var(--mono)}
+.bars .row--accent .value{fill:var(--accent)}
+
+/* ---------- process (stage grid + rail) ---------- */
+.process .rail{border-top:1px dashed var(--line-strong);height:20px;margin-inline:5%;
+  position:relative;margin-bottom:6px}
+.process .rail::before,.process .rail::after{content:"";position:absolute;top:-3px;
+  width:5px;height:5px;background:var(--ink)}
+.process .rail::before{left:0}.process .rail::after{right:0}
+.process .rail i{position:absolute;top:-4px;width:7px;height:7px;border:1px solid var(--accent);
+  background:var(--ground);animation:travel 4.8s cubic-bezier(.5,0,.5,1) infinite}
+.process .stages{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.process .stages section{position:relative;display:flex;flex-direction:column;min-height:116px;
+  padding:13px 11px;border:1px solid var(--line);background:var(--ground)}
+.process .stages section>span{color:var(--quiet);font:8px/1 var(--mono)}
+.process .stages section>b{margin-top:22px;color:var(--ink);font-size:11px;font-weight:540}
+.process .stages section>small{margin-top:5px;color:var(--muted);font:7px/1.45 var(--mono)}
+.process .stages section.is-committed{background:var(--accent);border-color:var(--accent)}
+.process .stages section.is-committed>span,.process .stages section.is-committed>b,.process .stages section.is-committed>small{color:var(--ground)}
+
+/* ---------- loops (coupled orbits) ---------- */
+.loops .system{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:54px;
+  min-height:310px;position:relative}
+.loops .system>section>span{display:block;text-align:center;margin-bottom:10px;color:var(--quiet);
+  font:8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.orbit{position:relative;aspect-ratio:1/1;max-width:230px;margin:auto;border-radius:50%;
+  border:1px solid var(--line-strong);animation:breathe 6s ease-in-out infinite}
+.orbit.human{animation-delay:-3s}
+.orbit::before{content:"";position:absolute;inset:20%;border:1px dashed var(--line);border-radius:50%}
+.orbit i{position:absolute;color:var(--muted);background:var(--ground);font:normal 7px/1 var(--mono);
+  text-transform:uppercase;padding:4px 6px}
+.orbit i:first-child{top:-8px;left:50%;transform:translateX(-50%)}
+.orbit i:nth-child(2){top:50%;right:-14px;transform:translateY(-50%)}
+.orbit i:nth-child(3){bottom:-8px;left:50%;transform:translateX(-50%)}
+.orbit i:nth-child(4){top:50%;left:-12px;transform:translateY(-50%)}
+.orbit b{position:absolute;inset:34%;display:grid;place-items:center;border:1px solid var(--line);
+  color:var(--ink);font-weight:500;text-transform:uppercase;font-size:9px;text-align:center}
+.loops .bridge{position:absolute;top:50%;left:42%;right:42%;display:grid;place-items:center}
+.loops .bridge::before{content:"";border-top:1px solid var(--accent);width:100%}
+.loops .bridge i{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);
+  animation:pulse 2.2s ease-in-out infinite alternate}
+.loops .bridge span{margin-top:18px;color:var(--quiet);font:7px/1 var(--mono);text-transform:uppercase}
+
+/* ---------- tree ---------- */
+.tree .memory path{fill:none;stroke:var(--quiet);stroke-width:11;opacity:.08;filter:blur(6px)}
+.tree .branches path{fill:none;stroke:var(--line-strong);stroke-width:1}
+.tree .nodes circle{fill:var(--ground);stroke:var(--ink);stroke-width:1.4}
+.tree .labels{fill:var(--muted);font:8px var(--mono);letter-spacing:1px}
+.tree .signal{fill:var(--accent);opacity:0;transform-box:view-box;animation:signal 3.8s linear infinite}
+
+/* ---------- state-flow rail ---------- */
+.flow .rail{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;align-items:stretch}
+.flow .rail>section{display:flex;flex-direction:column;min-height:148px;padding:14px;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--surface-solid) 70%,transparent)}
+.flow .rail>section>span{color:var(--quiet);font:8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.flow .rail>section>b{margin-top:8px;color:var(--ink);font-size:11px;font-weight:520;line-height:1.35}
+.flow .focus{box-shadow:inset 0 2px var(--accent)}
+.flow .arrow{display:grid;place-items:center;color:var(--quiet);font:11px/1 var(--mono)}
+.flow .evt{display:flex;align-items:end;gap:5px;height:40px;margin-top:auto}
+.flow .evt em{width:5px;height:5px;background:var(--quiet);animation:evt 1.8s steps(2) infinite}
+.flow .evt em:nth-child(2){background:var(--ink);height:18px;animation-delay:-.4s}
+.flow .evt em:nth-child(3){background:var(--ink-soft);height:30px;animation-delay:-.8s}
+.flow .evt em:nth-child(4){height:12px;animation-delay:-1.2s}
+.flow .stack{display:grid;gap:5px;margin-top:auto}
+.flow .stack i{height:7px;background:var(--quiet)}
+.flow .stack i[data-tone="critical"]{background:var(--accent);width:92%}
+.flow .stack i[data-tone="relevant"]{background:var(--ink-soft);width:72%}
+.flow .stack i[data-tone="info"]{background:var(--quiet);width:48%}
+.flow .readout{margin-top:auto;border:1px solid var(--line);color:var(--ink);font:8px/1 var(--mono);padding:8px}
+.flow .readout i{display:inline-block;width:6px;height:6px;margin-right:7px;background:var(--accent);border:1px solid var(--ink)}
+
+/* ---------- NEW #7: accumulation toward a target ---------- */
+.accrue .meter{display:grid;gap:14px;margin-block:6px}
+.accrue .m{display:grid;grid-template-columns:120px 1fr 40px;align-items:center;gap:14px}
+.accrue .m span{font:9px/1 var(--mono);text-transform:uppercase;color:var(--muted)}
+.accrue .m .bar{height:10px;background:var(--ground-deep);position:relative;border:1px solid var(--line)}
+.accrue .m .bar i{position:absolute;inset:0 auto 0 0;width:calc(var(--v)*100%);background:var(--ink-soft)}
+.accrue .m.hit .bar i{background:var(--accent)}
+.accrue .m .bar::after{content:"";position:absolute;top:-4px;bottom:-4px;left:calc(var(--target)*100%);
+  width:1px;background:var(--accent)}
+.accrue .m em{font:700 9px/1 var(--mono);font-style:normal;color:var(--quiet);text-align:right}
+.accrue .m.hit em{color:var(--accent)}
+.accrue .legend{display:flex;gap:20px;color:var(--quiet);font:7px/1 var(--mono);text-transform:uppercase;margin-top:16px}
+
+/* ---------- NEW #8: boundary / inside-vs-outside ---------- */
+.boundary .field{position:relative;height:220px;border:1px solid var(--line);overflow:hidden}
+.boundary .zone{position:absolute;top:0;bottom:0;display:grid;place-items:center;text-align:center;padding:16px}
+.boundary .zone span{font:8px/1.5 var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.boundary .out{left:0;right:50%;color:var(--muted)}
+.boundary .in{left:50%;right:0;background:color-mix(in srgb,var(--accent) 8%,transparent);color:var(--ink-soft)}
+.boundary .wall{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--accent)}
+.boundary .wall b{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--ground);
+  color:var(--accent);font:7px/1 var(--mono);text-transform:uppercase;padding:6px 8px;white-space:nowrap;
+  border:1px solid var(--accent)}
+.boundary .dot{position:absolute;top:calc(var(--y)*1%);width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.boundary .cross{animation:cross 5s ease-in-out infinite}
+@keyframes cross{0%{left:12%;opacity:.4}45%{left:44%;opacity:.4}55%{left:56%;opacity:1;background:var(--accent)}100%{left:82%;opacity:1;background:var(--accent)}}
+
+/* ---------- keyframes ---------- */
+@keyframes travel{0%{left:0}45%,65%{left:58%}100%{left:calc(100% - 7px)}}
+@keyframes pulse{0%{opacity:.25;left:0}100%{opacity:1;left:calc(100% - 6px)}}
+@keyframes breathe{50%{transform:rotate(2deg) scale(1.015)}}
+@keyframes signal{0%,12%{opacity:0;transform:translateY(0)}24%{opacity:1}72%,82%{opacity:1;transform:translateY(70px)}94%,100%{opacity:0;transform:translateY(70px)}}
+@keyframes evt{0%,100%{opacity:.25}50%{opacity:1}}
+
+@media (max-width:720px){
+  .cells .row,.process .stages{grid-template-columns:1fr}
+  .cells .row section,.process .stages section{border-right:1px solid var(--line);min-height:84px}
+  .loops .system,.flow .rail{grid-template-columns:1fr;gap:32px}
+  .loops .bridge,.cells .stakes b{display:none}
+  .flow .arrow{transform:rotate(90deg);min-height:26px}
+  .accrue .m{grid-template-columns:90px 1fr 34px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="kicker">Design system · monotykamary × linear × editorial web</p>
+      <h1>Claim <em>→</em> geometry</h1>
+      <p class="sub">Every figure is one argument rendered as geometry. Grayscale, hairline-framed, mono-captioned, with a single coral accent on the point. Hover the figures; they respond.</p>
+    </div>
+    <div class="controls">
+      <button id="theme">◐ Theme</button>
+      <button id="accent">● Coral</button>
+    </div>
+  </header>
+
+  <div class="method">
+    <p><b>1.</b> Write the claim in one sentence — it becomes the caption. <b>2.</b> Name the claim's <em style="font-style:normal;color:var(--ink)">structure</em> (spectrum? ranking? sequence? mutual causation? branch? transformation?). <b>3.</b> That structure picks the geometry. <b>4.</b> Put coral on the one element that <em style="font-style:normal;color:var(--ink)">is</em> the point. <b>5.</b> Motion only if it demonstrates the argument.</p>
+    <p><code>The six below are the method applied — not a fixed menu. The last two show it generalizing to new shapes.</code></p>
+  </div>
+
+  <p class="sec-label">Worked examples · the method applied</p>
+
+  <!-- 1 spectrum -->
+  <p class="claim"><span>Structure: spectrum ·</span> Autonomy isn't binary; the useful position slides.</p>
+  <figure class="fig cells" style="--n:5">
+    <div class="axis"><span>More oversight</span><i></i><span>More delegation</span></div>
+    <div class="row">
+      <section style="--v:.1"><span>01</span><b>Complete</b><small>Human decides every move</small><i></i></section>
+      <section style="--v:.3"><span>02</span><b>Suggest</b><small>AI proposes local changes</small><i></i></section>
+      <section style="--v:.5"><span>03</span><b>Pair</b><small>Shared iteration loop</small><i></i></section>
+      <section style="--v:.75"><span>04</span><b>Delegate</b><small>AI executes bounded work</small><i></i></section>
+      <section style="--v:1"><span>05</span><b>Roam</b><small>AI owns the trajectory</small><i></i></section>
+    </div>
+    <div class="stakes"><span>Throwaway prototype</span><b>Move deliberately, not permanently →</b><span>Production system</span></div>
+    <figcaption>The useful position is contextual: autonomy moves with blast radius, expertise, and feedback quality.</figcaption>
+  </figure>
+
+  <!-- 2 bars -->
+  <p class="claim"><span>Structure: ranked magnitudes ·</span> Developers avoid high-stakes AI work; trust is low.</p>
+  <figure class="fig bars">
+    <svg viewBox="0 0 720 336" role="img" aria-label="Selected developer-survey figures, share of respondents">
+      <g class="grid">
+        <g><line x1="246" x2="246" y1="18" y2="308"/><text x="246" y="12" text-anchor="middle">0</text></g>
+        <g><line x1="352.5" x2="352.5" y1="18" y2="308"/><text x="352.5" y="12" text-anchor="middle">25</text></g>
+        <g><line x1="459" x2="459" y1="18" y2="308"/><text x="459" y="12" text-anchor="middle">50</text></g>
+        <g><line x1="565.5" x2="565.5" y1="18" y2="308"/><text x="565.5" y="12" text-anchor="middle">75</text></g>
+        <g><line x1="672" x2="672" y1="18" y2="308"/><text x="672" y="12" text-anchor="middle">100</text></g>
+      </g>
+      <g class="row row--accent" tabindex="0"><text class="label" x="0" y="56">Avoid deployment / monitoring</text><rect class="track" x="246" y="38" width="426" height="24"/><rect class="fill" x="246" y="38" width="323.8" height="24"/><text class="value" x="561" y="55" text-anchor="end">76%</text></g>
+      <g class="row row--accent" tabindex="0"><text class="label" x="0" y="108">Reject professional vibe coding</text><rect class="track" x="246" y="90" width="426" height="24"/><rect class="fill" x="246" y="90" width="306.7" height="24"/><text class="value" x="544" y="107" text-anchor="end">72%</text></g>
+      <g class="row" tabindex="0"><text class="label" x="0" y="160">Avoid AI project planning</text><rect class="track" x="246" y="142" width="426" height="24"/><rect class="fill" x="246" y="142" width="293.9" height="24"/><text class="value" x="531" y="159" text-anchor="end">69%</text></g>
+      <g class="row" tabindex="0"><text class="label" x="0" y="212">Cite almost-right output</text><rect class="track" x="246" y="194" width="426" height="24"/><rect class="fill" x="246" y="194" width="281.2" height="24"/><text class="value" x="519" y="211" text-anchor="end">66%</text></g>
+      <g class="row row--accent" tabindex="0"><text class="label" x="0" y="264">Express high trust</text><rect class="track" x="246" y="246" width="426" height="24"/><rect class="fill" x="246" y="246" width="11" height="24"/><text class="value" x="290" y="263" text-anchor="end">2.6%</text></g>
+    </svg>
+    <figcaption>Selected developer-survey figures cited in this analysis · share of respondents</figcaption>
+  </figure>
+
+  <!-- 3 process -->
+  <p class="claim"><span>Structure: sequence with a threshold ·</span> Nothing bills until work crosses the boundary.</p>
+  <figure class="fig process">
+    <div class="rail" aria-hidden="true"><i></i></div>
+    <div class="stages">
+      <section><span>01</span><b>Compose</b><small>Measured locally</small></section>
+      <section><span>02</span><b>Queue</b><small>Staged, not billed</small></section>
+      <section><span>03</span><b>Invoke</b><small>Tokens + tool time</small></section>
+      <section><span>04</span><b>Deliver</b><small>Outcome lands</small></section>
+      <section class="is-committed"><span>05</span><b>Commit</b><small>Receipt changes</small></section>
+    </div>
+    <figcaption>Nothing becomes billable until the work crosses the delivery boundary.</figcaption>
+  </figure>
+
+  <!-- 4 loops -->
+  <p class="claim"><span>Structure: mutual causation ·</span> Evidence sharpens judgment; judgment ranks evidence.</p>
+  <figure class="fig loops">
+    <div class="system">
+      <section><span>Technical loop</span><div class="orbit"><i>Context</i><i>Action</i><i>Tests</i><i>Repair</i><b>Evidence</b></div></section>
+      <section><span>Human loop</span><div class="orbit human"><i>Observe</i><i>Question</i><i>Review</i><i>Learn</i><b>Judgment</b></div></section>
+      <div class="bridge"><i></i><span>Calibration</span></div>
+    </div>
+    <figcaption>Agent evidence sharpens human judgment; human judgment decides which evidence matters.</figcaption>
+  </figure>
+
+  <!-- 5 tree -->
+  <p class="claim"><span>Structure: branch under uncertainty ·</span> Preserve inspectable conditions, not a transcript.</p>
+  <figure class="fig tree">
+    <svg viewBox="0 0 720 330" role="img" aria-labelledby="tree-cap">
+      <g class="memory"><path d="M360 290V220M360 220 190 150M360 220 530 150M190 150 90 70M190 150 260 70M530 150 460 70M530 150 630 70"/></g>
+      <g class="branches"><path d="M360 290V220M360 220 190 150M360 220 530 150M190 150 90 70M190 150 260 70M530 150 460 70M530 150 630 70"/></g>
+      <g class="nodes"><circle cx="360" cy="290" r="9"/><circle cx="360" cy="220" r="7"/><circle cx="190" cy="150" r="6"/><circle cx="530" cy="150" r="6"/><circle cx="90" cy="70" r="5"/><circle cx="260" cy="70" r="5"/><circle cx="460" cy="70" r="5"/><circle cx="630" cy="70" r="5"/></g>
+      <g class="labels"><text x="360" y="322" text-anchor="middle">OBSERVED STATE</text><text x="190" y="178" text-anchor="middle">VERIFIED</text><text x="530" y="178" text-anchor="middle">UNKNOWN</text><text x="90" y="48" text-anchor="middle">RECOMPUTE</text><text x="260" y="48" text-anchor="middle">REUSE</text><text x="460" y="48" text-anchor="middle">QUERY</text><text x="630" y="48" text-anchor="middle">DEFER</text></g>
+      <circle class="signal" cx="360" cy="220" r="2"/>
+    </svg>
+    <figcaption id="tree-cap">A recursive evaluation tree preserves inspectable conditions at every branch instead of an irreversible reasoning transcript.</figcaption>
+  </figure>
+
+  <!-- 6 state-flow -->
+  <p class="claim"><span>Structure: transformation of form ·</span> Events become conditions become state.</p>
+  <figure class="fig flow" aria-labelledby="flow-cap">
+    <div class="rail">
+      <section><span>01 · events</span><b>Raw agent history</b><i class="evt" aria-hidden="true"><em></em><em></em><em></em><em></em></i></section>
+      <span class="arrow" aria-hidden="true">→</span>
+      <section class="focus"><span>02 · observe</span><b>Compressed conditions</b><div class="stack" aria-hidden="true"><i data-tone="critical"></i><i data-tone="relevant"></i><i data-tone="info"></i></div></section>
+      <span class="arrow" aria-hidden="true">→</span>
+      <section><span>03 · reconcile</span><b>Declarative state</b><div class="readout"><i></i> READY</div></section>
+    </div>
+    <figcaption id="flow-cap">Event history becomes observable conditions, which controllers reconcile into state.</figcaption>
+  </figure>
+
+  <p class="sec-label">The method generalizes · shapes not in the original six</p>
+
+  <!-- 7 accumulation -->
+  <p class="claim"><span>Structure: accumulation toward a target ·</span> Coverage is close, but one gate is unmet.</p>
+  <figure class="fig accrue">
+    <div class="meter">
+      <div class="m hit" style="--v:.9;--target:.8"><span>Unit tests</span><div class="bar"><i></i></div><em>90</em></div>
+      <div class="m hit" style="--v:.84;--target:.8"><span>Integration</span><div class="bar"><i></i></div><em>84</em></div>
+      <div class="m" style="--v:.62;--target:.8"><span>E2E flows</span><div class="bar"><i></i></div><em>62</em></div>
+      <div class="m hit" style="--v:.95;--target:.8"><span>Lint / types</span><div class="bar"><i></i></div><em>95</em></div>
+    </div>
+    <div class="legend"><span>Coral tick = required threshold (80)</span><span>Coral fill = target met</span></div>
+    <figcaption>Three of four gates clear the bar; end-to-end coverage is the one that ships the risk.</figcaption>
+  </figure>
+
+  <!-- 8 boundary -->
+  <p class="claim"><span>Structure: boundary / inside-vs-outside ·</span> Trust is earned only by crossing review.</p>
+  <figure class="fig boundary">
+    <div class="field">
+      <div class="zone out"><span>Unreviewed<br>agent output</span></div>
+      <div class="zone in"><span>Merged &amp;<br>trusted</span></div>
+      <div class="wall"><b>Human review</b></div>
+      <div class="dot" style="--y:28"></div>
+      <div class="dot" style="--y:70;left:22%"></div>
+      <div class="dot cross" style="--y:48"></div>
+    </div>
+    <figcaption>Output stays provisional until it crosses the one boundary that confers trust.</figcaption>
+  </figure>
+
+  <p class="sec-label">Reference</p>
+  <div class="method" style="margin-top:34px">
+    <p><code>skill: .claude/skills/editorial-illustrations/</code></p>
+    <p style="color:var(--muted);font-size:13px">SKILL.md = the method · references/design-system.md = tokens + primitive CSS · references/worked-examples.md = the six with claim→geometry reasoning. Accent swaps in one token; toggle grayscale above to see the monotykamary-faithful mode.</p>
+  </div>
+</div>
+
+<script>
+const root=document.documentElement;
+document.getElementById('theme').onclick=()=>{
+  root.dataset.theme = root.dataset.theme==='light'?'dark':'light';
+};
+const ab=document.getElementById('accent');
+ab.onclick=()=>{
+  const mono = root.dataset.accent==='mono';
+  root.dataset.accent = mono?'':'mono';
+  ab.textContent = mono?'● Coral':'● Grayscale';
+};
+</script>
+</body>
+</html>

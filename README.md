@@ -59,6 +59,7 @@ COG ships a **full Claude Code surface**, a **full Antigravity surface**, plus *
 |---|---|---|
 | Claude Code | 33 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
 | Antigravity | 33 skills + 10 agents (pointer-stub format) | Full surface — thin stubs in `.agents/` delegate to the `.claude/` playbooks, which stay authoritative |
+| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + `skills/` (33 skills) | Spec 1.0.0 conformant — any standard-aware client loads COG as a plugin |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |

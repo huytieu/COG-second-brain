@@ -10,6 +10,7 @@ This document is the packaging contract: it tells contributors and maintainers w
 |---|---|---:|---|
 | Claude Code | `.claude/skills/*/SKILL.md` | 33 skills | Full native surface |
 | Antigravity | `.agents/skills/*/SKILL.md` + `.agents/agents/*.md` | 33 skills + 10 agents | Full surface (pointer-stub format — delegates to `.claude/`, which stays authoritative) |
+| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + `skills/` (generated mirror) | 33 skills | Spec 1.0.0 conformant; rebuild with `scripts/build-agent-plugin.sh` |
 | Universal agent docs | `AGENTS.md` | 17 commands | Full documented fallback |
 | Kiro | `.kiro/powers/*/POWER.md` | 7 powers | Core workflows only |
 | Gemini CLI | `.gemini/commands/*.toml` + `.gemini/skills/*.md` | 7 commands | Core workflows only |

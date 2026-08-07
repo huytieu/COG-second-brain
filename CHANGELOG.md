@@ -2,6 +2,21 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.10.0] - 2026-08-07
+
+### Added
+
+#### Agent Plugins standard adoption
+COG now conforms to the [Agent Plugins specification 1.0.0](https://agent-plugins.org) — the open, vendor-neutral plugin format governed by a Technical Steering Committee with representatives from Amazon, Cursor, Microsoft, OpenAI, and Vercel. Any standard-conformant client can load COG as a plugin directly from a checkout.
+
+- **`plugin.json`** at the repo root: the standard manifest, validated against the published 1.0.0 schema.
+- **`skills/`** at the repo root: generated mirror of `.claude/skills/` (the spec's fixed skill location; skills follow the [Agent Skills](https://agentskills.io) format). `.claude/skills/` stays canonical — regenerate with `./scripts/build-agent-plugin.sh`, never edit `skills/` by hand.
+- **`scripts/build-agent-plugin.sh`**: one-command mirror rebuild, wired into `cog-update.sh` so framework updates regenerate the surface automatically.
+- **Validator coverage**: `validate-agent-surface.sh` now checks the manifest declares the 1.0.0 schema, the mirror matches `.claude/skills/` exactly, and the version is aligned across all four packaging manifests.
+
+### Changed
+- Version alignment check now spans `.claude-plugin/plugin.json`, `plugin.json`, `marketplace-entry.json`, and `COG-VERSION`.
+
 ## [3.9.0] - 2026-07-29
 
 ### Added
