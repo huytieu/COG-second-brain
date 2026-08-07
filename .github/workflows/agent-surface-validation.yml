@@ -49,6 +49,9 @@ jobs:
       - name: Test updater validator failure propagation
         run: bash tests/test-cog-update-validator-failure.sh
 
+      - name: Test updater self refresh
+        run: bash tests/test-cog-update-self-refresh.sh
+
       - name: Preserve updater executable modes
         run: bash tests/test-cog-update-file-mode.sh
 
