@@ -159,12 +159,29 @@ jobs:
                   raise SystemExit('ensure_remote block not found exactly once')
               text = text.replace(old_remote, new_remote, 1)
 
-          usage_marker = '  ./cog-update.sh --help     Show this help message\n'
-          usage_line = '  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n'
-          if usage_line not in text:
-              if text.count(usage_marker) < 1:
-                  raise SystemExit('usage marker not found')
-              text = text.replace(usage_marker, usage_marker + usage_line, 1)
+          bad_header = '\n  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nset -euo pipefail\n'
+          good_header = '\n#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nset -euo pipefail\n'
+          if bad_header in text:
+              text = text.replace(bad_header, good_header, 1)
+          elif good_header not in text:
+              header_marker = '#   ./cog-update.sh --help     Show this help message\n'
+              if text.count(header_marker) != 1:
+                  raise SystemExit('header usage marker not found exactly once')
+              text = text.replace(header_marker, header_marker + '#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n', 1)
+
+          usage_block = '''Usage:
+            ./cog-update.sh            Interactive update
+            ./cog-update.sh --check    Check for available updates (no changes)
+            ./cog-update.sh --dry-run  Show what would change (no changes)
+            ./cog-update.sh --force    Update all framework files without prompting
+            ./cog-update.sh --validate Run packaging validator only
+            ./cog-update.sh --help     Show this help message
+          '''.replace('            ', '')
+          usage_block_with_override = usage_block + '  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n'
+          if usage_block_with_override not in text:
+              if text.count(usage_block) != 1:
+                  raise SystemExit('runtime usage block not found exactly once')
+              text = text.replace(usage_block, usage_block_with_override, 1)
 
           path.write_text(text, encoding='utf-8')
           PY
