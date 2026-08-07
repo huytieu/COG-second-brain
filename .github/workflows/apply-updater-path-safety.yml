@@ -227,3 +227,5 @@ backup_file() {
             git commit -m "fix: harden updater path safety"
             git push origin HEAD:fix/updater-path-safety
           fi
+
+# trigger after workflow exists on branch
