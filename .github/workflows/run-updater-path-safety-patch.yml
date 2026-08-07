@@ -20,12 +20,13 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import textwrap
 
           workflow = Path('.github/workflows/apply-updater-path-safety.yml').read_text(encoding='utf-8')
           marker = "python3 - <<'PY'\n"
-          payload = workflow.split(marker, 1)[1].split('\n          PY', 1)[0]
-          exec(textwrap.dedent(payload), {})
+          raw = workflow.split(marker, 1)[1].split('\n          PY', 1)[0]
+          lines = raw.splitlines()
+          payload = '\n'.join(line[10:] if line.startswith('          ') else line for line in lines)
+          exec(payload, {})
           PY
 
       - name: Commit patch
