@@ -1,0 +1,40 @@
+name: Run updater path safety patch
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/updater-path-safety' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v6
+        with:
+          ref: fix/updater-path-safety
+
+      - name: Reuse guarded patch payload
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/apply-updater-path-safety.yml').read_text(encoding='utf-8')
+          marker = "python3 - <<'PY'\n"
+          payload = workflow.split(marker, 1)[1].split('\n          PY', 1)[0]
+          exec(textwrap.dedent(payload), {})
+          PY
+
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cog-update.sh tests/test-cog-update-path-safety.sh .github/workflows/agent-surface-validation.yml
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: harden updater path safety"
+            git push origin HEAD:fix/updater-path-safety
+          fi
