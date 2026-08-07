@@ -16,7 +16,7 @@ jobs:
         with:
           ref: fix/updater-trust-boundaries-v2
 
-      - name: Apply guarded updater trust edits
+      - name: Correct updater help text
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -24,164 +24,22 @@ jobs:
           path = Path('cog-update.sh')
           text = path.read_text(encoding='utf-8')
 
-          old_config = '''REMOTE_NAME="cog-upstream"
-          REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
-          BRANCH="main"'''.replace('          ', '')
-          new_config = '''REMOTE_NAME="cog-upstream"
-          DEFAULT_REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
-          REMOTE_URL="${COG_UPSTREAM_URL:-$DEFAULT_REMOTE_URL}"
-          BRANCH="main"'''.replace('          ', '')
-          if new_config not in text:
-              if text.count(old_config) != 1:
-                  raise SystemExit('remote configuration marker not found exactly once')
-              text = text.replace(old_config, new_config, 1)
+          bad = '\n  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nset -euo pipefail\n'
+          good = '\n#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nset -euo pipefail\n'
+          if bad in text:
+              text = text.replace(bad, good, 1)
+          elif good not in text:
+              marker = '#   ./cog-update.sh --help     Show this help message\n'
+              if text.count(marker) != 1:
+                  raise SystemExit('header help marker not found exactly once')
+              text = text.replace(marker, marker + '#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n', 1)
 
-          test_marker = '  "tests/test-cog-update-path-safety.sh"\n'
-          test_line = '  "tests/test-cog-update-trust-boundaries.sh"\n'
-          if test_line not in text:
-              if text.count(test_marker) != 1:
-                  raise SystemExit('trust-boundary test marker not found exactly once')
-              text = text.replace(test_marker, test_marker + test_line, 1)
-
-          old_parent = r'''assert_parent_inside_repo() {
-            local file="$1"
-            local dir physical_dir
-            dir=$(dirname "$file")
-            physical_dir=$(cd "$dir" 2>/dev/null && pwd -P) || {
-              err "Could not resolve framework parent directory: $dir"
-              return 1
-            }
-            case "$physical_dir/" in
-              "$REPO_ROOT/"*) return 0 ;;
-              *)
-                err "Refusing framework path outside repository root: $file"
-                return 1
-                ;;
-            esac
-          }'''.replace('          ', '')
-          new_parent = r'''assert_parent_inside_repo() {
-            local file="$1"
-            local dir physical_dir trusted_root
-
-            if [[ -z "${REPO_ROOT:-}" || "$REPO_ROOT" != /* ]]; then
-              err "Repository root is not initialized for framework writes"
-              return 1
-            fi
-
-            trusted_root=$(git -C "$REPO_ROOT" rev-parse --show-toplevel 2>/dev/null) || {
-              err "Repository root is not a valid Git checkout: $REPO_ROOT"
-              return 1
-            }
-            trusted_root=$(cd "$trusted_root" && pwd -P) || return 1
-            if [[ "$trusted_root" != "$REPO_ROOT" ]]; then
-              err "Repository root must be a physical checkout path: $REPO_ROOT"
-              return 1
-            fi
-
-            dir=$(dirname "$file")
-            physical_dir=$(cd "$dir" 2>/dev/null && pwd -P) || {
-              err "Could not resolve framework parent directory: $dir"
-              return 1
-            }
-            case "$physical_dir/" in
-              "$trusted_root/"*) return 0 ;;
-              *)
-                err "Refusing framework path outside repository root: $file"
-                return 1
-                ;;
-            esac
-          }'''.replace('          ', '')
-          if new_parent not in text:
-              if text.count(old_parent) != 1:
-                  raise SystemExit('parent trust helper not found exactly once')
-              text = text.replace(old_parent, new_parent, 1)
-
-          old_remote = r'''# ── Ensure remote exists & fetch ─────────────────────────────────────
-          ensure_remote() {
-            if ! git remote get-url "$REMOTE_NAME" &>/dev/null; then
-              info "Adding remote ${BOLD}${REMOTE_NAME}${RESET} → ${REMOTE_URL}"
-              git remote add "$REMOTE_NAME" "$REMOTE_URL"
-            fi
-            info "Fetching latest from ${BOLD}${REMOTE_NAME}/${BRANCH}${RESET}..."
-            git fetch "$REMOTE_NAME" "$BRANCH" --quiet
-          }'''.replace('          ', '')
-          new_remote = r'''# ── Ensure remote exists & fetch ─────────────────────────────────────
-          normalize_remote_url() {
-            local url="$1"
-            url="${url%/}"
-
-            case "$url" in
-              https://github.com/*)
-                url="${url%.git}"
-                printf '%s\n' "$url"
-                ;;
-              git@github.com:*)
-                url="${url#git@github.com:}"
-                url="${url%.git}"
-                printf 'https://github.com/%s\n' "$url"
-                ;;
-              ssh://git@github.com/*)
-                url="${url#ssh://git@github.com/}"
-                url="${url%.git}"
-                printf 'https://github.com/%s\n' "$url"
-                ;;
-              *)
-                printf '%s\n' "$url"
-                ;;
-            esac
-          }
-
-          remote_urls_match() {
-            local actual="$1" expected="$2"
-            [[ "$(normalize_remote_url "$actual")" == "$(normalize_remote_url "$expected")" ]]
-          }
-
-          ensure_remote() {
-            local actual_url
-
-            if actual_url=$(git remote get-url "$REMOTE_NAME" 2>/dev/null); then
-              if ! remote_urls_match "$actual_url" "$REMOTE_URL"; then
-                err "Refusing to fetch: remote ${REMOTE_NAME} points to ${actual_url}"
-                err "Expected trusted upstream: ${REMOTE_URL}"
-                err "Set COG_UPSTREAM_URL explicitly only when a different upstream is intentional"
-                return 1
-              fi
-            else
-              info "Adding remote ${BOLD}${REMOTE_NAME}${RESET} → ${REMOTE_URL}"
-              git remote add "$REMOTE_NAME" "$REMOTE_URL"
-            fi
-
-            info "Fetching latest from ${BOLD}${REMOTE_NAME}/${BRANCH}${RESET}..."
-            git fetch "$REMOTE_NAME" "$BRANCH" --quiet
-          }'''.replace('          ', '')
-          if new_remote not in text:
-              if text.count(old_remote) != 1:
-                  raise SystemExit('ensure_remote block not found exactly once')
-              text = text.replace(old_remote, new_remote, 1)
-
-          bad_header = '\n  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nset -euo pipefail\n'
-          good_header = '\n#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nset -euo pipefail\n'
-          if bad_header in text:
-              text = text.replace(bad_header, good_header, 1)
-          elif good_header not in text:
-              header_marker = '#   ./cog-update.sh --help     Show this help message\n'
-              if text.count(header_marker) != 1:
-                  raise SystemExit('header usage marker not found exactly once')
-              text = text.replace(header_marker, header_marker + '#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n', 1)
-
-          usage_block = '''Usage:
-            ./cog-update.sh            Interactive update
-            ./cog-update.sh --check    Check for available updates (no changes)
-            ./cog-update.sh --dry-run  Show what would change (no changes)
-            ./cog-update.sh --force    Update all framework files without prompting
-            ./cog-update.sh --validate Run packaging validator only
-            ./cog-update.sh --help     Show this help message
-          '''.replace('            ', '')
-          usage_block_with_override = usage_block + '  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n'
-          if usage_block_with_override not in text:
-              if text.count(usage_block) != 1:
-                  raise SystemExit('runtime usage block not found exactly once')
-              text = text.replace(usage_block, usage_block_with_override, 1)
+          runtime_marker = '  ./cog-update.sh --help     Show this help message\n\nHow it works:'
+          runtime_replacement = '  ./cog-update.sh --help     Show this help message\n  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL\n\nHow it works:'
+          if runtime_replacement not in text:
+              if text.count(runtime_marker) != 1:
+                  raise SystemExit('runtime help marker not found exactly once')
+              text = text.replace(runtime_marker, runtime_replacement, 1)
 
           path.write_text(text, encoding='utf-8')
           PY
@@ -193,6 +51,6 @@ jobs:
           git add cog-update.sh
           git diff --cached --check
           if ! git diff --cached --quiet; then
-            git commit -m "fix: harden updater trust boundaries"
+            git commit -m "fix: correct updater trust help text"
             git push origin HEAD:fix/updater-trust-boundaries-v2
           fi
