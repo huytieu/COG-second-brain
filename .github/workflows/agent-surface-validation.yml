@@ -43,6 +43,9 @@ jobs:
       - name: Test updater path safety
         run: bash tests/test-cog-update-path-safety.sh
 
+      - name: Test updater trust boundaries
+        run: bash tests/test-cog-update-trust-boundaries.sh
+
       - name: Preserve updater executable modes
         run: bash tests/test-cog-update-file-mode.sh
 

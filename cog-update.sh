@@ -9,6 +9,7 @@
 #   ./cog-update.sh --force    Update all framework files without prompting
 #   ./cog-update.sh --validate Run packaging validator only
 #   ./cog-update.sh --help     Show this help message
+#   COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
 
 set -euo pipefail
 
@@ -17,7 +18,8 @@ REPO_ROOT=""
 
 # ── Configuration ────────────────────────────────────────────────────
 REMOTE_NAME="cog-upstream"
-REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
+DEFAULT_REMOTE_URL="https://github.com/huytieu/COG-second-brain.git"
+REMOTE_URL="${COG_UPSTREAM_URL:-$DEFAULT_REMOTE_URL}"
 BRANCH="main"
 VERSION_FILE="COG-VERSION"
 VALIDATOR_SCRIPT="scripts/validate-agent-surface.sh"
@@ -53,6 +55,7 @@ FRAMEWORK_FILES=(
   "tests/test-harness-assets.sh"
   "tests/test-harness-bootstrap-contract.sh"
   "tests/test-cog-update-path-safety.sh"
+  "tests/test-cog-update-trust-boundaries.sh"
   "tests/test-harness-report-renderer.py"
   "04-projects/harness/templates/evidence-ledger.md"
   "04-projects/harness/templates/SPEC-template.md"
@@ -252,14 +255,30 @@ preflight_framework_paths() {
 
 assert_parent_inside_repo() {
   local file="$1"
-  local dir physical_dir
+  local dir physical_dir trusted_root
+
+  if [[ -z "${REPO_ROOT:-}" || "$REPO_ROOT" != /* ]]; then
+    err "Repository root is not initialized for framework writes"
+    return 1
+  fi
+
+  trusted_root=$(git -C "$REPO_ROOT" rev-parse --show-toplevel 2>/dev/null) || {
+    err "Repository root is not a valid Git checkout: $REPO_ROOT"
+    return 1
+  }
+  trusted_root=$(cd "$trusted_root" && pwd -P) || return 1
+  if [[ "$trusted_root" != "$REPO_ROOT" ]]; then
+    err "Repository root must be a physical checkout path: $REPO_ROOT"
+    return 1
+  fi
+
   dir=$(dirname "$file")
   physical_dir=$(cd "$dir" 2>/dev/null && pwd -P) || {
     err "Could not resolve framework parent directory: $dir"
     return 1
   }
   case "$physical_dir/" in
-    "$REPO_ROOT/"*) return 0 ;;
+    "$trusted_root/"*) return 0 ;;
     *)
       err "Refusing framework path outside repository root: $file"
       return 1
@@ -281,6 +300,7 @@ Usage:
   ./cog-update.sh --force    Update all framework files without prompting
   ./cog-update.sh --validate Run packaging validator only
   ./cog-update.sh --help     Show this help message
+  COG_UPSTREAM_URL=<url> ./cog-update.sh --force   Explicitly trust a different upstream URL
 
 How it works:
   1. Adds/fetches the upstream remote (cog-upstream)
@@ -295,11 +315,51 @@ EOF
 }
 
 # ── Ensure remote exists & fetch ─────────────────────────────────────
+normalize_remote_url() {
+  local url="$1"
+  url="${url%/}"
+
+  case "$url" in
+    https://github.com/*)
+      url="${url%.git}"
+      printf '%s\n' "$url"
+      ;;
+    git@github.com:*)
+      url="${url#git@github.com:}"
+      url="${url%.git}"
+      printf 'https://github.com/%s\n' "$url"
+      ;;
+    ssh://git@github.com/*)
+      url="${url#ssh://git@github.com/}"
+      url="${url%.git}"
+      printf 'https://github.com/%s\n' "$url"
+      ;;
+    *)
+      printf '%s\n' "$url"
+      ;;
+  esac
+}
+
+remote_urls_match() {
+  local actual="$1" expected="$2"
+  [[ "$(normalize_remote_url "$actual")" == "$(normalize_remote_url "$expected")" ]]
+}
+
 ensure_remote() {
-  if ! git remote get-url "$REMOTE_NAME" &>/dev/null; then
+  local actual_url
+
+  if actual_url=$(git remote get-url "$REMOTE_NAME" 2>/dev/null); then
+    if ! remote_urls_match "$actual_url" "$REMOTE_URL"; then
+      err "Refusing to fetch: remote ${REMOTE_NAME} points to ${actual_url}"
+      err "Expected trusted upstream: ${REMOTE_URL}"
+      err "Set COG_UPSTREAM_URL explicitly only when a different upstream is intentional"
+      return 1
+    fi
+  else
     info "Adding remote ${BOLD}${REMOTE_NAME}${RESET} → ${REMOTE_URL}"
     git remote add "$REMOTE_NAME" "$REMOTE_URL"
   fi
+
   info "Fetching latest from ${BOLD}${REMOTE_NAME}/${BRANCH}${RESET}..."
   git fetch "$REMOTE_NAME" "$BRANCH" --quiet
 }

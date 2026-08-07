@@ -29,7 +29,7 @@ git -C "$consumer" commit -q -m "fixture: consumer state"
 git -C "$consumer" remote add cog-upstream "$upstream"
 
 set +e
-output="$(cd "$consumer" && bash cog-update.sh --force 2>&1)"
+output="$(cd "$consumer" && COG_UPSTREAM_URL="$upstream" bash cog-update.sh --force 2>&1)"
 status=$?
 set -e
 
@@ -54,4 +54,4 @@ if [[ "$(tr -d '[:space:]' < "$consumer/COG-VERSION")" != "9.9.9" ]]; then
   exit 1
 fi
 
-echo "cog-update --force updates multiple files under set -e"
+echo "cog-update --force updates multiple files under set -e with an explicit fixture upstream"
