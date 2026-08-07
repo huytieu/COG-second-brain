@@ -6,6 +6,7 @@ TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 failures=0
+expected_message="Update applied, but packaging validation failed. Review the working tree before committing."
 
 fail() {
   echo "FAIL: $*" >&2
@@ -60,6 +61,9 @@ fi
 if [[ "$(cat "$force_consumer/README.md")" != "upstream readme" ]]; then
   fail "--force validator regression did not reach the post-update validation phase"
 fi
+if [[ "$force_output" != *"$expected_message"* ]]; then
+  fail "--force did not explain that changes were applied before validation failed: $force_output"
+fi
 
 interactive_upstream="$TMP_DIR/interactive-upstream"
 interactive_consumer="$TMP_DIR/interactive-consumer"
@@ -77,10 +81,13 @@ fi
 if [[ "$(cat "$interactive_consumer/README.md")" != "upstream readme" ]]; then
   fail "interactive validator regression did not reach the post-update validation phase"
 fi
+if [[ "$interactive_output" != *"$expected_message"* ]]; then
+  fail "interactive update did not explain that changes were applied before validation failed: $interactive_output"
+fi
 
 if [[ $failures -gt 0 ]]; then
   echo "$failures updater validator-failure regression(s) remain" >&2
   exit 1
 fi
 
-echo "cog-update propagates post-update validator failures in force and interactive modes"
+echo "cog-update propagates post-update validator failures with an explicit applied-but-invalid message"
