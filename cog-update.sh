@@ -610,7 +610,7 @@ main() {
   # ── Force mode ───────────────────────────────────────────────────
   if [[ "$mode" == "force" ]]; then
     local updated=0
-    for f in "${changed[@]}" "${new_files[@]}"; do
+    for f in "${changed[@]}" ${new_files:+"${new_files[@]}"}; do
       if [[ -f "$f" ]]; then
         backup_file "$f" >/dev/null
       fi
@@ -727,7 +727,7 @@ main() {
     fi
     info "Updater changed; restarting once to load the new framework file list..."
     export COG_UPDATE_REEXEC=1
-    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+    exec bash "$REPO_ROOT/cog-update.sh" ${original_args:+"${original_args[@]}"}
   fi
 
   echo ""
