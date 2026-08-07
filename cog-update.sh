@@ -57,6 +57,7 @@ FRAMEWORK_FILES=(
   "tests/test-cog-update-path-safety.sh"
   "tests/test-cog-update-trust-boundaries.sh"
   "tests/test-cog-update-validator-failure.sh"
+  "tests/test-cog-update-plugin-rebuild-failure.sh"
   "tests/test-cog-update-self-refresh.sh"
   "tests/test-harness-report-renderer.py"
   "04-projects/harness/templates/evidence-ledger.md"
@@ -466,8 +467,12 @@ warn_if_dirty() {
 # updates so it never drifts from the updated .claude/skills/.
 rebuild_agent_plugin() {
   if [[ -x "scripts/build-agent-plugin.sh" ]]; then
-    ./scripts/build-agent-plugin.sh || warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
+    if ! ./scripts/build-agent-plugin.sh; then
+      warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
+      return 1
+    fi
   fi
+  return 0
 }
 
 run_validator() {
@@ -616,19 +621,22 @@ main() {
     done
 
     if [[ $self_updated -eq 1 ]]; then
-    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
-      err "Updater changed again after its one allowed restart; refusing a restart loop."
-      return 1
+      if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+        err "Updater changed again after its one allowed restart; refusing a restart loop."
+        return 1
+      fi
+      info "Updater changed; restarting once to load the new framework file list..."
+      export COG_UPDATE_REEXEC=1
+      exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
     fi
-    info "Updater changed; restarting once to load the new framework file list..."
-    export COG_UPDATE_REEXEC=1
-    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
-  fi
 
     echo ""
     ok "Updated ${updated} file(s) to v${uv}"
     info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
-    rebuild_agent_plugin
+    if ! rebuild_agent_plugin; then
+      err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+      return 1
+    fi
     if ! run_validator; then
       err "Update applied, but packaging validation failed. Review the working tree before committing."
       return 1
@@ -709,18 +717,18 @@ main() {
   fi
 
   if [[ $self_updated -eq 1 ]]; then
-  if [[ $skipped -gt 0 ]]; then
-    err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
-    return 1
+    if [[ $skipped -gt 0 ]]; then
+      err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+      return 1
+    fi
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
   fi
-  if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
-    err "Updater changed again after its one allowed restart; refusing a restart loop."
-    return 1
-  fi
-  info "Updater changed; restarting once to load the new framework file list..."
-  export COG_UPDATE_REEXEC=1
-  exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
-fi
 
   echo ""
   echo -e "${BOLD}Summary:${RESET}"
@@ -729,7 +737,10 @@ fi
   echo ""
 
   if [[ $updated -gt 0 ]]; then
-    rebuild_agent_plugin
+    if ! rebuild_agent_plugin; then
+      err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+      return 1
+    fi
     if ! run_validator; then
       err "Update applied, but packaging validation failed. Review the working tree before committing."
       return 1
