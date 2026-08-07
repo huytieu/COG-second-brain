@@ -7,6 +7,7 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 failures=0
 future_file="FUTURE-FRAMEWORK.md"
+skip_message="Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
 
 fail() {
   echo "FAIL: $*" >&2
@@ -52,6 +53,7 @@ make_consumer() {
   git -C "$path" remote add cog-upstream "$upstream"
 }
 
+# Regression 1: force mode must restart once after updating cog-update.sh so the new list is honored.
 force_upstream="$TMP_DIR/force-upstream"
 force_consumer="$TMP_DIR/force-consumer"
 make_upstream "$force_upstream"
@@ -68,6 +70,7 @@ elif [[ ! -f "$force_consumer/$future_file" ]]; then
   fail "--force reported success after updating itself but did not install the newly tracked framework file: $force_output"
 fi
 
+# Regression 2: interactive mode with no skips must also continue under the updated file list.
 interactive_upstream="$TMP_DIR/interactive-upstream"
 interactive_consumer="$TMP_DIR/interactive-consumer"
 make_upstream "$interactive_upstream"
@@ -84,9 +87,33 @@ elif [[ ! -f "$interactive_consumer/$future_file" ]]; then
   fail "interactive update reported success after updating itself but did not install the newly tracked framework file: $interactive_output"
 fi
 
+# Regression 3: if the user skipped anything before updating the updater, do not replay those choices automatically.
+skip_upstream="$TMP_DIR/skip-upstream"
+skip_consumer="$TMP_DIR/skip-consumer"
+make_upstream "$skip_upstream"
+make_consumer "$skip_consumer" "$skip_upstream"
+
+set +e
+skip_output="$(cd "$skip_consumer" && printf 'n\n\n' | COG_UPSTREAM_URL="$skip_upstream" bash cog-update.sh 2>&1)"
+skip_status=$?
+set -e
+
+if [[ $skip_status -eq 0 ]]; then
+  fail "interactive self-refresh returned success after a skipped choice: $skip_output"
+fi
+if [[ "$skip_output" != *"$skip_message"* ]]; then
+  fail "interactive self-refresh did not explain why an explicit rerun is required after skipped choices: $skip_output"
+fi
+if [[ -f "$skip_consumer/$future_file" ]]; then
+  fail "interactive self-refresh replayed choices and installed a newly tracked file despite a prior skip"
+fi
+if [[ "$(tr -d '[:space:]' < "$skip_consumer/COG-VERSION")" != "1.0.0" ]]; then
+  fail "interactive self-refresh did not preserve the user's skipped COG-VERSION choice"
+fi
+
 if [[ $failures -gt 0 ]]; then
   echo "$failures updater self-refresh regression(s) remain" >&2
   exit 1
 fi
 
-echo "cog-update refreshes its framework file list after updating itself"
+echo "cog-update refreshes its file list after self-update without replaying skipped interactive choices"
