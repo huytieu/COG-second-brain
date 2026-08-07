@@ -27,7 +27,7 @@ COG ships marketplace metadata in multiple formats:
 | `marketplace-entry.json` | General marketplaces | Lightweight catalog entry |
 | `AGENTS.md` | Universal | 33-command reference for markdown-reading agents |
 
-Current packaged version: **3.10.2**
+Current packaged version: **3.10.3**
 
 ## Surface Model
 
