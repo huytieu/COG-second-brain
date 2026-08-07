@@ -58,6 +58,9 @@ set -e
 if [[ "$(cat "$outside_target")" != "private user content" ]]; then
   fail "updater followed README.md symlink and modified content outside the checkout (status=$symlink_status): $symlink_output"
 fi
+if [[ $symlink_status -eq 0 ]]; then
+  fail "updater reported success for a symlinked framework file: $symlink_output"
+fi
 
 # Regression 2: a symlinked parent directory must not redirect framework writes outside the checkout.
 parent_upstream="$TMP_DIR/parent-upstream"
@@ -81,6 +84,9 @@ set -e
 
 if [[ -e "$outside_dir/lib/checkpoint.sh" ]]; then
   fail "updater followed symlinked .claude parent and wrote outside the checkout (status=$parent_status): $parent_output"
+fi
+if [[ $parent_status -eq 0 ]]; then
+  fail "updater reported success for a symlinked framework parent: $parent_output"
 fi
 
 # Regression 3: running from a nested directory must still operate on the Git root.
@@ -109,9 +115,41 @@ else
   fi
 fi
 
+# Regression 4: invoking the script from a different Git repository must still target the script's checkout.
+foreign_upstream="$TMP_DIR/foreign-upstream"
+foreign_consumer="$TMP_DIR/foreign-consumer"
+caller_repo="$TMP_DIR/caller-repo"
+make_upstream "$foreign_upstream"
+make_consumer "$foreign_consumer" "$foreign_upstream"
+git init -q -b main "$caller_repo"
+git -C "$caller_repo" config user.name "COG Test"
+git -C "$caller_repo" config user.email "cog-test@example.invalid"
+printf 'caller content\n' > "$caller_repo/README.md"
+git -C "$caller_repo" add README.md
+git -C "$caller_repo" commit -q -m "fixture: caller repo"
+
+set +e
+foreign_output="$(cd "$caller_repo" && bash "$foreign_consumer/cog-update.sh" --force 2>&1)"
+foreign_status=$?
+set -e
+
+if [[ $foreign_status -ne 0 ]]; then
+  fail "updater failed when invoked from another Git repository (status=$foreign_status): $foreign_output"
+else
+  if [[ "$(cat "$foreign_consumer/README.md")" != "upstream readme" ]]; then
+    fail "foreign-cwd invocation did not update the checkout owning cog-update.sh"
+  fi
+  if [[ "$(tr -d '[:space:]' < "$foreign_consumer/COG-VERSION")" != "9.9.9" ]]; then
+    fail "foreign-cwd invocation did not update the owning checkout version"
+  fi
+  if [[ "$(cat "$caller_repo/README.md")" != "caller content" || -e "$caller_repo/COG-VERSION" ]]; then
+    fail "foreign-cwd invocation modified the caller repository"
+  fi
+fi
+
 if [[ $failures -gt 0 ]]; then
-  echo "$failures updater path-safety regression(s) reproduced" >&2
+  echo "$failures updater path-safety regression(s) remain" >&2
   exit 1
 fi
 
-echo "cog-update anchors writes at the repository root and does not follow framework symlinks"
+echo "cog-update anchors writes to its own checkout and rejects framework symlink traversal"
