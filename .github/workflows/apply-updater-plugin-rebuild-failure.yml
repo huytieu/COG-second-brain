@@ -1,0 +1,151 @@
+name: Apply updater plugin rebuild failure fix
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/updater-plugin-rebuild-failure' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v6
+        with:
+          ref: fix/updater-plugin-rebuild-failure
+
+      - name: Apply guarded updater rebuild edits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('cog-update.sh')
+          text = path.read_text(encoding='utf-8')
+
+          test_marker = '  "tests/test-cog-update-validator-failure.sh"\n'
+          test_line = '  "tests/test-cog-update-plugin-rebuild-failure.sh"\n'
+          if test_line not in text:
+              if text.count(test_marker) != 1:
+                  raise SystemExit('plugin rebuild regression marker not found exactly once')
+              text = text.replace(test_marker, test_marker + test_line, 1)
+
+          old_rebuild = '''rebuild_agent_plugin() {
+            if [[ -x "scripts/build-agent-plugin.sh" ]]; then
+              ./scripts/build-agent-plugin.sh || warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
+            fi
+          }'''.replace('            ', '')
+          new_rebuild = '''rebuild_agent_plugin() {
+            if [[ -x "scripts/build-agent-plugin.sh" ]]; then
+              if ! ./scripts/build-agent-plugin.sh; then
+                warn "Agent plugin mirror rebuild failed; run ./scripts/build-agent-plugin.sh manually"
+                return 1
+              fi
+            fi
+            return 0
+          }'''.replace('            ', '')
+          if new_rebuild not in text:
+              if text.count(old_rebuild) != 1:
+                  raise SystemExit('rebuild_agent_plugin block not found exactly once')
+              text = text.replace(old_rebuild, new_rebuild, 1)
+
+          force_old = '''    info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
+            rebuild_agent_plugin
+            if ! run_validator; then'''.replace('            ', '')
+          force_new = '''    info "Backups saved as *.backup-YYYYMMDD-HHMMSS alongside originals"
+            if ! rebuild_agent_plugin; then
+              err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+              return 1
+            fi
+            if ! run_validator; then'''.replace('            ', '')
+          if force_new not in text:
+              if text.count(force_old) != 1:
+                  raise SystemExit('force rebuild call marker not found exactly once')
+              text = text.replace(force_old, force_new, 1)
+
+          interactive_old = '''  if [[ $updated -gt 0 ]]; then
+            rebuild_agent_plugin
+            if ! run_validator; then'''.replace('            ', '')
+          interactive_new = '''  if [[ $updated -gt 0 ]]; then
+            if ! rebuild_agent_plugin; then
+              err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+              return 1
+            fi
+            if ! run_validator; then'''.replace('            ', '')
+          if interactive_new not in text:
+              if text.count(interactive_old) != 1:
+                  raise SystemExit('interactive rebuild call marker not found exactly once')
+              text = text.replace(interactive_old, interactive_new, 1)
+
+          force_bad = '''    if [[ $self_updated -eq 1 ]]; then
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+'''
+          force_good = '''    if [[ $self_updated -eq 1 ]]; then
+      if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+        err "Updater changed again after its one allowed restart; refusing a restart loop."
+        return 1
+      fi
+      info "Updater changed; restarting once to load the new framework file list..."
+      export COG_UPDATE_REEXEC=1
+      exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+    fi
+'''
+          if force_bad in text:
+              text = text.replace(force_bad, force_good, 1)
+          elif force_good not in text:
+              raise SystemExit('unexpected force self-refresh formatting')
+
+          interactive_bad = '''  if [[ $self_updated -eq 1 ]]; then
+  if [[ $skipped -gt 0 ]]; then
+    err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+    return 1
+  fi
+  if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+    err "Updater changed again after its one allowed restart; refusing a restart loop."
+    return 1
+  fi
+  info "Updater changed; restarting once to load the new framework file list..."
+  export COG_UPDATE_REEXEC=1
+  exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+fi
+'''
+          interactive_good = '''  if [[ $self_updated -eq 1 ]]; then
+    if [[ $skipped -gt 0 ]]; then
+      err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
+      return 1
+    fi
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
+      err "Updater changed again after its one allowed restart; refusing a restart loop."
+      return 1
+    fi
+    info "Updater changed; restarting once to load the new framework file list..."
+    export COG_UPDATE_REEXEC=1
+    exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
+  fi
+'''
+          if interactive_bad in text:
+              text = text.replace(interactive_bad, interactive_good, 1)
+          elif interactive_good not in text:
+              raise SystemExit('unexpected interactive self-refresh formatting')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit updater code only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cog-update.sh
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: propagate plugin mirror rebuild failures"
+            git push origin HEAD:fix/updater-plugin-rebuild-failure
+          fi
