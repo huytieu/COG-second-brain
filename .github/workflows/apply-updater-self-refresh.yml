@@ -20,6 +20,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path('cog-update.sh')
           text = path.read_text(encoding='utf-8')
@@ -31,34 +32,22 @@ jobs:
                   raise SystemExit('self-refresh test marker not found exactly once')
               text = text.replace(test_marker, test_marker + test_line, 1)
 
-          main_old = '''main() {
-            local mode="interactive"
+          main_marker = 'main() {\n  local mode="interactive"\n'
+          main_replacement = 'main() {\n  local mode="interactive"\n  local -a original_args=("$@")\n  local self_updated=0\n'
+          if main_replacement not in text:
+              if text.count(main_marker) != 1:
+                  raise SystemExit('main marker not found exactly once')
+              text = text.replace(main_marker, main_replacement, 1)
 
-            while [[ $# -gt 0 ]]; do'''.replace('            ', '')
-          main_new = '''main() {
-            local mode="interactive"
-            local -a original_args=("$@")
-            local self_updated=0
+          self_marker = '[[ "$f" == "cog-update.sh" ]] && self_updated=1'
+          if self_marker not in text:
+              pattern = re.compile(r'^(\s*)updated=\$\(\(updated \+ 1\)\)$', re.MULTILINE)
+              matches = list(pattern.finditer(text))
+              if len(matches) != 6:
+                  raise SystemExit(f'expected 6 updater mutation counters, found {len(matches)}')
+              text = pattern.sub(lambda m: m.group(0) + '\n' + m.group(1) + self_marker, text)
 
-            while [[ $# -gt 0 ]]; do'''.replace('            ', '')
-          if main_new not in text:
-              if text.count(main_old) != 1:
-                  raise SystemExit('main argument marker not found exactly once')
-              text = text.replace(main_old, main_new, 1)
-
-          force_update_old = '''      update_file "$f"
-              ok "Updated: $f"
-              updated=$((updated + 1))
-            done
-            echo ""
-            ok "Updated ${updated} file(s) to v${uv}"'''.replace('              ', '')
-          force_update_new = '''      update_file "$f"
-              ok "Updated: $f"
-              updated=$((updated + 1))
-              [[ "$f" == "cog-update.sh" ]] && self_updated=1
-            done
-
-            if [[ $self_updated -eq 1 ]]; then
+          force_restart = '''    if [[ $self_updated -eq 1 ]]; then
               if [[ "${COG_UPDATE_REEXEC:-0}" == "1" ]]; then
                 err "Updater changed again after its one allowed restart; refusing a restart loop."
                 return 1
@@ -67,69 +56,19 @@ jobs:
               export COG_UPDATE_REEXEC=1
               exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
             fi
+          '''.replace('          ', '')
+          force_start = text.index('  # ── Force mode')
+          force_end = text.index('  # ── Interactive mode')
+          force_section = text[force_start:force_end]
+          if force_restart not in force_section:
+              marker = '    done\n    echo ""\n    ok "Updated ${updated} file(s) to v${uv}"'
+              if force_section.count(marker) != 1:
+                  raise SystemExit('force restart insertion marker not found exactly once')
+              replacement = '    done\n\n' + force_restart + '\n    echo ""\n    ok "Updated ${updated} file(s) to v${uv}"'
+              force_section = force_section.replace(marker, replacement, 1)
+              text = text[:force_start] + force_section + text[force_end:]
 
-            echo ""
-            ok "Updated ${updated} file(s) to v${uv}"'''.replace('              ', '')
-          if force_update_new not in text:
-              if text.count(force_update_old) != 1:
-                  raise SystemExit('force update loop marker not found exactly once')
-              text = text.replace(force_update_old, force_update_new, 1)
-
-          interactive_markers = [
-              ('''        update_file "$f"
-                        ok "Added: $f"
-                        updated=$((updated + 1))'''.replace('                        ', ''),
-               '''        update_file "$f"
-                        ok "Added: $f"
-                        updated=$((updated + 1))
-                        [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                        ', '')),
-              ('''            update_file "$f"
-                            ok "Updated: $f"
-                            updated=$((updated + 1))'''.replace('                            ', ''),
-               '''            update_file "$f"
-                            ok "Updated: $f"
-                            updated=$((updated + 1))
-                            [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                            ', '')),
-              ('''            local bk
-                            bk=$(backup_file "$f")
-                            update_file "$f"
-                            ok "Updated: $f (backup: $bk)"
-                            updated=$((updated + 1))'''.replace('                            ', ''),
-               '''            local bk
-                            bk=$(backup_file "$f")
-                            update_file "$f"
-                            ok "Updated: $f (backup: $bk)"
-                            updated=$((updated + 1))
-                            [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                            ', '')),
-              ('''          local bk
-                          bk=$(backup_file "$f")
-                          update_file "$f"
-                          ok "Updated: $f (backup: $bk)"
-                          updated=$((updated + 1))'''.replace('                          ', ''),
-               '''          local bk
-                          bk=$(backup_file "$f")
-                          update_file "$f"
-                          ok "Updated: $f (backup: $bk)"
-                          updated=$((updated + 1))
-                          [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                          ', '')),
-              ('''          update_file "$f"
-                          ok "Updated: $f"
-                          updated=$((updated + 1))'''.replace('                          ', ''),
-               '''          update_file "$f"
-                          ok "Updated: $f"
-                          updated=$((updated + 1))
-                          [[ "$f" == "cog-update.sh" ]] && self_updated=1'''.replace('                          ', '')),
-          ]
-          for old, new in interactive_markers:
-              if new not in text:
-                  if text.count(old) != 1:
-                      raise SystemExit(f'interactive self-update marker not found exactly once: {old!r}')
-                  text = text.replace(old, new, 1)
-
-          summary_old = '''  echo ""
-            echo -e "${BOLD}Summary:${RESET}"
-            ok "${updated} file(s) updated"'''.replace('            ', '')
-          summary_new = '''  if [[ $self_updated -eq 1 ]]; then
+          interactive_restart = '''  if [[ $self_updated -eq 1 ]]; then
             if [[ $skipped -gt 0 ]]; then
               err "Updater changed while some framework files were skipped. Run cog-update.sh again to load the new framework file list without replaying skipped choices."
               return 1
@@ -142,14 +81,12 @@ jobs:
             export COG_UPDATE_REEXEC=1
             exec bash "$REPO_ROOT/cog-update.sh" "${original_args[@]}"
           fi
-
-          echo ""
-            echo -e "${BOLD}Summary:${RESET}"
-            ok "${updated} file(s) updated"'''.replace('            ', '')
-          if summary_new not in text:
-              if text.count(summary_old) != 1:
+          '''.replace('          ', '')
+          if interactive_restart not in text:
+              summary_marker = '  echo ""\n  echo -e "${BOLD}Summary:${RESET}"'
+              if text.count(summary_marker) != 1:
                   raise SystemExit('interactive summary marker not found exactly once')
-              text = text.replace(summary_old, summary_new, 1)
+              text = text.replace(summary_marker, interactive_restart + '\n' + summary_marker, 1)
 
           path.write_text(text, encoding='utf-8')
           PY
