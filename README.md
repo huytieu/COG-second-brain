@@ -330,7 +330,7 @@ Built with [Claude Code](https://claude.ai/code), [Cursor](https://cursor.com/),
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=huytieu/COG-second-brain&type=date&legend=top-left)](https://www.star-history.com/#huytieu/COG-second-brain&type=date&legend=top-left)
+[![Star History Chart](https://star-history.dera.page/svg?repos=huytieu/COG-second-brain&type=date&legend=top-left)](https://star-history.dera.page/#huytieu/COG-second-brain&type=date&legend=top-left)
 
 ---
 
