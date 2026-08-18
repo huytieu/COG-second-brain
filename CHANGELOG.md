@@ -2,6 +2,25 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.10.1] - 2026-08-18
+
+### Fixed
+
+#### The daily journal is actually ambient now
+`daily-journal` described itself as an automatic, passive log the agent keeps for you, but it logged nothing until you invoked it. The cause was architectural, not a missing instruction: the behavioral trigger ("append after finishing a meaningful unit of work") lived inside `SKILL.md`, and a skill body is lazily loaded, so the instruction telling the agent to act ambiently was itself locked behind the manual trigger.
+
+A behavioral trigger cannot live in a lazily loaded file. The trigger now lives on the always-loaded surfaces and the skill body keeps the procedure.
+
+- **`CLAUDE.md`** gains a `## Daily Journal (ALWAYS APPLY)` section carrying the trigger, the do-not-log list, and an explicit opt-out.
+- **`.cursorrules`** gains the same rule in its own register, since Cursor does not read `CLAUDE.md`.
+- **`AGENTS.md`** names `CLAUDE.md` as the trigger's home so the surfaces agree.
+- **`SKILL.md`** stops claiming to be its own trigger and points at where the trigger actually lives.
+- `01-daily/journal/` now ships with a `.gitkeep` so the destination exists on a fresh clone.
+
+Also fixes a dangling reference in `daily-journal`'s purpose line: it compared itself to `/daily-checkin`, which this repo does not ship. The skill is `/weekly-checkin`.
+
+Reported in #26, with the correct diagnosis.
+
 ## [3.10.0] - 2026-08-07
 
 ### Added

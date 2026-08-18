@@ -6,7 +6,7 @@ description: A passive daily work journal that Claude keeps FOR you so you never
 # Daily Journal
 
 ## Purpose
-Keep an **automatic, passive** journal of your workdays so you don't have to write one. Claude logs what got done as it happens; you optionally run a reflection later. This is distinct from `/daily-checkin` (which is a manual reflection where you supply the input) — here **Claude is the author** and the log accrues in the background.
+Keep an **automatic, passive** journal of your workdays so you don't have to write one. Claude logs what got done as it happens; you optionally run a reflection later. This is distinct from `/weekly-checkin` (which is a manual reflection where you supply the input) — here **Claude is the author** and the log accrues in the background.
 
 Two modes:
 1. **`log`** (default, mostly invoked implicitly) — append a short entry to today's journal.
@@ -17,7 +17,9 @@ Two modes:
 - Create the file from the template below on the first entry of the day.
 - Append only — never rewrite earlier entries. Newest entries go at the bottom of the Log section.
 
-## When to log (behavioral trigger — applies in ANY session, not just when invoked)
+## When to log (procedure for the always-apply trigger)
+The trigger itself lives in `CLAUDE.md` § Daily Journal (ALWAYS APPLY), because a skill body is lazily loaded and cannot fire itself. This section is the procedure that trigger runs.
+
 After finishing a **meaningful** unit of work, append one entry. Meaningful = would matter to future-you or shows how the day was spent. Examples:
 - Shipped/committed something, published a note/brief/slide, filed or moved tracker issues (Linear/Jira/GitHub).
 - Made a decision, changed direction, or hit a notable blocker.

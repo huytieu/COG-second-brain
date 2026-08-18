@@ -701,7 +701,7 @@ The following 7 skills raise output quality on writing and visual work. They enc
 **Triggers:**
 - `/daily-journal` or `/daily-journal reflect [today|yesterday|YYYY-MM-DD]`
 - "log this to my journal"
-- Implicitly, after finishing a meaningful chunk of work in any session
+- Implicitly, after finishing a meaningful chunk of work in any session. The always-apply trigger lives in `CLAUDE.md` § Daily Journal so it is loaded in every session; this entry is the reference.
 
 **Purpose:** Distinct from `/weekly-checkin`, where you supply the input. Here **the agent is the author** and the log accrues in the background, so the record exists even on days you'd never sit down to write one.
 

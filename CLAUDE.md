@@ -208,6 +208,18 @@ The failure mode this prevents is **confident-but-unchecked**: a step returns pl
 
 ---
 
+## Daily Journal (ALWAYS APPLY)
+
+The daily journal is an **ambient** behavior, not a command. The trigger lives here because it has to be loaded in every session; the procedure lives in the skill (`.claude/skills/daily-journal/SKILL.md`).
+
+- **After finishing a meaningful unit of work, append one entry** to `01-daily/journal/YYYY-MM-DD.md` (get the date with `date +%F`, never guess). Meaningful = shipped or committed something, produced a deliverable, made a decision, changed direction, or hit a notable blocker.
+- **Create the file from the skill's template on the first entry of the day.** Append only; newest entries at the bottom of the `## Log` section.
+- **Do NOT log** trivial reads, one-line lookups, mid-task scratch work, the journal's own writes, or anything you asked to keep out. Do not announce the write — append and carry on.
+- Read the skill body for the entry format, `reflect` mode, and the full guardrails before the session's first write.
+- If you say to stop journaling, stop for the rest of the session and do not re-ask.
+
+---
+
 ## Integration Preferences
 
 Before using any external integration in a skill, check `00-inbox/MY-INTEGRATIONS.md`:
