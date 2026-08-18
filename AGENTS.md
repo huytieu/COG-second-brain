@@ -43,6 +43,8 @@ This document defines the available commands/skills for AI agents interacting wi
 
 **Run this first** if you're new to COG.
 
+**References:** `references/profile-templates.md` (the four profile document templates), `references/welcome-guide.md` (the WELCOME-TO-COG template).
+
 ---
 
 ### /braindump
@@ -169,6 +171,8 @@ This document defines the available commands/skills for AI agents interacting wi
 - Timeline: `05-knowledge/timeline/[topic]-evolution-YYYY-MM.md`
 - Reports: `05-knowledge/consolidated/consolidation-YYYY-MM-DD.md`
 
+**References:** `references/templates.md` (all five consolidation document templates).
+
 ---
 
 ### /url-dump
@@ -253,6 +257,8 @@ This document defines the available commands/skills for AI agents interacting wi
 5. Produces a concise brief with a Linear sync report
 
 **Output location:** `03-professional/team-briefs/team-brief-YYYY-MM-DD.md`
+
+**References:** `references/agent-prompts.md` (the six Phase-2 sub-agent prompts), `references/publish-templates.md` (HackMD + Slack payloads), `references/brief-frontmatter.md` (the metadata template).
 
 ---
 
@@ -585,6 +591,8 @@ The following 7 skills raise output quality on writing and visual work. They enc
 
 **Boundary:** Landing, portfolio, marketing, editorial. It hands off dashboards, data tables, and multi-step product UI to `/product-ui-taste`. Never run both on the same component.
 
+**References:** `references/pattern-vocabulary.md`, `references/motion-skeletons.md`, `references/design-systems-install.md`, `references/canonical-sources.md`, `references/liquid-glass.md`.
+
 ---
 
 ### /product-ui-taste
@@ -607,6 +615,8 @@ The following 7 skills raise output quality on writing and visual work. They enc
 6. Covers the states marketing UI never has: read-only, permission-denied, plan-locked
 
 **Boundary:** The counterpart to `/taste-skill`. Maps to Carbon, Polaris, Atlaskit, Fluent, Primer, Material 3, Radix/shadcn, and Ant.
+
+**References:** `references/block-skeletons.md`, `references/install-commands.md`, `references/canonical-sources.md`.
 
 ---
 

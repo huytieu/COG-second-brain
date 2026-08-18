@@ -2,6 +2,32 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.10.2] - 2026-08-18
+
+### Changed
+
+#### Oversized skill bodies split into bundled `references/`
+Everything after a skill's frontmatter loads into context the moment the skill triggers. Five SKILL.md bodies ran past the 500-line figure in the Agent Skills best-practices guidance, the largest at 87 KB, so a task that never touched the appendix material paid for it anyway. Lookup tables and document templates now live in `references/` files the model reads only when it needs them, following the shape `museum-art`, `data-forms` and `editorial-illustrations` already use.
+
+| skill | body before | body after |
+|---|---|---|
+| `knowledge-consolidation` | 870 | 293 |
+| `onboarding` | 553 | 304 |
+| `team-brief` | 886 | 473 |
+| `product-ui-taste` | 649 | 515 |
+| `taste-skill` | 1204 | 786 |
+
+Every move is verbatim. `product-ui-taste` lands just above the guideline and `taste-skill` well above it: what remains in both is live instruction rather than lookup material, and condensing it would be an editorial rewrite with real behavioral risk, not a mechanical move. Stated plainly rather than forced under the number.
+
+### Fixed
+
+#### Bundled reference files now actually ship to installed users
+`cog-update.sh` enumerates individual files in `FRAMEWORK_FILES`, and no `references/*.md` had ever been listed. The 13 files under `museum-art/references/`, `data-forms/references/` and `editorial-illustrations/references/` therefore never reached anyone who installed COG — `museum-art`'s own `## References` section pointed at files those users did not have. All 27 reference files are now registered.
+
+**Existing installs: run `./cog-update.sh` twice for this release.** Your local copy of the updater carries the old `FRAMEWORK_FILES` array, so the first run delivers the trimmed skills and the new updater but not the reference files the new array names; the second run picks them up.
+
+Reported in #29, with the measurements reproduced exactly.
+
 ## [3.10.1] - 2026-08-18
 
 ### Fixed
