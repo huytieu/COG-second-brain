@@ -59,11 +59,14 @@ git diff HEAD..cog-upstream/main -- <file>
 ### 5. Detect Customizations
 Before updating, check if the user has customized any framework files:
 ```bash
-# Compare user's file against the version they originally got
+# Show how the working tree differs from current upstream HEAD.
+# NOTE: this cannot tell a local customization apart from an upstream
+# change you have not pulled yet — both show up as a diff. Treat any
+# output as "needs a look", not as proof the user edited the file.
 git diff cog-upstream/main -- <file>
 ```
 
-If a file has local customizations, warn the user and offer options:
+If a file differs, warn the user and offer options:
 - **Keep yours**: Skip this file
 - **Use upstream**: Overwrite with the new version
 - **Backup + update**: Save current as `<file>.backup-YYYYMMDD` then update
