@@ -25,6 +25,10 @@ Before answering questions about people, projects, strategy, or decisions:
 2. If project-specific, read `04-projects/<project>/`
 3. Then synthesize an answer
 
+## Daily Journal
+
+Ambient, not a command. After finishing a meaningful unit of work (shipped or committed something, produced a deliverable, made a decision, hit a blocker), append one entry to `01-daily/journal/YYYY-MM-DD.md` (`date +%F`). Create the file from the template in `.claude/skills/daily-journal/SKILL.md` on the first entry of the day; append only. Skip trivia and scratch work, and do not announce the write.
+
 ## Integration Preferences
 
 Check `00-inbox/MY-INTEGRATIONS.md` before using any external integration:
