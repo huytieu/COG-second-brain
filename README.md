@@ -22,8 +22,6 @@ graph LR
     D --> F[iCloud]
 ```
 
-> **New to COG?** Watch the [2-minute walkthrough](https://youtube.com/PLACEHOLDER) to see it in action.
-
 ## Quick Start
 
 **1. Clone & enter the repo:**
@@ -327,10 +325,6 @@ Built with [Claude Code](https://claude.ai/code), [Cursor](https://cursor.com/),
 - **Zettelkasten** — atomic, interlinked notes as the foundation of knowledge
 - **Building a Second Brain (Tiago Forte)** — PARA organization, progressive summarization
 - **GTD (David Allen)** — capture everything, process systematically
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=huytieu/COG-second-brain&type=date&legend=top-left)](https://www.star-history.com/#huytieu/COG-second-brain&type=date&legend=top-left)
 
 ---
 
