@@ -1,9 +1,11 @@
 ---
 name: closed-loop
 description: >
-  V-model execute: CP-2 plan → CP-3 build → CP-3v component verify →
-  CP-4 integration verify (full) → CP-5 acceptance. Worker never grades
-  its own homework; evidence rows trace back to AC-n. Use via /execute.
+  Run one task through the V-model verification loop: CP-2 plan → CP-3 build →
+  CP-3v component verify → CP-4 integration verify (full lane) → CP-5 acceptance.
+  The worker never grades its own homework; evidence rows trace back to AC-n.
+  Opt-in: invoke with /closed-loop or by asking for the closed loop, proper
+  verification, or an evidence trail. Ordinary work does not run this.
 ---
 
 # Closed-loop execute (V-model right arm)
@@ -12,9 +14,14 @@ Mechanical verification pipeline. Every verify step emits **evidence rows** tied
 
 ## When to use
 
-- `/execute <task>` or `/execute <spec-path>`
-- Any skill at `normal`+ lane after implementation
-- Code changes, deploys, multi-step vault deliverables
+The harness is opt-in. Run it when:
+
+- Invoked as `/closed-loop <task>` or `/closed-loop <spec-path>`.
+- The user asks for the closed loop, proper verification, or an evidence trail.
+- `verification_harness: on` in `00-inbox/MY-PROFILE.md` and this is a build task.
+- Another skill that declares a `normal`+ lane reaches its verify step.
+
+Do **not** run it on a request that did not ask for it. Notes, briefs, research, drafts, and ordinary edits are not harness runs, and a checkpoint ledger on those is pure overhead.
 
 ## Phase 0 — Lane + run folder
 
@@ -36,7 +43,7 @@ Record: `checkpoint.sh record <run-dir> CP-0 PASS|SKIP "<lane>"`
 
 If spec exists, use its `## Acceptance criteria` + traceability matrix. Else write:
 
-`04-projects/harness/runs/<id>/criteria.md` using `04-projects/harness/templates/SPEC-template.md` (criteria + matrix only).
+`04-projects/harness/runs/<id>/criteria.md` using `references/spec-template.md` (criteria + matrix sections only).
 
 Each criterion: **falsifiable** + `AC-n` ID + verify method.
 
@@ -83,7 +90,7 @@ For each mutation, observe artifact (curl, screenshot, re-fetch). Emit:
 
 `EVIDENCE AC-n | CP-5 | PASS | <observation> | <artifact>`
 
-**UI/UX flow changes:** the post-condition is *visual*. Capture with browser-harness (`evidence_shot` per state; `FlowRecorder`→`.save_gif()` for a flow; `pixel_diff` against the intended/prior state), then read the image and confirm no overflow/misalignment/clipping/wrong-color/broken-responsive before PASS. The Observation must describe what you saw; the artifact is the screenshot/GIF in `evidence/`. Fix any visual defect and re-capture. See CLAUDE.md → Visual Verification.
+**UI/UX flow changes:** the post-condition is *visual*. Screenshot every meaningful state with whatever browser tooling the environment has, then read the image and confirm no overflow, misalignment, clipping, wrong color, or broken responsive layout before PASS. The Observation must describe what you saw; the artifact is the screenshot/GIF in `evidence/`. Fix any visual defect and re-capture. See CLAUDE.md → Visual Verification.
 
 Write `evidence/CP-5-acceptance.md`. **Traceability closure**: every AC in matrix has ≥1 PASS row in ledger.
 
@@ -93,18 +100,18 @@ Record: `checkpoint.sh record <run-dir> CP-5 PASS|FAIL`
 
 - Append to `.claude/logs/loop-ledger.tsv`
 - Update spec traceability matrix statuses to `verified`
-- **`full` lane / big task:** generate an HTML rollup from `04-projects/harness/templates/report.html` → `04-projects/harness/runs/<id>/report.html`, filled from `criteria.md` + `evidence/ledger.md` (criteria, AC traceability, verifier verdicts, post-condition observations). Self-contained; `SendUserFile` it or publish as an Artifact. Skip for `normal`/`tiny`.
+- **`full` lane / big task:** generate an HTML rollup from `references/report-template.html` → `04-projects/harness/runs/<id>/report.html`, filled from `criteria.md` + `evidence/ledger.md` (criteria, AC traceability, verifier verdicts, post-condition observations). Self-contained; `SendUserFile` it or publish as an Artifact. Skip for `normal`/`tiny`.
 - Suggest `/retro <run-dir>` for CP-7
 
 ## Integration
 
 | Skill | Lane | CP-4 |
 |---|---|---|
-| ultragoal | `full` per phase (never downgraded) | integration-verifier + north-star acceptance |
-| team-brief | full | claim-verifier |
-| dogfood-release | full | Playwright cross-verify |
-| blog-publish | normal | skip |
-| content-factory | normal | skip |
+| `ultragoal` | `full` per phase (never downgraded) | integration-verifier + north-star acceptance |
+| `team-brief` | full | claim-verifier |
+| `comprehensive-analysis`, `auto-research` | full | claim-verifier on cited claims |
+| `content-factory` | normal | skip |
+| `review-cockpit` | normal | skip; CP-6 is the user's approval per card |
 
 ## Escalation template
 

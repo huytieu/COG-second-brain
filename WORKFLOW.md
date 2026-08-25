@@ -3,9 +3,17 @@
 > **V-model harness**: decompose on the left, verify with evidence on the right, build at the apex, retro closes the loop.
 > Adapted from [dwarves-kit](https://github.com/dwarvesf/dwarves-kit) + V-model SDLC discipline.
 
+## Scope: opt-in only
+
+**This document governs harness runs, and nothing else.** A session that never invoked the harness owes it no checkpoints, no lane classification, and no evidence ledger. Notes, briefs, research, drafts, and ordinary edits are not harness runs.
+
+You are in a harness run when you invoked `/closed-loop`, `/ultragoal`, `/retro`, `/harvest`, or `/review-cockpit`; asked for the closed loop, proper verification, or an evidence trail in those words; or set `verification_harness: on` in `00-inbox/MY-PROFILE.md`. Otherwise you are not, and the two rules in `CLAUDE.md` § Verification Harness are the whole of what applies.
+
+Nothing here needs installing. The two helper scripts (`.claude/lib/checkpoint.sh`, `.claude/lib/lane-classify.sh`) ship executable, and the run directories are created on first use.
+
 ## The V-model (primary mental model)
 
-Every non-`tiny` task walks the V. Each **checkpoint (CP)** is a gate: you cannot descend the left arm past a failed CP, and you cannot ascend the right arm without **evidence** tied back to a criterion ID.
+Inside a harness run, every non-`tiny` task walks the V. Each **checkpoint (CP)** is a gate: you cannot descend the left arm past a failed CP, and you cannot ascend the right arm without **evidence** tied back to a criterion ID.
 
 ```
                     CP-0 INTAKE (think)
@@ -51,7 +59,7 @@ No criterion ships without a matching evidence row. No evidence row without a cr
 | **CP-6** | Ship | blocking (external) | Review Gate / your approval / deploy proof | `evidence/CP-6-ship.md` |
 | **CP-7** | Retro | advisory | Retro doc + harvest staged | `04-projects/harness/retro/YYYY-MM-DD-<slug>.md` |
 
-Record checkpoints: `bash .claude/lib/checkpoint.sh record <run-dir> <CP-id> PASS|FAIL|SKIP <note>`
+Record checkpoints: `bash .claude/lib/checkpoint.sh record <run-dir> <CP-id> PASS|FAIL|SKIP <note>` (`init <run-dir>` first to lay down the evidence dir and ledger header)
 
 ### Evidence row contract (every verify pass)
 
@@ -70,7 +78,7 @@ Verifier and post-condition steps emit these rows. Consolidate in `evidence/ledg
 
 ### Cross-model flagship gate (`full`+ / ultragoal / irreversible)
 
-The read-only verifiers (`task-verifier` CP-3v, `integration-verifier` CP-4) are **same-family mechanical** checks — they share the lead's blind spots. On high-stakes runs, overlay a **flagship model that is NOT the lead's own** (spin off `Agent(model="fable")` when the lead is Opus) as a cross-model second opinion. Fresh context (paths + question, never the lead's draft-reasoning), read-only, advisory.
+The read-only verifiers (`task-verifier` CP-3v, `integration-verifier` CP-4) are **same-family mechanical** checks that share the lead's blind spots. On high-stakes runs, overlay a **flagship model that is NOT the lead's own** (spawn the verifier with an explicit `model` override from a different family) as a cross-model second opinion. Fresh context (paths + question, never the lead's draft-reasoning), read-only, advisory.
 
 | CP | Flagship role | What it checks |
 |---|---|---|
@@ -80,7 +88,7 @@ The read-only verifiers (`task-verifier` CP-3v, `integration-verifier` CP-4) are
 | **CP-6 Ship** | critic | Break it before the user sees it — last gate before external/irreversible |
 | **Ultragoal** | critic | Per-phase gate AND final north-star acceptance (adversarial by default; wrongness compounds across sessions) |
 
-Advisory, not hard-blocking — but a **critical** cross-model finding means do not auto-ship; escalate the disagreement to the user to adjudicate. Skip entirely on `tiny`/`normal` runs (pure overhead there). If the flagship hard-refuses (offensive-security / bio-adjacent), rerun the check on Opus 5 rather than dropping it.
+Advisory, not hard-blocking, but a **critical** cross-model finding means do not auto-ship; escalate the disagreement to the user to adjudicate. Skip entirely on `tiny`/`normal` runs (pure overhead there). If the cross-model reviewer hard-refuses (offensive-security / bio-adjacent), rerun the check on the lead's own family rather than dropping it.
 
 ## Risk lanes (checkpoint depth)
 
@@ -97,7 +105,7 @@ Classifier: `bash .claude/lib/lane-classify.sh classify "<task>"`
 ## Verification pipeline (right arm detail)
 
 ```
-orchestrator (/execute or skill)
+orchestrator (/closed-loop or a skill that invokes it)
         │
         ▼
    CP-3 BUILD: worker implements (traced to AC-n)
@@ -115,7 +123,7 @@ orchestrator (/execute or skill)
    CP-5: post-condition (observe artifact: curl, screenshot, re-fetch)
         │
         ▼
-   CP-6: ship gate (Review Gate: you approve external / gstack / deploy proof)
+   CP-6: ship gate (you approve anything external / deploy proof)
         │
         ▼
    CP-7: /retro + /harvest
@@ -125,53 +133,54 @@ orchestrator (/execute or skill)
 
 | Work type | Primary skill | Right-arm verifiers |
 |---|---|---|
+| Single task through the loop | `/closed-loop` | CP-3v `task-verifier` + CP-5 post-condition |
 | Long-running goal | `/ultragoal` | full closed-loop per phase + north-star acceptance verifier |
 | Team intelligence | `/team-brief` | claim-verifier (CP-3v) + CP-6 |
-| Code / deploy | `/execute` + gstack | CP-3v + tests + CP-5 curl |
-| Product dogfood | `/dogfood-release` | Playwright cross-verify (CP-4) |
-| Content | content-factory | voice checklist + screenshot (CP-5) |
-| AUT skills | aut-skill-capture | verdict taxonomy (CP-3v) |
-| Knowledge | `/memory-hygiene` | environment re-verify (CP-5) |
+| Research / analysis | `/auto-research`, `/comprehensive-analysis` | citation verbatim check (CP-3v) |
+| Content | `/content-factory` | voice checklist + screenshot (CP-5) |
+| Memory store | `/memory-hygiene` | environment re-verify (CP-5) |
 | Session learnings | `/harvest` | human promotes (CP-7 input) |
+| Multi-item review | `/review-cockpit` | your approval per card (CP-6) |
 
 ## Self-enhancement loops
 
 | Loop | CP | Output |
 |---|---|---|
-| **V execute** | CP-3 → CP-5 | Evidence ledger + loop-ledger.tsv |
-| **Evolution** | CP-7 → aut-skill-capture | Skill patches from friction |
+| **Closed loop** | CP-3 → CP-5 | Evidence ledger + `loop-ledger.tsv` |
 | **Ultragoal** | CP-1 → CP-6 per phase | `04-projects/<goal>/STATUS.md` + evidence per phase + `report.html` |
-| **Harvest** | CP-7 | staging → lizard |
+| **Harvest** | CP-7 | Staging file the human promotes into `05-knowledge/` |
+| **Retro** | CP-7 | `04-projects/harness/retro/` + skill patches from friction |
 | **Memory hygiene** | CP-5 on memory store | `last_verified` stamps |
-| **Retro** | CP-7 | `04-projects/harness/retro/` |
 
 ## File homes
+
+Run output lives under `04-projects/harness/`, which is created on the first harness run. Templates ship with the skills, so `/update-cog` keeps them current.
 
 | Artifact | Path |
 |---|---|
 | Spec + traceability matrix | `04-projects/<project>/specs/SPEC-NNN-<slug>.md` |
 | Run evidence bundle | `04-projects/harness/runs/<id>/evidence/` |
 | HTML report (ultragoal / big run) | `04-projects/<goal>/report.html` · `04-projects/harness/runs/<id>/report.html` |
-| Report template | `04-projects/harness/templates/report.html` |
-| Spec template | `04-projects/harness/templates/SPEC-template.md` |
 | Retro outputs | `04-projects/harness/retro/YYYY-MM-DD-<slug>.md` |
 | Harness backlog | `04-projects/harness/BACKLOG.md` |
+| Ultragoal registry | `04-projects/harness/ultragoals.md` |
 | Harvest staging | `04-projects/harness/harvest/staging-<date>.md` |
 | Checkpoint + loop logs | `.claude/logs/checkpoint-ledger.tsv`, `loop-ledger.tsv` |
+| Spec template | `.claude/skills/closed-loop/references/spec-template.md` |
+| Report template | `.claude/skills/closed-loop/references/report-template.html` |
+| Retro template | `.claude/skills/retro/references/retro-template.md` |
+| Review cockpit template | `.claude/skills/review-cockpit/references/session-review-template.md` |
 
 ## Commands
 
 | Command | V-model phase |
 |---|---|
-| `/execute` | CP-2 through CP-5 |
+| `/closed-loop` | CP-2 through CP-5 |
 | `/retro <run or spec>` | CP-7 |
 | `/harvest` | CP-7 input |
 | `/ultragoal` | full V per phase, across sessions |
 | `/memory-hygiene` | CP-5 on memory |
 
-## Install
+## No install step
 
-```bash
-bash .claude/lib/install-harness.sh
-bash .claude/lib/install-harness.sh --check
-```
+The harness has no installer. `.claude/lib/*.sh` ship executable, run directories are created on demand, and COG ships no hooks. If a skill body ever tells you to run `install-harness.sh`, that reference is stale; report it.

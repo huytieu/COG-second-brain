@@ -11,6 +11,7 @@ created: YYYY-MM-DD
 onboarding_completed: true
 role_pack: [matched role_id or "custom"]
 agent_mode: [solo or team, based on role pack suggestion]
+verification_harness: off
 tags: ["#profile", "#config", "#cog"]
 ---
 
@@ -24,6 +25,7 @@ tags: ["#profile", "#config", "#cog"]
 
 ## Settings
 - **Agent Mode**: [solo/team] *(solo = handle everything directly; team = delegate to specialist sub-agents for deeper results)*
+- **Verification Harness**: off *(off = the V-model harness runs only when you ask for it, e.g. `/closed-loop`; on = build tasks default to the `normal`-lane pipeline)*
 
 ## Active Projects
 [If they mentioned projects:]

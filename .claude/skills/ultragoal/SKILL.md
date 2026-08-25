@@ -4,12 +4,14 @@ description: >
   Run a large, multi-session goal (e.g. shipping a whole side product) through the full V-model
   closed loop, one phase at a time, with cross-session state and a final
   north-star acceptance gate. Ultragoals never downgrade the lane: every
-  phase runs CP-1→CP-6 with adversarial verification. Use via /ultragoal.
+  phase runs CP-1→CP-6 with adversarial verification. Opt-in: invoke with
+  /ultragoal or by calling something a long-running goal. Ordinary work does not
+  run this.
 ---
 
 # Ultragoal — the closed loop for goals too big to ship in one run
 
-An **ultragoal** is the term for a north-star that spans many sessions: fork the repos, combine the strong parts, ship one product. A normal `/execute` run is one task through the loop. An ultragoal is a *chain of phases*, each of which is its own full closed-loop run, tracked so any cold session can resume.
+An **ultragoal** is the term for a north-star that spans many sessions: fork the repos, combine the strong parts, ship one product. A `/closed-loop` run is one task through the loop. An ultragoal is a *chain of phases*, each of which is its own full closed-loop run, tracked so any cold session can resume.
 
 **Core rule (from dwarves-kit, adopted fully): the worker never grades its own homework, and wrongness compounds across sessions — so verify every phase, not just the end.**
 
@@ -20,7 +22,7 @@ An **ultragoal** is the term for a north-star that spans many sessions: fork the
 - `/ultragoal status` — report all ultragoals from the registry
 - Trigger phrases: "make this an ultragoal", "this is a long-running goal", "combine these into one product over time"
 
-Do **not** use for single-run work — that is `/execute`. Rule of thumb: if it needs a phase decomposition and won't finish today, it is an ultragoal.
+Do **not** use for single-run work (that is `/closed-loop`), and do not start one on a request that never asked for one. Rule of thumb: if it needs a phase decomposition and won't finish today, it is an ultragoal.
 
 ## Files (one goal = one folder)
 
@@ -36,7 +38,7 @@ Code, if any, lives outside the vault (e.g. `~/code/<goal>/`) — the spec/statu
 ## Phase 0 — Charter (`/ultragoal new`)
 
 1. Interview the user for the **north-star** in one sentence (what "done" looks like).
-2. Write `04-projects/<goal>/spec.md` from `04-projects/harness/templates/SPEC-template.md`:
+2. Write `04-projects/<goal>/spec.md` from `../closed-loop/references/spec-template.md`:
    - North-star statement
    - Falsifiable `AC-n` acceptance criteria (these define done for the *whole* goal)
    - Phase decomposition `P0…Pn` — each phase is a shippable increment mapped to a subset of `AC-n`
@@ -97,7 +99,7 @@ North-star acceptance:
 
 Every ultragoal carries a single self-contained HTML report that **covers everything**: north-star, live status, all phases, the full `AC-n` traceability table with pass/open/fail, evidence rows per phase (with screenshots embedded as `data:` URIs), and the open-items / next-action block. It is the human-readable face of the evidence ledger.
 
-- **Template:** `04-projects/harness/templates/report.html` (house style, theme-aware, rows-not-cards). Copy it, then fill every `{{token}}` and `<!-- FILL -->` / `<!-- REPEAT -->` block from `spec.md` + `STATUS.md` + `evidence/P*/`. You fill it by editing — do not build a parser.
+- **Template:** `../closed-loop/references/report-template.html` (theme-aware, rows-not-cards). Copy it, then fill every `{{token}}` and `<!-- FILL -->` / `<!-- REPEAT -->` block from `spec.md` + `STATUS.md` + `evidence/P*/`. You fill it by editing; do not build a parser.
 - **Deliverable path:** `04-projects/<goal>/report.html`. One file, overwritten each phase (it always reflects current truth).
 - **When:** regenerate at each phase gate (CP-6) and again at final north-star acceptance. The final report must show every `AC-n` with a PASS row — if any pill is `open`, the goal is not done.
 - **Self-contained only:** inline everything, embed screenshots as `data:` URIs, so it also works when published as an Artifact (external hosts are blocked). Before publishing as an Artifact, load the `artifact-design` skill.

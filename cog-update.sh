@@ -75,6 +75,8 @@ FRAMEWORK_FILES=(
   ".claude/skills/product-ui-taste/SKILL.md"
 
   # Skill reference files (bundled lookup material, loaded on demand)
+  ".claude/skills/closed-loop/references/report-template.html"
+  ".claude/skills/closed-loop/references/spec-template.md"
   ".claude/skills/data-forms/references/forms.md"
   ".claude/skills/editorial-illustrations/references/design-system.md"
   ".claude/skills/editorial-illustrations/references/elements.md"
@@ -91,6 +93,8 @@ FRAMEWORK_FILES=(
   ".claude/skills/museum-art/references/smk.md"
   ".claude/skills/onboarding/references/profile-templates.md"
   ".claude/skills/onboarding/references/welcome-guide.md"
+  ".claude/skills/retro/references/retro-template.md"
+  ".claude/skills/review-cockpit/references/session-review-template.md"
   ".claude/skills/product-ui-taste/references/block-skeletons.md"
   ".claude/skills/product-ui-taste/references/canonical-sources.md"
   ".claude/skills/product-ui-taste/references/install-commands.md"

@@ -48,7 +48,7 @@ Ask:
 
 ## Phase 4 — Write retro
 
-Copy `04-projects/harness/templates/retro.md` to:
+Copy `references/retro-template.md` to:
 
 `04-projects/harness/retro/YYYY-MM-DD-<slug>.md`
 

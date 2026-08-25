@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  COG harness run report: fill by editing, do not build a parser.
+  Replace every {{token}}. Delete or repeat each <!-- REPEAT --> row block.
+  Self-contained: no external CSS, JS, fonts, or images. Inline any screenshot
+  as a data: URI, or link it relative to this file inside the run folder.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}: run report</title>
+<style>
+  :root {
+    --bg: #fbfbfa; --panel: #ffffff; --ink: #1a1a19; --muted: #6b6b68;
+    --line: #e4e4e1; --pass: #1a7f4b; --fail: #b4232a; --skip: #8a8a86;
+    --accent: #1a1a19;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131313; --panel: #1b1b1a; --ink: #ececea; --muted: #9a9a96;
+      --line: #2c2c2a; --pass: #4ec281; --fail: #f2777c; --skip: #7d7d79;
+      --accent: #ececea;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #131313; --panel: #1b1b1a; --ink: #ececea; --muted: #9a9a96;
+    --line: #2c2c2a; --pass: #4ec281; --fail: #f2777c; --skip: #7d7d79;
+    --accent: #ececea;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans); }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+  h1 { font-size: 1.6rem; letter-spacing: -0.01em; margin: 0 0 .4rem; }
+  .meta { color: var(--muted); font: 13px/1.5 var(--mono); }
+  h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+       margin: 2.75rem 0 .9rem; font-weight: 600; }
+  p { margin: 0 0 1rem; }
+  .northstar { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+               padding: 1rem 1.15rem; border-radius: 3px; }
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 600 12px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td.id, td.cp { font-family: var(--mono); white-space: nowrap; }
+  .v { font: 600 12px/1.4 var(--mono); white-space: nowrap; }
+  .v.pass { color: var(--pass); } .v.fail { color: var(--fail); } .v.skip { color: var(--skip); }
+  .obs { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  figure { margin: 1.25rem 0; }
+  figure img { display: block; max-width: 100%; border: 1px solid var(--line); border-radius: 3px; }
+  figcaption { color: var(--muted); font: 12.5px/1.5 var(--mono); margin-top: .5rem; }
+  .next { background: var(--panel); border: 1px solid var(--line); padding: 1rem 1.15rem; border-radius: 3px; }
+  footer { margin-top: 3.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+           color: var(--muted); font: 12.5px/1.5 var(--mono); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>{{title}}</h1>
+  <div class="meta">{{run_id}} · lane {{lane}} · {{date}} · outcome {{shipped|escalated}}</div>
+</header>
+
+<h2>North star</h2>
+<p class="northstar">{{one paragraph: what is true now that was not true before}}</p>
+
+<h2>Phases</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>Phase</th><th>Scope</th><th>Covers</th><th>State</th></tr></thead>
+  <tbody>
+    <!-- REPEAT one row per phase; delete this section entirely for a single-task run -->
+    <tr><td class="id">{{P0}}</td><td>{{scope}}</td><td class="id">{{AC-01, AC-02}}</td>
+        <td class="v pass">{{done}}</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Acceptance criteria</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>AC</th><th>Criterion</th><th>Task</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <!-- REPEAT one row per AC in the traceability matrix -->
+    <tr><td class="id">{{AC-01}}</td><td>{{criterion}}</td><td class="id">{{T-01}}</td>
+        <td class="v pass">{{PASS}}</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Evidence</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>AC</th><th>CP</th><th>Verdict</th><th>Observation</th><th>Artifact</th></tr></thead>
+  <tbody>
+    <!-- REPEAT one row per EVIDENCE line in evidence/ledger.md -->
+    <tr><td class="id">{{AC-01}}</td><td class="cp">{{CP-3v}}</td><td class="v pass">{{PASS}}</td>
+        <td class="obs">{{what was observed, not what was claimed}}</td>
+        <td class="obs">{{path or command}}</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Screenshots</h2>
+<!-- REPEAT one figure per captured state; delete the section if the run had no visual surface -->
+<figure>
+  <img src="{{evidence/shot-01.png}}" alt="{{what this shows}}">
+  <figcaption>{{state name}}: {{what to look at, and what was fixed if anything}}</figcaption>
+</figure>
+
+<h2>Next action</h2>
+<p class="next">{{the single next thing, or "none: run closed"}}</p>
+
+<footer>
+  Generated by the COG verification harness · evidence bundle {{04-projects/harness/runs/&lt;id&gt;/evidence/}}
+</footer>
+
+</div>
+</body>
+</html>

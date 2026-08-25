@@ -16,7 +16,21 @@ shift || true
 init_run() {
   local dir="$1"
   mkdir -p "$dir/evidence"
-  [[ -f "$dir/evidence/ledger.md" ]] || cp "$ROOT/04-projects/harness/templates/evidence-ledger.md" "$dir/evidence/ledger.md"
+  if [[ ! -f "$dir/evidence/ledger.md" ]]; then
+    cat > "$dir/evidence/ledger.md" <<'LEDGER'
+# Evidence ledger
+
+One row per verify pass. The observation records what was observed in the
+artifact, never what a worker reported.
+
+```text
+EVIDENCE <AC-id> | <checkpoint> | PASS|FAIL | <observation> | <artifact-path-or-command>
+```
+
+## Rows
+
+LEDGER
+  fi
   echo "initialized: $dir/evidence/"
 }
 

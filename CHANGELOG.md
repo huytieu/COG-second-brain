@@ -2,6 +2,30 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.12.0] - 2026-08-25
+
+### Changed
+
+#### The verification harness is opt-in, not mandated
+Reported in [#43](https://github.com/huytieu/COG-second-brain/issues/43): `CLAUDE.md` carried four **ALWAYS APPLY** sections mandating the V-model harness on every task, while `WORKFLOW.md` opened by asserting that "every non-`tiny` task walks the V." Nothing in a normal COG session does that, and a mandate no session honors teaches the model to discount every other rule in the file. The harness is good machinery for the runs that want it and pure ceremony on a braindump.
+
+- `CLAUDE.md`: the four sections (V-Model Checkpoints, Closed-Loop Execute, Risk Lanes, Ultragoal) collapse into one **Verification Harness (opt-in, off by default)**. It names the three ways to turn the harness on and states plainly that a session which never invoked it owes no checkpoints, no lane classification, and no evidence ledger. Two rules survive as always-on because they cost nothing: verification observes the artifact, and a worker never grades its own homework.
+- `WORKFLOW.md`: new **Scope: opt-in only** section at the top. The V-model text now reads "inside a harness run, every non-`tiny` task walks the V."
+- Third opt-in path: `verification_harness: on` in `00-inbox/MY-PROFILE.md` makes the `normal`-lane pipeline the default for build tasks. Absent or `off` means per-request. Added to the onboarding profile template.
+- `AGENTS.md`, `README.md`: the harness section leads with opt-in; per-skill trigger lists no longer claim the loop fires "automatically, whenever a task mutates external state".
+
+### Fixed
+
+#### Harness references that pointed at files COG never shipped
+Also from [#43](https://github.com/huytieu/COG-second-brain/issues/43): the skills instructed the model to copy templates from `04-projects/harness/templates/`, a directory that does not exist in a COG checkout, and `WORKFLOW.md` closed with an **Install** block calling `.claude/lib/install-harness.sh`, a script that does not exist either. `checkpoint.sh init` would have failed on the same missing template path.
+
+- Templates now ship with the skills, so `/update-cog` keeps them current: `closed-loop/references/spec-template.md`, `closed-loop/references/report-template.html` (self-contained, theme-aware), `retro/references/retro-template.md`, `review-cockpit/references/session-review-template.md`. All four added to the updater's framework file list.
+- `checkpoint.sh init` writes the evidence-ledger header inline instead of copying a missing file.
+- The Install block is replaced by **No install step**: the two `.claude/lib` scripts ship executable, run directories are created on demand, and COG ships no hooks. The `harvest` nightly block no longer calls the phantom installer, and the `harvest` trigger list no longer claims a SessionEnd hook stages automatically.
+- `/execute` never existed as a command; every reference now points at `/closed-loop`. `WORKFLOW.md`'s domain-routing and self-enhancement tables listed skills COG does not ship (`dogfood-release`, `aut-skill-capture`, gstack, lizard) and now list the ones it does.
+- Vault-specific leakage removed from the harness surface: the `browser-harness` Python helpers in `closed-loop`, and the `Agent(model="fable")` call shape in `WORKFLOW.md`.
+- `CLAUDE.md` said `.claude/agents/` holds 6 agents; it holds 10, and `.claude/lib/` was missing from the framework file list.
+
 ## [3.11.0] - 2026-08-24
 
 ### Added

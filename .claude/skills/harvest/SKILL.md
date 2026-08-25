@@ -64,12 +64,13 @@ Harvest: <n> staged, <m> promoted, <k> folded
 - Contradictions with existing knowledge → flag both, ask the user.
 - Pair with `/memory-hygiene` monthly for environment-dependent facts in `~/.claude/.../memory/`.
 
-## Nightly enhance (optional launchd)
+## Nightly enhance (optional)
 
-```bash
-# 04-projects/harness/scripts/nightly-enhance.sh
-bash .claude/lib/install-harness.sh --check  # hooks alive
-# /memory-hygiene (skill)
-# /harvest promote if staging non-empty
-# content-factory if scheduled
+If you want harvest to run unattended, schedule a job that invokes the skills in
+this order. There is nothing to install first, since COG ships no hooks.
+
+```
+/memory-hygiene
+/harvest promote     # only if the staging file is non-empty
+/content-factory     # only if scheduled
 ```

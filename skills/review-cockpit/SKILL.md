@@ -23,7 +23,7 @@ Pairs with `closed-loop` (verification), `harvest` (learnings), and the V-model 
 
 ## Structure
 
-Copy `04-projects/harness/templates/session-review.md`. Save the working copy in the relevant project folder as `YYYY-MM-DD-<slug>-review.md` (or `-plan.md`).
+Copy `references/session-review-template.md`. Save the working copy in the relevant project folder as `YYYY-MM-DD-<slug>-review.md` (or `-plan.md`).
 
 **Cockpit (top):**
 1. **Status line** — one line: how many items await review + last-updated timestamp.

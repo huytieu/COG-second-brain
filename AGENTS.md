@@ -446,7 +446,9 @@ This document defines the available commands/skills for AI agents interacting wi
 
 ### Verification Harness Skills
 
-The following 5 skills implement the V-model closed loop described in `WORKFLOW.md`. They are the enforcement layer that keeps every other skill honest: the worker never grades its own homework.
+The following 5 skills implement the V-model closed loop described in `WORKFLOW.md`: the worker never grades its own homework.
+
+**They are opt-in.** None of them run unless you invoke the skill, ask for the closed loop / proper verification / an evidence trail in those words, or set `verification_harness: on` in `00-inbox/MY-PROFILE.md`. Ordinary work (notes, briefs, research, drafts, edits) carries no checkpoints, no lane classification, and no evidence ledger. `WORKFLOW.md` governs harness runs and nothing else.
 
 ---
 
@@ -455,10 +457,12 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 **Description:** V-model execute pipeline: CP-2 plan → CP-3 build → CP-3v component verify → CP-4 integration verify → CP-5 acceptance. Every verify step emits evidence rows traced to acceptance criterion IDs (`AC-n`).
 
 **Triggers:**
-- `/execute <task>`
-- "run this through the closed loop"
-- Any `normal`-lane or higher build task
-- Automatically, whenever a task mutates external state
+- `/closed-loop <task>` or `/closed-loop <spec-path>`
+- "run this through the closed loop", "verify this properly", "give me an evidence trail"
+- `verification_harness: on` in your profile, on a build task
+- Another skill declaring a `normal`+ lane reaching its verify step
+
+Not triggered by an ordinary request. A task that mutates external state still owes the post-condition check (observe the artifact) whether or not the full loop runs.
 
 **Purpose:** Prevent the **confident-but-unchecked** failure mode. A worker reports success, nothing downstream validates it, and a plausible-but-wrong result ships. The loop makes success a *verified observation*, not a claim.
 
@@ -480,9 +484,10 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 **Triggers:**
 - `/ultragoal <goal>`
-- "this is a multi-week thing"
+- "make this an ultragoal", "this is a multi-week thing"
 - Resuming a long-running goal in a cold session
-- Any goal that can't finish in one run
+
+Never started unprompted. A big task is not an ultragoal until you call it one.
 
 **Purpose:** Wrongness compounds across sessions. A goal spanning weeks accumulates unverified assumptions that no single run ever revisits. Ultragoals never downgrade the lane: every phase runs CP-1 → CP-6 with adversarial verification, and nothing is "done" until every `AC-n` has a PASS row.
 
@@ -504,9 +509,10 @@ The following 5 skills implement the V-model closed loop described in `WORKFLOW.
 
 **Triggers:**
 - `/harvest`
-- SessionEnd hook (automatic staging)
-- After a correction, a rejected deliverable, or a surprising discovery
-- Nightly self-enhancement runs
+- After a correction, a rejected deliverable, or a surprising discovery, when you ask for it
+- A scheduled self-enhancement job, if you set one up
+
+COG ships no hooks, so nothing stages automatically until you wire it up yourself.
 
 **Purpose:** Tacit knowledge dies in the transcript. Corrections you made, workarounds discovered, and patterns that worked are all lost when the session closes. Harvest catches them at the boundary, but stages rather than commits, because auto-promoting session noise into durable knowledge poisons the well.
 
