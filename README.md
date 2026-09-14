@@ -80,6 +80,8 @@ Before publishing or updating framework files, run `./scripts/validate-agent-sur
 | **update-cog** | Update framework files without touching your content | "Update COG" |
 | **memory-hygiene** | Trust sweep of persistent memory — re-verify claims against the live environment, stamp `last_verified` + confidence | "Audit my memories" |
 
+`url-dump` saves a page you point at; `meeting-transcript` structures a transcript you already have. The material that falls between the two — a raw local talk/podcast/interview that was never transcribed, or a page's in-page video/attachment that web-fetch never pulls — currently has no door into the vault. [cue-omni-reader](https://github.com/sensedeal/cue-skills/tree/main/cue-omni-reader) closes that: web pages including in-page video/attachments, plus authorized local documents, audio, or video (several local files at once), all into Markdown that the capture skills can then ingest. Install: `npx skills add sensedeal/cue-skills --skill cue-omni-reader` (MIT; may bill).
+
 ### Team Intelligence Skills (for Product & Engineering Leads)
 
 | Skill | What it does | Try saying... |
