@@ -2,6 +2,32 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.14.0] - 2026-09-18
+
+### Added
+
+#### Updater path safety, trust boundaries, and a test suite (PR [#24](https://github.com/huytieu/COG-second-brain/pull/24))
+`cog-update.sh` overwrites framework files inside a user's vault, so it now refuses the inputs that could make that write land somewhere else. Contributed by [@imMamdouhaboammar](https://github.com/imMamdouhaboammar).
+
+- Every framework path is checked before a write: no absolute paths, no `..` components, no symlink anywhere in the chain, and the parent directory must resolve inside the physical checkout root. Writes go through `mktemp` + `mv`, and the upstream executable bit is preserved and compared, so a lost `+x` counts as drift.
+- `ensure_remote` refuses to fetch when the existing `cog-upstream` remote no longer matches the trusted URL. `COG_UPSTREAM_URL` exists for the deliberate case and is logged as such.
+- Force mode works on macOS system bash 3.2 when only new files are available; the empty-array expansion under `set -u` no longer aborts the run.
+- Plugin-mirror rebuild and validator failures now fail the update instead of printing a warning, and an updater that changes itself restarts once to load the new file list.
+- 16 hermetic tests under `tests/` (local `git init` fixtures, no network), a GitHub Actions workflow that runs them on push and pull request with `contents: read`, and `checkpoint.sh` now validates the result token and sanitizes tab and newline characters out of ledger fields.
+- `scripts/render-harness-report.py` renders the harness HTML report from a JSON contract, HTML-escaping every field and accepting only validated base64 image data URIs. `closed-loop` and `ultragoal` point at it instead of asking the agent to substitute template tokens by hand.
+
+### Changed
+
+- **Workflow and tests stay maintainer-side.** The CI workflow and `tests/` are not in `FRAMEWORK_FILES`: COG users clone this repo as their personal vault, and `./cog-update.sh --force` should not install CI that checks a private vault out onto a hosted runner. They ship with the repo; the updater does not push them into existing installs.
+- Harness templates stay inside `.claude/skills/closed-loop/references/`, where [#44](https://github.com/huytieu/COG-second-brain/pull/44) put them. The renderer's template replaces the manual-fill one at the same path; the duplicate `04-projects/harness/templates/` directory does not ship.
+- `team-brief` now says `/team-brief` where it said `/daily-brief`, routes its six collectors to `worker-data-collector` and `worker-file-ops` instead of `general-purpose`, and saves to `team-brief-YYYY-MM-DD.md`, so it no longer collides with the `daily-brief` news skill ([#37](https://github.com/huytieu/COG-second-brain/issues/37), [#38](https://github.com/huytieu/COG-second-brain/issues/38)).
+- `.cursorrules` lists 35 skills and all 10 agents. `.cursor-plugin/plugin.json` gains `slop-gate` and `voice-baseline`, and skill counts across README, SETUP, MARKETPLACE, and AGENT-SUPPORT read 35.
+- `WORKFLOW.md` drops the `04-projects/harness/BACKLOG.md` row, which pointed at a file no checkout has.
+
+### Fixed
+
+- Three updater tests sourced `cog-update.sh` through a process substitution, which defines no functions under bash 3.2; they now source a temp file.
+
 ## [3.13.0] - 2026-09-14
 
 ### Added

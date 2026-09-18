@@ -13,7 +13,7 @@ curl -s -X POST 'https://api.hackmd.io/v1/notes' \
 # Step 2: Prepare payload and update
 python3 -c "
 import json
-with open('[CUSTOMIZE: path/to/briefs/]daily-brief-YYYY-MM-DD.md') as f:
+with open('[CUSTOMIZE: path/to/briefs/]team-brief-YYYY-MM-DD.md') as f:
     content = f.read()
 with open('/tmp/hackmd-payload.json', 'w') as f:
     json.dump({'content': content}, f)

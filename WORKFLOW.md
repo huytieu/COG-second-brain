@@ -162,7 +162,6 @@ Run output lives under `04-projects/harness/`, which is created on the first har
 | Run evidence bundle | `04-projects/harness/runs/<id>/evidence/` |
 | HTML report (ultragoal / big run) | `04-projects/<goal>/report.html` · `04-projects/harness/runs/<id>/report.html` |
 | Retro outputs | `04-projects/harness/retro/YYYY-MM-DD-<slug>.md` |
-| Harness backlog | `04-projects/harness/BACKLOG.md` |
 | Ultragoal registry | `04-projects/harness/ultragoals.md` |
 | Harvest staging | `04-projects/harness/harvest/staging-<date>.md` |
 | Checkpoint + loop logs | `.claude/logs/checkpoint-ledger.tsv`, `loop-ledger.tsv` |

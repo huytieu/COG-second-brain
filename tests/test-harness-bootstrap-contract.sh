@@ -18,7 +18,7 @@ for skill in .claude/skills/ultragoal/SKILL.md skills/ultragoal/SKILL.md; do
   if ! grep -Fq 'No registered ultragoals.' "$skill"; then
     fail "$skill does not define the missing-registry status behavior"
   fi
-  if ! grep -Fq 'created on the first `/ultragoal new`' "$skill"; then
+  if ! grep -Fqi 'created on the first `/ultragoal new`' "$skill"; then
     fail "$skill does not define first-use registry creation"
   fi
   if ! grep -Fq 'never overwrite an existing registry' "$skill"; then

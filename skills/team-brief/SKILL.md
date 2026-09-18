@@ -57,9 +57,9 @@ You're not a reporting tool — you're a teammate who happens to have read every
 
 ## Parallel Agent Team Execution Strategy
 
-**The daily brief MUST use parallel agents to maximize speed and efficiency.**
+**The team brief MUST use parallel agents to maximize speed and efficiency.**
 
-When `/daily-brief` is invoked, the orchestrator (main agent) should:
+When `/team-brief` is invoked, the orchestrator (main agent) should:
 
 ### Phase 1: Setup (Orchestrator — Sequential, Fast)
 1. Determine today's date and the **lookback start date**:
@@ -71,26 +71,26 @@ When `/daily-brief` is invoked, the orchestrator (main agent) should:
 4. Check for recent braindumps in `[CUSTOMIZE: path/to/braindumps/]` matching dates from `LOOKBACK_DATE` through today
 
 ### Phase 2: Parallel Data Collection (Spawn 6 Agents Simultaneously)
-**Launch ALL of these agents in a single message using the Task tool with `run_in_background: true`:**
+**Launch ALL of these agents in a single message using the Agent tool (named Task in older clients) with `run_in_background: true`. Each worker writes its findings to a file and returns the path; the orchestrator reads the files in Phase 3.**
 
-#### Agent 1: "github-analyst" (subagent_type: general-purpose)
+#### Agent 1: "github-analyst" (subagent_type: worker-data-collector)
 Prompt: see `references/agent-prompts.md` § github-analyst.
 
-#### Agent 2: "slack-monitor" (subagent_type: general-purpose)
+#### Agent 2: "slack-monitor" (subagent_type: worker-data-collector)
 *Only spawn if Slack MCP is available*
 Prompt: see `references/agent-prompts.md` § slack-monitor.
 
-#### Agent 3: "meeting-reviewer" (subagent_type: general-purpose)
+#### Agent 3: "meeting-reviewer" (subagent_type: worker-file-ops)
 Prompt: see `references/agent-prompts.md` § meeting-reviewer.
 
-#### Agent 4: "linear-tracker" (subagent_type: general-purpose)
+#### Agent 4: "linear-tracker" (subagent_type: worker-data-collector)
 *Only spawn if Linear MCP is available*
 Prompt: see `references/agent-prompts.md` § linear-tracker.
 
-#### Agent 5: "braindump-reviewer" (subagent_type: general-purpose)
+#### Agent 5: "braindump-reviewer" (subagent_type: worker-file-ops)
 Prompt: see `references/agent-prompts.md` § braindump-reviewer.
 
-#### Agent 6: "posthog-analyst" (subagent_type: general-purpose)
+#### Agent 6: "posthog-analyst" (subagent_type: worker-data-collector)
 *Only spawn if PostHog MCP is available*
 Prompt: see `references/agent-prompts.md` § posthog-analyst.
 
@@ -147,7 +147,7 @@ This is the most critical phase. The orchestrator must:
 
 9. **Generate the brief** following the Content Structure below, with insights FIRST and details LAST. **Use the Voice & Tone guidelines** — write like a teammate, not a dashboard.
 
-10. **Save** to `[CUSTOMIZE: path/to/briefs/]daily-brief-YYYY-MM-DD.md` with proper metadata
+10. **Save** to `[CUSTOMIZE: path/to/briefs/]team-brief-YYYY-MM-DD.md` with proper metadata
 
 11. **Present** a concise summary to the user
 
@@ -246,7 +246,7 @@ The HackMD API token is stored in `.claude/settings/hackmd-token` (one line, no 
    - Extract the `id` and `publishLink` from the response
 
 2. **Update the note content** via `PATCH https://api.hackmd.io/v1/notes/<id>` with the full brief markdown content:
-   - Read the saved brief from `[CUSTOMIZE: path/to/briefs/]daily-brief-YYYY-MM-DD.md`
+   - Read the saved brief from `[CUSTOMIZE: path/to/briefs/]team-brief-YYYY-MM-DD.md`
    - Use Python to JSON-encode the content and write to a temp file
    - Send via `curl -X PATCH ... -d @/tmp/hackmd-payload.json`
 

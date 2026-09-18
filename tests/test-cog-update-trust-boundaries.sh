@@ -69,7 +69,10 @@ set +e
 helper_output="$( (
   cd "$helper_consumer"
   # shellcheck disable=SC1090
-  source <(sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh")
+  # bash 3.2 (macOS) defines nothing when sourcing a process substitution; use a file.
+  sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh" > "$TMP_DIR/cog-update-lib.sh"
+  # shellcheck disable=SC1091
+  source "$TMP_DIR/cog-update-lib.sh"
   REMOTE_NAME="fixture"
   BRANCH="main"
   REPO_ROOT=""
@@ -88,7 +91,10 @@ fi
 # Regression 3: common GitHub SSH aliases must normalize to the same trusted repository identity.
 if ! (
   # shellcheck disable=SC1090
-  source <(sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh")
+  # bash 3.2 (macOS) defines nothing when sourcing a process substitution; use a file.
+  sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh" > "$TMP_DIR/cog-update-lib.sh"
+  # shellcheck disable=SC1091
+  source "$TMP_DIR/cog-update-lib.sh"
   remote_urls_match "git@github.com:huytieu/COG-second-brain.git" "$DEFAULT_REMOTE_URL" &&
     remote_urls_match "ssh://git@github.com/huytieu/COG-second-brain.git" "$DEFAULT_REMOTE_URL" &&
     remote_urls_match "https://github.com/huytieu/COG-second-brain/" "$DEFAULT_REMOTE_URL" &&

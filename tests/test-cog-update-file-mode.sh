@@ -29,7 +29,10 @@ chmod +x "$consumer/scripts/regular-helper.sh"
 (
   cd "$consumer"
   # shellcheck disable=SC1090
-  source <(sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh")
+  # bash 3.2 (macOS) defines nothing when sourcing a process substitution; use a file.
+  sed '/^main "\$@"$/d' "$ROOT_DIR/cog-update.sh" > "$TMP_DIR/cog-update-lib.sh"
+  # shellcheck disable=SC1091
+  source "$TMP_DIR/cog-update-lib.sh"
   REMOTE_NAME="fixture"
   BRANCH="main"
   REPO_ROOT="$(pwd -P)"

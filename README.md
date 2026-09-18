@@ -11,7 +11,7 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[33 Skills]
+    B -- runs --> C[35 Skills]
     C -- delegates to --> W[6 Workers]
     C -- verified by --> V[4 Read-Only Verifiers]
     C -- reads & writes --> D[.md Files]
@@ -55,13 +55,13 @@ COG ships a **full Claude Code surface**, a **full Antigravity surface**, plus *
 
 | Surface | Current support | Notes |
 |---|---|---|
-| Claude Code | 33 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
-| Antigravity | 33 skills + 10 agents (pointer-stub format) | Full surface — thin stubs in `.agents/` delegate to the `.claude/` playbooks, which stay authoritative |
-| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + `skills/` (33 skills) | Spec 1.0.0 conformant; any standard-aware client loads COG as a plugin |
+| Claude Code | 35 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
+| Antigravity | 35 skills + 10 agents (pointer-stub format) | Full surface — thin stubs in `.agents/` delegate to the `.claude/` playbooks, which stay authoritative |
+| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + `skills/` (35 skills) | Spec 1.0.0 conformant; any standard-aware client loads COG as a plugin |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
-| `AGENTS.md` | 33 documented commands | Universal fallback for Codex and other agents |
+| `AGENTS.md` | 35 documented commands | Universal fallback for Codex and other agents |
 
 Before publishing or updating framework files, run `./scripts/validate-agent-surface.sh` to catch drift between manifests, docs, and shipped files. See [docs/AGENT-SUPPORT.md](docs/AGENT-SUPPORT.md) for the detailed support matrix and contributor rules.
 
@@ -231,7 +231,7 @@ graph TD
 
 ```
 COG-second-brain/
-├── .claude/skills/          # Claude Code skills (33)
+├── .claude/skills/          # Claude Code skills (35)
 ├── .claude/agents/          # Worker agent definitions (6)
 ├── .claude/roles/           # Role packs (7) — personalized recommendations
 ├── .agents/                 # Antigravity (agy CLI + IDE) — pointer stubs to .claude/

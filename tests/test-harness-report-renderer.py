@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "scripts/render-harness-report.py"
-TEMPLATE = ROOT / "04-projects/harness/templates/report.html"
+TEMPLATE = ROOT / ".claude/skills/closed-loop/references/report-template.html"
 ONE_PIXEL_PNG = (
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6eQAAAABJRU5ErkJggg=="
 )

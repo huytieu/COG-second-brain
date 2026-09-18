@@ -115,7 +115,7 @@ North-star acceptance:
 
 Every ultragoal carries a single self-contained HTML report that **covers everything**: north-star, live status, all phases, the full `AC-n` traceability table with pass/open/fail, evidence rows per phase, and the open-items / next-action block.
 
-- **Renderer:** build structured JSON using the Safe report data contract in `closed-loop`, then run `python3 scripts/render-harness-report.py --data <report-data.json> --output 04-projects/<goal>/report.html`. The renderer uses `04-projects/harness/templates/report.html` by default.
+- **Renderer:** build structured JSON using the Safe report data contract in `closed-loop`, then run `python3 scripts/render-harness-report.py --data <report-data.json> --output 04-projects/<goal>/report.html`. The renderer uses `.claude/skills/closed-loop/references/report-template.html` by default.
 - **No manual token substitution:** never copy a template and paste raw project/evidence text into HTML. The renderer HTML-escapes every text field and derives CSS classes from fixed mappings.
 - **Media:** screenshots may be supplied only as validated base64 `data:image/png`, `jpeg`, `webp`, or `gif` entries in the structured `media` list. Arbitrary HTML and non-image data URIs are rejected.
 - **Deliverable path:** `04-projects/<goal>/report.html`. One file, overwritten each phase so it reflects current truth.

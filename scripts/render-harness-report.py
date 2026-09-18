@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_TEMPLATE = ROOT / "04-projects/harness/templates/report.html"
+DEFAULT_TEMPLATE = ROOT / ".claude/skills/closed-loop/references/report-template.html"
 ALLOWED_IMAGE_MIME = {"image/png", "image/jpeg", "image/webp", "image/gif"}
 MAX_MEDIA_BYTES = 10 * 1024 * 1024
 DATA_IMAGE_RE = re.compile(

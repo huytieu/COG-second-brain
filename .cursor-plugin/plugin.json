@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
   "displayName": "COG: Agentic Second Brain",
-  "version": "3.12.0",
+  "version": "3.14.0",
   "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 33 skills, 10 agents (6 workers + 4 read-only verifiers), people CRM with tiered enrichment. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, risk lanes, multi-session ultragoals with a north-star acceptance gate, craft skills for writing and visuals, and paired anti-slop design skills for marketing and product UI. Works with Claude Code, Cursor, Kiro, Gemini CLI, and Codex.",
   "author": {
     "name": "Huy Tieu",
@@ -205,6 +205,16 @@
       "name": "product-ui-taste",
       "path": ".claude/skills/product-ui-taste/SKILL.md",
       "description": "Anti-slop skill for dense product surfaces (dashboards, tables, forms, wizards, admin consoles) - frame-first, correct at every edge case real data produces"
+    },
+    {
+      "name": "slop-gate",
+      "path": ".claude/skills/slop-gate/SKILL.md",
+      "description": "Refuse AI-slop tells in anything about to be written, published, or sent; runs in CI or as a hook"
+    },
+    {
+      "name": "voice-baseline",
+      "path": ".claude/skills/voice-baseline/SKILL.md",
+      "description": "Measure the words and sentence shapes you over-use so an agent stops amplifying your tics"
     }
   ],
   "agents": [

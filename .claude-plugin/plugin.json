@@ -1,6 +1,6 @@
 {
   "name": "cog-second-brain",
-  "version": "3.13.0",
+  "version": "3.14.0",
   "description": "Self-evolving second brain with 35 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
@@ -279,7 +279,7 @@
     "requirements": {
       "obsidian": "Recommended for markdown file management",
       "git": "Optional but recommended for version control and safe updates",
-      "claudeCode": "Recommended for the full 33-skill native experience",
+      "claudeCode": "Recommended for the full 35-skill native experience",
       "kiro": "Optional - ships 7 native core powers",
       "geminiCli": "Optional - ships 7 native core commands",
       "agentsMd": "Universal fallback surface for Codex and other markdown-reading agents"
@@ -291,7 +291,7 @@
       "validation": "Run ./scripts/validate-agent-surface.sh before publishing or after framework updates"
     },
     "directoryStructure": {
-      ".claude/skills": "33 Claude Code skills (full surface)",
+      ".claude/skills": "35 Claude Code skills (full surface)",
       ".claude/agents": "10 agent definitions - 6 workers plus 4 read-only verifiers",
       ".claude/roles": "7 role packs for personalized skill and integration recommendations",
       ".kiro/powers": "7 Kiro powers (core workflows)",
@@ -309,17 +309,17 @@
     },
     "skillArchitecture": {
       "type": "agent-skills",
-      "skills": 33,
+      "skills": 35,
       "workerAgents": 10,
       "rolePacks": 7,
       "invocation": "model-invoked",
       "progressiveDisclosure": true,
       "nativeSurfaces": {
-        "claudeCode": 33,
-        "antigravity": 33,
+        "claudeCode": 35,
+        "antigravity": 35,
         "kiro": 7,
         "geminiCli": 7,
-        "agentsMd": 33
+        "agentsMd": 35
       },
       "description": "Self-contained skills with worker delegation and a read-only verification layer, full Claude Code and Antigravity surfaces, core native Kiro/Gemini surfaces, and AGENTS.md as the universal fallback"
     }

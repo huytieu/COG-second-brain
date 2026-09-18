@@ -7,9 +7,9 @@ Complete step-by-step instructions for setting up your COG (Cognition + Obsidian
 ### What You Need
 
 1. **AI Agent** (choose one or more):
-   - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/` + `.claude/agents/` (33 skills + 10 agents)
-   - **Antigravity** - Uses `.agents/skills/` + `.agents/agents/` (33 skills + 10 agents)
-   - **Cursor** - Uses `.cursor-plugin/plugin.json` + `.cursorrules` (33 skills + 10 agents)
+   - [Claude Code](https://claude.ai/download) - Uses `.claude/skills/` + `.claude/agents/` (35 skills + 10 agents)
+   - **Antigravity** - Uses `.agents/skills/` + `.agents/agents/` (35 skills + 10 agents)
+   - **Cursor** - Uses `.cursor-plugin/plugin.json` + `.cursorrules` (35 skills + 10 agents)
    - [Kiro](https://kiro.dev/) - Uses `.kiro/powers/` (7 core native powers)
    - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Uses `GEMINI.md` + `.gemini/commands/` (7 core native commands)
    - Any OpenAI-compatible or markdown-reading agent - Uses `AGENTS.md`
@@ -46,13 +46,13 @@ That's it! You now have a working second brain.
 **What just happened?**
 - The cloned `COG-second-brain` folder IS your second brain
 - COG now exposes a clear multi-agent support matrix:
-  - `.claude/skills/` + `.claude/agents/` - 33 Claude Code skills + 10 agents
-  - `.agents/skills/` + `.agents/agents/` - 33 Antigravity skill stubs + 10 agent stubs
-  - `.cursor-plugin/plugin.json` + `.cursorrules` - Cursor package with 33 skills + 10 agents
-  - `plugin.json` + `skills/` - Agent Plugins 1.0.0 manifest + generated 33-skill mirror
+  - `.claude/skills/` + `.claude/agents/` - 35 Claude Code skills + 10 agents
+  - `.agents/skills/` + `.agents/agents/` - 35 Antigravity skill stubs + 10 agent stubs
+  - `.cursor-plugin/plugin.json` + `.cursorrules` - Cursor package with 35 skills + 10 agents
+  - `plugin.json` + `skills/` - Agent Plugins 1.0.0 manifest + generated 35-skill mirror
   - `.kiro/powers/` - 7 Kiro powers (core workflows)
   - `.gemini/commands/` + `.gemini/skills/` - 7 Gemini CLI commands (core workflows)
-  - `AGENTS.md` - 33 documented commands for Codex and other agents
+  - `AGENTS.md` - 35 documented commands for Codex and other agents
 - Onboarding will create your personalized directory structure
 - You can validate the packaged agent surfaces anytime with `./scripts/validate-agent-surface.sh`
 
@@ -136,7 +136,7 @@ COG-second-brain/              # This is your second brain folder
 ├── .claude/
 │   ├── agents/                # 10 agents (6 workers + 4 verifiers)
 │   ├── roles/                 # 7 role packs for personalized recommendations
-│   └── skills/                # 33 Claude Code skills
+│   └── skills/                # 35 Claude Code skills
 │       ├── onboarding/
 │       ├── braindump/
 │       ├── daily-brief/

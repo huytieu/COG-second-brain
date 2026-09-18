@@ -20,14 +20,14 @@ COG ships marketplace metadata in multiple formats:
 | File | Platform | Purpose |
 |---|---|---|
 | `plugin.json` | Agent Plugins standard | Root spec 1.0.0 manifest |
-| `skills/` | Agent Plugins standard | Generated mirror of all 33 Claude skills |
-| `.claude-plugin/plugin.json` | Claude Code marketplace | 33-skill packaged manifest |
-| `.cursor-plugin/plugin.json` | cursor.directory | 33 skills + 10 agents |
+| `skills/` | Agent Plugins standard | Generated mirror of all 35 Claude skills |
+| `.claude-plugin/plugin.json` | Claude Code marketplace | 35-skill packaged manifest |
+| `.cursor-plugin/plugin.json` | cursor.directory | 35 skills + 10 agents |
 | `.cursorrules` | Cursor | Cursor operating guidance |
 | `marketplace-entry.json` | General marketplaces | Lightweight catalog entry |
-| `AGENTS.md` | Universal | 33-command reference for markdown-reading agents |
+| `AGENTS.md` | Universal | 35-command reference for markdown-reading agents |
 
-Current packaged version: **3.12.0**
+Current packaged version: **3.14.0**
 
 ## Surface Model
 
@@ -35,11 +35,11 @@ COG is a multi-agent package with several distribution surfaces:
 
 | Surface | Coverage |
 |---|---:|
-| Claude Code (`.claude/`) | 33 native skills + 10 agents |
-| Antigravity (`.agents/`) | 33 skill stubs + 10 agent stubs |
-| Cursor (`.cursor-plugin/` + `.cursorrules`) | 33 skills + 10 agents |
-| Agent Plugins (`plugin.json` + `skills/`) | 33 skills |
-| Universal docs (`AGENTS.md`) | 33 documented commands |
+| Claude Code (`.claude/`) | 35 native skills + 10 agents |
+| Antigravity (`.agents/`) | 35 skill stubs + 10 agent stubs |
+| Cursor (`.cursor-plugin/` + `.cursorrules`) | 35 skills + 10 agents |
+| Agent Plugins (`plugin.json` + `skills/`) | 35 skills |
+| Universal docs (`AGENTS.md`) | 35 documented commands |
 | Kiro (`.kiro/powers/`) | 7 core powers |
 | Gemini CLI (`.gemini/commands/`) | 7 core commands |
 

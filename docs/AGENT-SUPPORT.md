@@ -8,11 +8,11 @@ This document is the packaging contract for contributors and maintainers: which 
 
 | Surface | Shipped format | Coverage | Status |
 |---|---|---:|---|
-| Claude Code | `.claude/skills/*/SKILL.md` + `.claude/agents/*.md` | 33 skills + 10 agents | Full authoritative surface |
-| Antigravity | `.agents/skills/*/SKILL.md` + `.agents/agents/*.md` | 33 skills + 10 agents | Full pointer-stub surface; delegates to `.claude/` |
-| Cursor | `.cursor-plugin/plugin.json` + `.cursorrules` | 33 skills + 10 agents | Full packaged metadata/rules surface |
-| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + generated `skills/` | 33 skills | Spec 1.0.0 standard surface |
-| Universal agent docs | `AGENTS.md` | 33 commands | Full documented fallback |
+| Claude Code | `.claude/skills/*/SKILL.md` + `.claude/agents/*.md` | 35 skills + 10 agents | Full authoritative surface |
+| Antigravity | `.agents/skills/*/SKILL.md` + `.agents/agents/*.md` | 35 skills + 10 agents | Full pointer-stub surface; delegates to `.claude/` |
+| Cursor | `.cursor-plugin/plugin.json` + `.cursorrules` | 35 skills + 10 agents | Full packaged metadata/rules surface |
+| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + generated `skills/` | 35 skills | Spec 1.0.0 standard surface |
+| Universal agent docs | `AGENTS.md` | 35 commands | Full documented fallback |
 | Kiro | `.kiro/powers/*/POWER.md` | 7 powers | Core workflows only |
 | Gemini CLI | `.gemini/commands/*.toml` + `.gemini/skills/*.md` | 7 commands | Core workflows only |
 
@@ -20,7 +20,7 @@ This document is the packaging contract for contributors and maintainers: which 
 
 ### Full surfaces
 
-The complete public skill set is the 33 directories currently shipped under `.claude/skills/`. That directory is authoritative for skill names and playbook content.
+The complete public skill set is the 35 directories currently shipped under `.claude/skills/`. That directory is authoritative for skill names and playbook content.
 
 The full surfaces are:
 - Claude Code: authoritative skill and agent definitions

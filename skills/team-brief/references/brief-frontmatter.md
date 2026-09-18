@@ -1,17 +1,17 @@
 # Team Brief — Metadata Template
 
-Verbatim YAML frontmatter template for the saved daily-brief markdown file, referenced from SKILL.md's `## Metadata Template` heading.
+Verbatim YAML frontmatter template for the saved team-brief markdown file, referenced from SKILL.md's `## Metadata Template` heading.
 
 ```yaml
 ---
-type: daily-brief
+type: team-brief
 brief_type: daily / week-start  # "week-start" if Monday, "daily" otherwise
 domain: shared
 date: YYYY-MM-DD
 lookback_from: YYYY-MM-DD  # Friday's date if Monday, yesterday otherwise
 created: YYYY-MM-DD HH:MM
 tags:
-  - daily-brief
+  - team-brief
   - team-intelligence
 data_sources:
   github: true
