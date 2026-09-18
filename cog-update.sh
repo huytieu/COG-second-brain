@@ -73,6 +73,9 @@ FRAMEWORK_FILES=(
   ".claude/skills/retro/SKILL.md"
   ".claude/skills/review-cockpit/SKILL.md"
   ".claude/skills/no-ai-slop/SKILL.md"
+  ".claude/skills/no-ai-slop/eval.md"
+  ".claude/skills/no-ai-slop/LICENSE"
+  ".claude/skills/no-ai-slop/SOURCE.md"
   ".claude/skills/slop-gate/SKILL.md"
   ".claude/skills/slop-gate/scripts/scan.py"
   ".claude/skills/voice-baseline/SKILL.md"
@@ -91,6 +94,7 @@ FRAMEWORK_FILES=(
   ".claude/skills/editorial-illustrations/references/design-system.md"
   ".claude/skills/editorial-illustrations/references/elements.md"
   ".claude/skills/editorial-illustrations/references/worked-examples.md"
+  ".claude/skills/editorial-illustrations/assets/gallery.html"
   ".claude/skills/knowledge-consolidation/references/templates.md"
   ".claude/skills/museum-art/references/_synthesis.md"
   ".claude/skills/museum-art/references/artic.md"
@@ -309,6 +313,19 @@ assert_parent_inside_repo() {
   esac
 }
 
+assert_existing_ancestor_inside_repo() {
+  local dir="$1"
+  local existing="$dir"
+  while [[ ! -d "$existing" ]]; do
+    if [[ -L "$existing" ]]; then
+      err "Refusing framework path through symlink: $existing"
+      return 1
+    fi
+    existing=$(dirname "$existing")
+  done
+  assert_parent_inside_repo "$existing/placeholder"
+}
+
 usage() {
   cat <<'EOF'
 COG Upstream Update Script
@@ -435,8 +452,8 @@ update_file() {
 
   assert_safe_framework_path "$file" || return 1
   dir=$(dirname "$file")
+  assert_existing_ancestor_inside_repo "$dir" || return 1
   [[ "$dir" != "." ]] && mkdir -p "$dir"
-  assert_safe_framework_path "$file" || return 1
   assert_parent_inside_repo "$file" || return 1
 
   tmp=$(mktemp "${dir}/.cog-update.XXXXXX") || return 1
@@ -468,6 +485,10 @@ backup_file() {
   assert_parent_inside_repo "$file" || return 1
   if [[ -f "$file" && ! -L "$file" ]]; then
     local backup="${file}.backup-$(date +%Y%m%d-%H%M%S)"
+    if [[ -e "$backup" || -L "$backup" ]]; then
+      err "Refusing to overwrite existing backup path: $backup"
+      return 1
+    fi
     cp "$file" "$backup"
     echo "$backup"
   fi
@@ -588,6 +609,17 @@ main() {
   local total=$(( ${#changed[@]} + ${#new_files[@]} ))
 
   if [[ $total -eq 0 ]]; then
+    if [[ "${COG_UPDATE_REEXEC:-0}" == "1" && "$mode" != "check" && "$mode" != "dry-run" ]]; then
+      # The pre-restart pass already applied files; finish what it skipped.
+      if ! rebuild_agent_plugin; then
+        err "Update applied, but Agent Plugins mirror rebuild failed. Review the working tree before committing."
+        return 1
+      fi
+      if ! run_validator; then
+        err "Update applied, but packaging validation failed. Review the working tree before committing."
+        return 1
+      fi
+    fi
     ok "Everything is up to date! (v${lv})"
     exit 0
   fi

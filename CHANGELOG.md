@@ -9,11 +9,12 @@ All notable changes to COG (Cognition + Obsidian + Git) will be documented in th
 #### Updater path safety, trust boundaries, and a test suite (PR [#24](https://github.com/huytieu/COG-second-brain/pull/24))
 `cog-update.sh` overwrites framework files inside a user's vault, so it now refuses the inputs that could make that write land somewhere else. Contributed by [@imMamdouhaboammar](https://github.com/imMamdouhaboammar).
 
+- Backups refuse a destination that already exists or is a symlink, and directories are created only after the nearest existing ancestor is confirmed inside the checkout.
 - Every framework path is checked before a write: no absolute paths, no `..` components, no symlink anywhere in the chain, and the parent directory must resolve inside the physical checkout root. Writes go through `mktemp` + `mv`, and the upstream executable bit is preserved and compared, so a lost `+x` counts as drift.
-- `ensure_remote` refuses to fetch when the existing `cog-upstream` remote no longer matches the trusted URL. `COG_UPSTREAM_URL` exists for the deliberate case and is logged as such.
+- `ensure_remote` refuses to fetch when the existing `cog-upstream` remote no longer matches the trusted URL. `COG_UPSTREAM_URL` exists for the deliberate case.
 - Force mode works on macOS system bash 3.2 when only new files are available; the empty-array expansion under `set -u` no longer aborts the run.
 - Plugin-mirror rebuild and validator failures now fail the update instead of printing a warning, and an updater that changes itself restarts once to load the new file list.
-- 16 hermetic tests under `tests/` (local `git init` fixtures, no network), a GitHub Actions workflow that runs them on push and pull request with `contents: read`, and `checkpoint.sh` now validates the result token and sanitizes tab and newline characters out of ledger fields.
+- 15 hermetic tests under `tests/` (local `git init` fixtures, no network), a GitHub Actions workflow that runs them on push and pull request with `contents: read`, and `checkpoint.sh` now validates the result token and sanitizes tab and newline characters out of ledger fields.
 - `scripts/render-harness-report.py` renders the harness HTML report from a JSON contract, HTML-escaping every field and accepting only validated base64 image data URIs. `closed-loop` and `ultragoal` point at it instead of asking the agent to substitute template tokens by hand.
 
 ### Changed
@@ -26,6 +27,7 @@ All notable changes to COG (Cognition + Obsidian + Git) will be documented in th
 
 ### Fixed
 
+- `FRAMEWORK_FILES` now carries `no-ai-slop/eval.md`, `LICENSE`, `SOURCE.md` and `editorial-illustrations/assets/gallery.html`, which shipped in the repo but never reached an existing install.
 - Three updater tests sourced `cog-update.sh` through a process substitution, which defines no functions under bash 3.2; they now source a temp file.
 
 ## [3.13.0] - 2026-09-14

@@ -100,7 +100,7 @@ Record: `checkpoint.sh record <run-dir> CP-5 PASS|FAIL`
 
 - Append to `.claude/logs/loop-ledger.tsv`
 - Update spec traceability matrix statuses to `verified`
-- **`full` lane / big task:** write structured report data to `evidence/report-data.json`, then render the self-contained HTML report with `python3 scripts/render-harness-report.py --data evidence/report-data.json --output report.html`. The renderer HTML-escapes every text field, derives CSS classes from fixed status mappings, and accepts only validated base64 `data:image` media. Never substitute report template tokens or arbitrary HTML by hand. Skip report generation for `normal`/`tiny`.
+- **`full` lane / big task:** write structured report data to `04-projects/harness/runs/<id>/evidence/report-data.json`, then, from the vault root, render the self-contained HTML report with `python3 scripts/render-harness-report.py --data 04-projects/harness/runs/<id>/evidence/report-data.json --output 04-projects/harness/runs/<id>/report.html`. The renderer HTML-escapes every text field, derives CSS classes from fixed status mappings, and accepts only validated base64 `data:image` media. Never substitute report template tokens or arbitrary HTML by hand. Skip report generation for `normal`/`tiny`.
 - Suggest `/retro <run-dir>` for CP-7
 
 ### Safe report data contract
