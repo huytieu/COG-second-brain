@@ -213,6 +213,10 @@
     "worker-file-ops",
     "worker-executor",
     "worker-publisher",
-    "brief-people-updater"
+    "brief-people-updater",
+    "task-verifier",
+    "integration-verifier",
+    "fix-agent",
+    "harvest-curator"
   ]
 }
