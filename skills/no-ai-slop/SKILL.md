@@ -158,6 +158,26 @@ Caps that hold regardless of whose voice it is:
 For the mechanical half of all of this, `slop-gate` scans outgoing text and refuses on a
 hard tell, so the check does not depend on being remembered.
 
+## Model-era tells (Opus 5.5, measured 2026-09-28)
+
+Tells move with the model. Measured with `slop-gate/scripts/model_compare.py --rules` on one maintainer's Claude Code transcripts, September 15 to 28, with the same rules file and hook for every model. Share of outputs `scan.py` would have refused:
+
+| | Fable 5.1 | Opus 5 | Opus 5.5 |
+|---|---|---|---|
+| Chat replies refused | 2.4% | 30.5% | 3.2% |
+| Markdown writes refused | 42% | 42% | 18% |
+| Em dash, % of replies | 0 | 23.6 | 0 |
+| "X, not Y", % of replies | 2.4 | 13.2 | 3.2 |
+
+On Opus 5.5 the em dash is gone and contrasts are rare, and several hard tells (rhetorical headings, verdict kickers, sycophancy, throat-clearing, recap endings) did not fire for any of the three models. The gate still catches the relapses. What 5.5 does instead is compress, so when checking its output look for these first:
+
+- **Parenthetical stuffing.** About one aside every 57 words in files: dates, counts, sources and qualifiers packed into brackets. Keep a parenthesis for an ID, unit or date the reader may need, move a real qualifier into the sentence, and delete the rest. More than one per paragraph is the smell.
+- **Semicolon chains.** Two to four clauses joined by semicolons, most often inside table cells and status lines. Split into sentences, or into a list when the items are parallel.
+- **Bullet-and-bold replies.** Chat answers built as bullets with a bold lead-in on each, 144 bullet lines per 10k words against 39 for Opus 5. A line of reasoning goes in prose.
+- **Colon lead-ins.** "So the plan is: ...", "Now the detector: ...". Say the sentence without the colon hinge.
+
+Rerun the script when your lead model changes and replace this table with your own numbers.
+
 ## Structural slop
 
 Word bans catch surface slop. The deeper tell is composition: predictable rhetorical structure with low information gain. A draft can pass every word check and still read as a miniature consulting memo. These patterns apply to the shape of the whole piece, not individual sentences.
@@ -167,6 +187,10 @@ Word bans catch surface slop. The deeper tell is composition: predictable rhetor
 **Rhetorical-function headings.** Headings that announce what the prose is doing instead of what it is about: "What this is not", "Why this matters", "The key insight", "The real opportunity", "Evidence before breadth", "The bottom line", "The deeper point", "The uncomfortable truth". Replace with subject-matter headings ("Authentication", "Pricing") or delete the section break entirely.
 
 **Negative runway.** Explaining what something isn't before saying what it is. Delete the runway; state the thing.
+
+**Announcement preamble.** A sentence that tells the reader what the next paragraphs will contain, instead of containing it: "Two entry paths, both ending in a reviewed test case." before two labelled paragraphs; "Four things are in scope:" before a numbered list; "Two models are on the table." before a comparison table; "There are three considerations here." The structure is already visible, so the sentence carries no information. Delete it, or replace it with a claim the reader could not get by looking ("The two candidate models differ on when the decision gets made, and only one can ship"). Bare lead-ins that just introduce a list ("In scope:", "The candidates:") are fine; the tell is the declared count plus a restatement of what follows.
+
+**Meta-narration about the document.** Sentences describing the document's own structure or how to read it: "The design above rests on these", "as described in the section below", "this section covers". Keep a cross-reference when the reader needs to navigate; cut when it only narrates.
 
 **Straw-man corrections.** Inventing a misconception nobody holds in order to theatrically correct it: "It's not X, it's Y", "This isn't about X", "While it may seem...", "Unlike...". Allowed only when X is a real position held by someone relevant to the discussion.
 

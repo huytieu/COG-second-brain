@@ -1,0 +1,16 @@
+{
+  "name": "saved-filters-explained",
+  "manifest": "raw/saved-filters.manifest.json",
+  "address": "app.example.com/projects/demo",
+  "theme": {"accent": "#6366f1", "accent_soft": "#a5b4fc", "ink": "#111318", "paper": "#e5e7eb", "bg": "#eef0f3"},
+  "intro": {"dur": 5.5, "kicker": "Release 2026-10-01", "title": "Saved <em>filters</em>",
+            "body": "Save any filter combination on the results page and reopen it from the sidebar. Before, filters reset on every visit.",
+            "foot": "Live demo on a demo project"},
+  "segments": [
+    {"src": [0, 6.0], "speed": 1, "step": "STEP 1", "caption": "Filter the results to failed runs on Chrome"},
+    {"src": [6.0, 21.0], "speed": 2.5, "step": "STEP 2", "caption": "Name the filter and save it. Sped up 2.5x"},
+    {"src": [21.0, 33.0], "speed": 1, "step": "STEP 3", "caption": "It appears in the sidebar and reopens with both conditions applied",
+     "zoom": {"box": [560, 185, 2120, 906], "at": 0.3, "dur": 1.0}, "ring": {"box": [600, 430, 2080, 536], "at": 1.8}}
+  ],
+  "outro": {"dur": 4.5, "kicker": "Available now", "title": "Filters that <em>stay</em>", "body": "Saved filters are per user and per project.", "foot": "Release 2026-10-01"}
+}

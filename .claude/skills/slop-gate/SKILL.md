@@ -119,3 +119,13 @@ same-family reviewer shares the author's sense of what a finished answer looks l
 and waves through the same shapes.
 
 For the tics that are yours rather than universal, measure them: `voice-baseline`.
+
+## Comparing models against the gate
+
+`scripts/model_compare.py` replays your own Claude Code transcripts through `scan.py` and reports, per model, the share of chat replies and Markdown writes the gate would have refused and the hit rate per rule. It also reports workload per human prompt (tool calls, active minutes, tool error rate, subagent spawns) and punctuation per 10k words. When a hook refuses a reply, the transcript keeps the refused attempt as well as the rewrite, so the counts include what the model wrote before the gate saw it.
+
+```bash
+python3 scripts/model_compare.py --since 2026-09-15T00:00:00+00:00 --rules
+```
+
+Pick a window in which the rules file and hook did not change. A rule that tightened mid-window makes the earlier model look worse than it was.

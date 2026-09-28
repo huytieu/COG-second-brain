@@ -1,0 +1,18 @@
+/* Theme tokens: swap these for your product's brand. */
+:root { --bg:#0f1115; --ink:#f3f4f6; --muted:#9ca3af; --accent:#6366f1; --accent-soft:#a5b4fc; --line:#2a2f3a;
+        --sans: Inter, system-ui, sans-serif; --mono: ui-monospace, Menlo, monospace; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; background:var(--bg); overflow:hidden; }
+#stage { position:relative; width:100vw; height:100vh; color:var(--ink); font-family:var(--sans); }
+.scene { position:absolute; inset:0; display:none; padding:520px 90px 140px; background:var(--bg); }
+.kicker { font:500 30px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+h1 { margin-top:48px; font:650 112px/1.02 var(--sans); letter-spacing:-.035em; }
+h1 em { font-style:normal; color:var(--accent-soft); }
+p.body { margin-top:40px; max-width:880px; font:400 44px/1.4 var(--sans); color:var(--muted); }
+.card { margin-top:80px; border:2px solid var(--line); border-radius:28px; padding:48px; background:#161a21; }
+.row { display:flex; align-items:center; gap:24px; padding:22px 0; border-top:2px solid var(--line); font:500 40px/1.2 var(--sans); }
+.row:first-child { border-top:0; }
+.dot { width:22px; height:22px; border-radius:50%; background:var(--accent); flex:none; }
+.big { font:700 180px/1 var(--sans); color:var(--accent-soft); letter-spacing:-.04em; }
+svg.illo { display:block; margin-top:70px; }
+svg.illo * { vector-effect:non-scaling-stroke; }

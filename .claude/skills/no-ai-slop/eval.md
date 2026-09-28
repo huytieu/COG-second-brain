@@ -32,6 +32,8 @@ For detect requests, make sure the response names each pattern found with a quot
 7. Are colons sentence case unless grammar, a proper noun, a title, or code requires otherwise?
 8. Are em dashes used sparingly: Usually none in short copy, and only 1-2 in longer drafts when they clearly help?
 
+9. For model output: is there at most one parenthetical per paragraph, no semicolon-chained clauses, and prose where bullets were carrying a line of reasoning?
+
 ## Structural slop
 
 1. Are invented frameworks, gates, layers, pillars, and numbered taxonomies removed unless they exist in the source or genuinely reduce complexity?

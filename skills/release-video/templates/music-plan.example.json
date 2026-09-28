@@ -1,0 +1,68 @@
+{
+ "composition_plan": {
+  "positive_global_styles": [
+   "upbeat instrumental product launch music",
+   "120 bpm",
+   "bright and playful",
+   "punchy modern drums",
+   "bouncy synth bass",
+   "clear downbeats for video cuts"
+  ],
+  "negative_global_styles": [
+   "vocals",
+   "sleepy",
+   "ambient",
+   "lo-fi",
+   "aggressive",
+   "repetitive loop"
+  ],
+  "sections": [
+   {
+    "section_name": "Title intro",
+    "positive_local_styles": [
+     "introductory",
+     "rising filtered synth swell",
+     "snare roll into the downbeat"
+    ],
+    "negative_local_styles": [
+     "full drums"
+    ],
+    "duration_ms": 4000,
+    "lines": []
+   },
+   {
+    "section_name": "Features",
+    "positive_local_styles": [
+     "full groove",
+     "new hook every 8 bars"
+    ],
+    "negative_local_styles": [
+     "repeating the intro"
+    ],
+    "duration_ms": 56000,
+    "lines": []
+   },
+   {
+    "section_name": "Summary lift",
+    "positive_local_styles": [
+     "bigger brighter chords",
+     "energy lift"
+    ],
+    "negative_local_styles": [],
+    "duration_ms": 6000,
+    "lines": []
+   },
+   {
+    "section_name": "Outro",
+    "positive_local_styles": [
+     "final hit then ring out"
+    ],
+    "negative_local_styles": [
+     "fade to nothing"
+    ],
+    "duration_ms": 5000,
+    "lines": []
+   }
+  ]
+ }
+}

@@ -132,6 +132,7 @@ Opt-in. Ask for one of these and work walks a **V**: decompose left into falsifi
 | **no-ai-slop** | Sharpen a draft without flattening its voice, or just detect AI-slop patterns | "Make this less AI-sounding" |
 | **slop-gate** | Refuse slop tells in anything about to be written, published, or sent; runs in CI or as a hook | "Scan this before I publish" |
 | **voice-baseline** | Measure the words and shapes you over-use so an agent stops amplifying your tics | "Why do my drafts all sound the same?" |
+| **release-video** | Turn a release into a motion recap and explained per-feature demos, with sound tied to motion | "Make a video for this release" |
 | **editorial-illustrations** | Claim → geometry: derive the *right* figure from what the text argues, render it as self-contained theme-aware HTML/SVG | "Make a diagram for this argument" |
 | **data-forms** | 20+ chart and diagram forms with when-to-use, failure modes, and the encoding discipline that makes any of them readable | "The bar chart is burying the point" |
 | **museum-art** | Real public-domain artwork from museum open-access APIs instead of AI-generated or stock imagery | "Find a hero image for this post" |

@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Minimal two-feature recap. Copy this folder, then:
+     - one <section class="scene"> per beat; data-start/data-dur in seconds (absolute)
+     - element timings are relative to their scene: data-rise="start,dur[,px]", data-fade, data-pop,
+       data-draw (SVG stroke draw-on), data-type (typewriter), data-count="s,d,from,to,decimals,suffix",
+       data-wipe, data-slide, data-zoom, data-pulse, data-out
+     - data-sfx="name,gain" on any animated element puts that sound at the element's start time
+     Feature scenes run 6-8 s: a viewer should be able to read every line twice. -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><script src="engine.js"></script></head>
+<body><div id="stage">
+
+<section class="scene" data-start="0" data-dur="4" data-enter="cut" data-sfx="swell,0.7,1,0">
+  <div class="kicker" data-fade="0.2,0.5">Release 2026-10-01</div>
+  <h1 data-rise="0.5,0.7,50" data-sfx="thump,0.7">Two things<br>you asked <em>for</em></h1>
+</section>
+
+<section class="scene" data-start="4" data-dur="7" data-enter="wipe">
+  <div class="kicker" data-fade="0.3,0.4">01 · Results</div>
+  <h1 data-rise="0.4,0.6,40" data-sfx="whoosh,0.5">Saved <em>filters</em></h1>
+  <p class="body" data-fade="1.0,0.6">Save a filter once and reopen it from the sidebar. It keeps every condition.</p>
+  <div class="card" data-rise="2.0,0.6,40" data-sfx="pop,0.5">
+    <div class="row" data-slide="2.6,0.5,-60" data-sfx="tick,0.45"><span class="dot"></span>Status is Failed</div>
+    <div class="row" data-slide="3.1,0.5,-60" data-sfx="tick,0.45,1.08"><span class="dot"></span>Browser is Chrome</div>
+    <div class="row" data-slide="3.6,0.5,-60" data-sfx="chime,0.5"><span class="dot"></span>Saved as "Chrome failures"</div>
+  </div>
+</section>
+
+<section class="scene" data-start="11" data-dur="7" data-enter="wipe">
+  <div class="kicker" data-fade="0.3,0.4">02 · Runs</div>
+  <h1 data-rise="0.4,0.6,40" data-sfx="whoosh,0.5">Faster <em>reruns</em></h1>
+  <p class="body" data-fade="1.0,0.6">Rerun only the failed cases. Median rerun time on our demo project:</p>
+  <div class="big"><span data-count="2.0,1.6,12,4,0" data-sfx="count,0.5">12</span> min</div>
+  <svg class="illo" width="900" height="160" viewBox="0 0 900 160">
+    <!-- closed, complete shapes: never leave a half-drawn stroke on screen at rest -->
+    <g data-draw="2.2,1.2" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round">
+      <rect x="3" y="40" width="880" height="80" rx="40"/>
+    </g>
+    <rect data-grow="2.4,1.4" x="3" y="40" width="300" height="80" rx="40" fill="#6366f1"/>
+  </svg>
+</section>
+
+<section class="scene" data-start="18" data-dur="4" data-enter="mask" data-hold="0">
+  <div class="kicker" data-fade="0.2,0.4">Available now</div>
+  <h1 data-rise="0.3,0.6,40" data-sfx="hit,0.8">See the full<br>release <em>notes</em></h1>
+</section>
+
+</div></body></html>

@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.13.0",
-  "description": "Self-evolving second brain with 35 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.14.0",
+  "description": "Self-evolving second brain with 36 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -250,6 +250,11 @@
       "name": "voice-baseline",
       "description": "Measure the words and sentence shapes you over-use so an agent stops amplifying your tics",
       "path": ".claude/skills/voice-baseline/SKILL.md"
+    },
+    {
+      "name": "release-video",
+      "path": ".claude/skills/release-video/SKILL.md",
+      "description": "Turn a product release into a motion recap video and explained per-feature demos: deterministic HTML scenes, sound effects tied to motion, music composed to the timeline"
     }
   ],
   "metadata": {
