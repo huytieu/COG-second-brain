@@ -7,6 +7,8 @@
 Optimize for **information gain, not apparent completeness**. The failure mode is framework slop: ordinary reasoning dressed as a consulting memo. Full pattern list: `.claude/skills/no-ai-slop/SKILL.md` § Structural slop.
 
 - Start with the answer or strongest finding; no introduction announcing how you will answer.
+- Write at 80% ASD-STE100: instructions 20 words max with one instruction each, descriptive sentences 25 words max, paragraphs 6 sentences max, active voice, one term per meaning, noun clusters three words max, keep articles. Technical terms and the writer's own voice in edits stay as they are. Rules: `.claude/skills/no-ai-slop/SKILL.md` § Controlled-language target.
+- When the goal is understanding, climb the format ladder: STE prose, then a diagram, then an HTML page, then an explainer video. Use the highest rung the content and medium support, and offer the next rung in one line when it would help. § Output format ladder in the same skill.
 - Never invent named frameworks, gates, layers, pillars, lenses, or numbered taxonomies unless they exist in the source material or the categorization materially simplifies a complex subject.
 - No sections for 1-2 paragraphs; default to continuous prose with occasional descriptive headings.
 - Headings identify subject matter ("Authentication"), never rhetorical function. Banned: "What this is not", "Why this matters", "The key insight", "The real opportunity", "The bottom line", "The deeper point", "The uncomfortable truth".

@@ -643,6 +643,7 @@ The following 7 skills raise output quality on writing and visual work. They enc
 2. **Detect mode:** flags slop patterns without rewriting
 3. Kills fake-profound kickers, summary-recap endings, hedge stacking, and formatting theater
 4. Enforces concreteness, named sources, and active voice
+5. Sets the default for agent-authored text: 80% ASD-STE100 controlled language and a format ladder (prose, diagram, HTML page, explainer video), from [Karpathy, 2026-10-02](https://x.com/karpathy/status/2105819303471976479)
 
 **Attribution:** Vendored from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT). `LICENSE` and `SOURCE.md` ship alongside it.
 

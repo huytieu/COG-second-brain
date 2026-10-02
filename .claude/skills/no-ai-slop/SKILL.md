@@ -1,6 +1,6 @@
 ---
 name: no-ai-slop
-description: Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. Use when the user wants a draft clearer, more direct, more opinionated, or less AI-sounding, or asks whether writing reads as AI.
+description: Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. Use when the user wants a draft clearer, more direct, more opinionated, or less AI-sounding, or asks whether writing reads as AI. Also the default writing standard for all agent output: 80% ASD-STE100 controlled language plus the format ladder (prose, diagram, HTML page, explainer video).
 ---
 
 # No AI slop
@@ -38,6 +38,34 @@ If the goal is unclear, ask what the reader should think, feel, or do after read
 - **Know the job.** Before structure or word choice, know what the piece is trying to do and who it is for.
 - **Preserve useful edge and character.** Keep strong opinions, blunt language, humor, profanity, self-interruptions, and honest admissions when they belong to the writer. Don't replace them with safer or more professional wording.
 - **Keep structure unless it's hurting the piece.** Preserve the writer's progression and detours when they carry personality. If you reorganize, say why in the What changed section.
+
+## Controlled-language target (ASD-STE100, adopted 2026-10-02)
+
+Default target for every explanation, report, spec, chat reply, and ticket the agent writes: about 80% of the way to ASD-STE100 (Simplified Technical English, the controlled language from aerospace maintenance manuals). Source: Karpathy, 2026-10-02, https://x.com/karpathy/status/2105819303471976479. He found STE output more readable than default model prose and softens it to "80% of the way" because the full spec is stringent. Models know the spec, so the request "write this in 80% ASD-STE100" works on any agent.
+
+The rules that carry over at 80%:
+- Procedural sentence (an instruction): 20 words max, one instruction per sentence, imperative verb first. "Run the setup script after each clone."
+- Descriptive sentence: 25 words max. Paragraph: 6 sentences max, one topic.
+- Active voice. Passive only when the actor is unknown or irrelevant.
+- Verbs: present, simple past, and future. Avoid progressive ("is running" becomes "runs") and avoid `-ing` words used as verbs or nouns where a finite verb works.
+- One word, one meaning. Pick the term once and repeat it; this is the STE version of Synonym cycling below.
+- Noun clusters of three words max. "Test run report export button" becomes "the button that exports the test run report".
+- Keep articles (the, a) and connectors that a terse model drops. Telegraphic text is shorter but slower to read.
+- Safety and warning text: the command first, then the reason. "Do not delete the lock file. Git may be writing to it."
+- Approved simple words over long ones: "use" not "utilize", "start" not "commence", "before" not "prior to", "about" not "approximately", "help" not "facilitate", "to" not "in order to".
+
+The 20% we keep outside STE: technical terms, product names, and code identifiers as they are; the writer's own voice when editing a human draft (Editing principles win over STE for a personal blog, chat, or email voice); hedges that express real uncertainty. Do not apply STE word limits to quoted material or code.
+
+## Output format ladder (adopted 2026-10-02)
+
+Same source. When the job is to make the reader understand something, prose is the lowest rung. Pick the highest rung the content and the medium support:
+
+1. STE prose (above), for answers of a few sentences and anything going into Slack, email, Jira, or a commit.
+2. A diagram (ASCII in chat, drawio or inline SVG in files), when the content has structure: a flow, a sequence, an architecture, a comparison of states.
+3. An HTML page (Artifact or local `.html`), when the reader needs to explore: tables with drill-down, toggles, an interactive model, animation of a process.
+4. An explainer video (the `release-video` skill, 3b1b-style animation with ElevenLabs narration), when the topic is a mechanism a viewer should watch unfold.
+
+Discardable artifacts are fine. A one-off web page or video that exists to explain one thing is worth building now that code is cheap. Offer the next rung up in one line when it would help and the user did not ask for it; do not build a page or video unasked for a question that two sentences answer. Every rung follows the rest of this skill: diagram node names, page headings, and video captions get the same slop rules as prose.
 
 ## Words to cut
 
@@ -209,6 +237,7 @@ The reliable composition order is finding -> evidence -> reasoning -> decision, 
 1. Read the full draft before editing.
 2. Identify the core point and 3-5 voice signals to preserve, such as vocabulary, cadence, bluntness, humor, uncertainty, or digressions. Keep this note internal. If you cannot identify the core point, ask the user.
 3. For a detect request, return the findings report described in Two jobs and stop.
-4. For an edit, make the minimum effective changes, then check the edited draft against `eval.md` yourself.
-5. If any check fails, fix the draft and run the checks again.
-6. Output the full edited draft and a short **What changed** section.
+4. For agent-authored text (not a human draft), write to the Controlled-language target and pick the rung from the Output format ladder before writing.
+5. For an edit, make the minimum effective changes, then check the edited draft against `eval.md` yourself.
+6. If any check fails, fix the draft and run the checks again.
+7. Output the full edited draft and a short **What changed** section.
