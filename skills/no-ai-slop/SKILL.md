@@ -56,6 +56,8 @@ The rules that carry over at 80%:
 
 The 20% we keep outside STE: technical terms, product names, and code identifiers as they are; the writer's own voice when editing a human draft (Editing principles win over STE for a personal blog, chat, or email voice); hedges that express real uncertainty. Do not apply STE word limits to quoted material or code.
 
+**ELI5 first for explanations.** When the job is to explain a concept, a mechanism, or a decision to someone who did not build it, open with an ELI5 paragraph: three sentences max, everyday words, one concrete analogy, no jargon. Then give the technical detail in STE. Skip the ELI5 for status updates, instructions, and replies to the person who wrote the code.
+
 ## Output format ladder (adopted 2026-10-02)
 
 Same source. When the job is to make the reader understand something, prose is the lowest rung. Pick the highest rung the content and the medium support:

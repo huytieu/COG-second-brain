@@ -38,7 +38,8 @@ For detect requests, make sure the response names each pattern found with a quot
 
 1. For agent-authored text: are instructions 20 words max with one instruction each, descriptive sentences 25 words max, paragraphs 6 sentences max, voice active, and each term used with one meaning?
 2. Are noun clusters three words max, with articles and connectors kept?
-3. Is the output on the right rung of the format ladder, or does the reply offer the next rung in one line when a diagram, page, or video would explain it better?
+3. For an explanation to a non-author: does it open with an ELI5 paragraph of three sentences max, with one everyday analogy and no jargon?
+4. Is the output on the right rung of the format ladder, or does the reply offer the next rung in one line when a diagram, page, or video would explain it better?
 
 ## Structural slop
 

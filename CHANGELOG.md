@@ -10,8 +10,9 @@ All notable changes to COG (Cognition + Obsidian + Git) will be documented in th
 Adapted from [Andrej Karpathy's post of 2026-10-02](https://x.com/karpathy/status/2105819303471976479) on how to read model output faster.
 
 - `no-ai-slop` gains a **Controlled-language target**: agent-authored text aims for about 80% of ASD-STE100, the controlled English from aerospace maintenance manuals. Instructions are 20 words max with one action each, descriptive sentences 25 words max, paragraphs 6 sentences max, active voice, one term per meaning, noun clusters three words max, articles kept. Technical terms, code, quotes, and the writer's own voice in edits stay outside the limits.
+- `no-ai-slop` gains **ELI5 first for explanations**: an explanation for someone who did not build the thing opens with three sentences of everyday words and one analogy, then the technical detail in STE.
 - `no-ai-slop` gains an **Output format ladder**: when the goal is understanding, the agent picks the richest rung the content and medium support (prose, diagram, HTML page, explainer video via `release-video`) and offers the next rung in one line instead of building it unasked.
-- `eval.md` gains three checks for sentence limits, term consistency, and format choice.
+- `eval.md` gains four checks for sentence limits, term consistency, the ELI5 opener, and format choice.
 - `CLAUDE.md` and `.cursorrules` Response Style carry both rules, so agents that never load the skill still follow them.
 
 ## [3.14.0] - 2026-09-28
