@@ -8,6 +8,13 @@ Ask open-ended questions, not option menus. Infer what you can. Never ask redund
 
 ## Steps
 
+### 0. Vault Location
+- If `cog.local.yaml` exists at the repository root, use its `vault_path` and do not ask.
+- Else, if `00-inbox/MY-PROFILE.md` exists in the repository, keep the vault there and do not ask.
+- Else, add one line to the welcome prompt: "Your notes go in this folder by default. If you want them somewhere else, tell me the path."
+- If the user gives a path: write `cog.local.yaml` with `vault_path: "<absolute path, forward slashes>"`, create the folder tree from Step 7 there, and copy `05-knowledge/people/README.md` and `06-templates/people-profile-template.md` if missing. Tell the user to restart Gemini CLI with `--include-directories "<path>"`.
+- Full procedure: `.claude/skills/onboarding/SKILL.md` § 1.5.
+
 ### 1. Check for Existing Profile
 - Look for `00-inbox/MY-PROFILE.md`
 - If exists: Ask "What would you like to update? Just tell me what needs changing."

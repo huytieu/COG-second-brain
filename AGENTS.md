@@ -6,6 +6,18 @@ This document defines the available commands/skills for AI agents interacting wi
 
 > **Note:** Claude Code users should use `.claude/skills/` and Kiro users should use `.kiro/powers/` for native support. This file serves as universal documentation for all other agents.
 
+## Vault Location
+
+The notes can live outside this repository. Read `vault_path` from `cog.local.yaml` at the repository root once per session, before the first vault read or write.
+
+- Resolve every path that starts with `00-inbox/`, `01-daily/`, `02-personal/`, `03-professional/`, `04-projects/`, `05-knowledge/` or `06-templates/` against `vault_path`.
+- If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root.
+- Framework paths (`.claude/`, `skills/`, `scripts/`, `.kiro/`, `.gemini/`, `/tmp`) stay relative to the repository.
+- In shell commands, use the absolute vault path in double quotes. The path can contain spaces.
+- If `vault_path` points to a folder that does not exist or that you cannot access, stop and tell the user. Never fall back to the repository folders silently.
+
+`/onboarding` creates `cog.local.yaml`. Codex needs access to an external vault: `codex --add-dir "<vault_path>"`, or `writable_roots` under `[sandbox_workspace_write]` in `~/.codex/config.toml`.
+
 ## Available Commands
 
 ### /onboarding
@@ -22,6 +34,7 @@ This document defines the available commands/skills for AI agents interacting wi
 **Purpose:** Welcome new users and collect essential information to personalize their COG experience through natural conversation - not sequential form-filling. Creates profile documents stored as markdown files within the vault.
 
 **How it works:**
+0. Asks where the notes should live (default: this repository). For another folder, writes `cog.local.yaml`, creates the vault folder tree there, and grants the agent access to it
 1. Asks ONE open-ended question: "Tell me about yourself - name, role, and what you're interested in"
 2. Intelligently parses the response to extract name, role, interests, projects, news sources, and competitive watchlist
 3. Only asks a follow-up if required info (name, role, interests) is still missing

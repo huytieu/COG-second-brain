@@ -18,7 +18,7 @@ Help the user update their COG framework files (skills, documentation, scripts) 
 ## Process Flow
 
 ### 1. Check Current Version
-Read `COG-VERSION` from the vault root. If it doesn't exist, inform the user they may be on an older version that predates version tracking.
+Read `COG-VERSION` from the repository root. If it doesn't exist, inform the user they may be on an older version that predates version tracking.
 
 ### 2. Ensure Upstream Remote
 ```bash
@@ -100,5 +100,7 @@ For users who prefer a non-AI update, mention the update script:
 ## Important Notes
 - **Content folders are NEVER touched**: `00-inbox/`, `01-daily/`, `02-personal/`, `03-professional/`, `04-projects/`, `05-knowledge/`, `06-templates/` contain user data and are always ignored
 - **The .gitignore is designed** so content folders are excluded from upstream tracking (only `.gitkeep` files are tracked)
+- **`cog.local.yaml` is never updated** — it holds the user's `vault_path` and is not a framework file
+- **External vault** — if `vault_path` points outside the repository, never overwrite the vault copies of `05-knowledge/people/README.md` and `06-templates/people-profile-template.md`. Copy them from upstream into the vault only when they are missing there
 - **The update script updates itself** — `cog-update.sh` is in the framework file list
 - **No merge conflicts possible** — this uses `git checkout` for surgical file replacement, not `git merge` or `git rebase`

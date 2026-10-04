@@ -178,6 +178,31 @@ COG-second-brain/              # This is your second brain folder
 
 ## Optional: Advanced Configuration
 
+### Keep Your Notes in Another Folder
+
+By default the numbered folders (`00-inbox/` … `06-templates/`) live inside this repository. You can keep them in any other folder, for example a separate Obsidian vault. The framework (skills, agents, scripts) stays here; only the notes move.
+
+**Easiest way:** run `/onboarding` and give the path when it asks where your notes should live.
+
+**By hand:** copy `cog.local.yaml.example` to `cog.local.yaml` and set the path:
+```yaml
+vault_path: "D:/Second Brain/vault"
+```
+Use an absolute path with forward slashes. Every agent reads this file at the start of a session and resolves vault paths against it. Without the file, the vault is this repository. `cog.local.yaml` is ignored by Git and `cog-update.sh` never overwrites it.
+
+**Give your agent access to the folder.** Agents only read and write inside the folders you allow:
+
+| Agent | How |
+|-------|-----|
+| Claude Code | Add the path to `permissions.additionalDirectories` in `.claude/settings.local.json` (onboarding does this), or run `/add-dir "<path>"` in a session |
+| Codex | `codex --add-dir "<path>"`, or add it to `writable_roots` under `[sandbox_workspace_write]` in `~/.codex/config.toml` |
+| Gemini CLI | `gemini --include-directories "<path>"` |
+| Kiro / Cursor | Add the folder to the workspace |
+
+**Effect on Git.** Notes in an external folder are outside this repository, so `git add -A` here can no longer commit them. For version history of the notes, run `git init` in the vault folder and keep it local or push it to a private remote.
+
+**Moving existing notes.** Run `/onboarding` and ask to move the vault. It copies the folders, compares file counts, and asks before deleting anything from the old location.
+
 ### Git Version Control
 
 Your second brain is already a Git repo (you cloned it). To track your changes:

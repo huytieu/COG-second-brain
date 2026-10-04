@@ -1,0 +1,12 @@
+# Local COG settings. Copy this file to cog.local.yaml and edit it.
+# cog.local.yaml is ignored by Git and never overwritten by cog-update.sh.
+# /onboarding creates it for you when you choose another vault location.
+
+# Folder that holds the numbered note folders (00-inbox ... 06-templates).
+# Use an absolute path with forward slashes, in double quotes.
+# Leave it as "." (or delete this file) to keep the notes in this repository.
+vault_path: "."
+
+# Examples:
+# vault_path: "D:/Second Brain/vault"
+# vault_path: "/Users/alex/Documents/vault"

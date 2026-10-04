@@ -9,6 +9,10 @@ keywords: ["onboarding", "setup COG", "setup profile", "get started", "configure
 
 Welcome new users and collect essential information to personalize their COG (Cognition + Obsidian + Git) second brain experience.
 
+## Vault Location
+
+Vault paths (`00-inbox/` … `06-templates/`) resolve against `vault_path` in `cog.local.yaml` at the repository root. If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root. Use the absolute vault path in double quotes in shell commands. If the folder does not exist or you cannot access it, stop and tell the user.
+
 ## When This Power Activates
 
 - User mentions "onboarding", "setup", or "get started"
@@ -26,6 +30,14 @@ Welcome new users and collect essential information to personalize their COG (Co
 - Confirm your interpretation rather than asking the question fresh
 
 ## Onboarding Steps
+
+### 0. Vault Location
+
+- If `cog.local.yaml` exists at the repository root, use its `vault_path` and do not ask.
+- Else, if `00-inbox/MY-PROFILE.md` exists in the repository, keep the vault there and do not ask.
+- Else, add one line to the welcome prompt: "Your notes go in this folder by default. If you want them somewhere else, tell me the path."
+- If the user gives a path: write `cog.local.yaml` with `vault_path: "<absolute path, forward slashes>"`, create the folder tree from Step 7 there, and copy `05-knowledge/people/README.md` and `06-templates/people-profile-template.md` if missing. Tell the user to add the folder to the Kiro workspace.
+- Full procedure: `.claude/skills/onboarding/SKILL.md` § 1.5.
 
 ### 1. Check for Existing Profile
 

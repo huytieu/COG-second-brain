@@ -146,10 +146,6 @@ FRAMEWORK_FILES=(
   ".claude/agents/fix-agent.md"
   ".claude/agents/harvest-curator.md"
 
-  # People CRM
-  "05-knowledge/people/README.md"
-  "06-templates/people-profile-template.md"
-
   # Framework config
   "CLAUDE.md"
 
@@ -237,6 +233,21 @@ FRAMEWORK_FILES=(
 
   # Git infrastructure
   ".gitignore"
+
+  # Local settings template (the real cog.local.yaml is never listed)
+  "cog.local.yaml.example"
+)
+
+# Local settings file (ignored by Git, never in FRAMEWORK_FILES). Its vault_path
+# key moves the numbered note folders outside the repository.
+LOCAL_CONFIG="cog.local.yaml"
+
+# Files the framework ships into the vault (People CRM). With the vault in the
+# repository they update like framework files. With an external vault they are
+# only copied there when missing, so user edits are never overwritten.
+VAULT_SEED_FILES=(
+  "05-knowledge/people/README.md"
+  "06-templates/people-profile-template.md"
 )
 
 # ── Helpers ──────────────────────────────────────────────────────────
@@ -251,6 +262,14 @@ info()  { echo -e "${CYAN}ℹ${RESET}  $*"; }
 ok()    { echo -e "${GREEN}✓${RESET}  $*"; }
 warn()  { echo -e "${YELLOW}⚠${RESET}  $*"; }
 err()   { echo -e "${RED}✗${RESET}  $*" >&2; }
+
+# Print one file from the upstream branch. Git Bash and MSYS2 on Windows rewrite
+# arguments that look like POSIX path lists, so "cog-upstream/main:.gitignore"
+# reached git as "cog-upstream\main;.gitignore" and every dot-path file looked
+# absent upstream. Disable that rewrite for this call only.
+upstream_show() {
+  MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*' git show "${REMOTE_NAME}/${BRANCH}:$1"
+}
 
 usage() {
   cat <<'EOF'
@@ -274,6 +293,8 @@ How it works:
   4. Warns if your working tree is already dirty before replacing framework files
   5. Runs the packaging validator after updates when available
   6. Your content folders (00-inbox, 01-daily, etc.) are NEVER modified
+  7. With vault_path set in cog.local.yaml, People CRM templates are copied
+     into that vault only when missing there
 
 Safe to run anytime — your notes, profiles, and braindumps are never touched.
 EOF
@@ -299,19 +320,19 @@ local_version() {
 }
 
 upstream_version() {
-  git show "${REMOTE_NAME}/${BRANCH}:${VERSION_FILE}" 2>/dev/null | tr -d '[:space:]' || echo "unknown"
+  upstream_show "${VERSION_FILE}" 2>/dev/null | tr -d '[:space:]' || echo "unknown"
 }
 
 # ── Diff a single file ──────────────────────────────────────────────
 file_has_changes() {
   local file="$1"
   # File exists upstream?
-  if ! git show "${REMOTE_NAME}/${BRANCH}:${file}" &>/dev/null; then
+  if ! upstream_show "${file}" &>/dev/null; then
     return 1  # no upstream version
   fi
   # File differs from upstream?
   if [[ -f "$file" ]]; then
-    ! diff -q <(git show "${REMOTE_NAME}/${BRANCH}:${file}" 2>/dev/null) "$file" &>/dev/null
+    ! diff -q <(upstream_show "${file}" 2>/dev/null) "$file" &>/dev/null
   else
     return 0  # file missing locally → counts as changed
   fi
@@ -323,7 +344,7 @@ update_file() {
   local dir
   dir=$(dirname "$file")
   [[ "$dir" != "." ]] && mkdir -p "$dir"
-  git show "${REMOTE_NAME}/${BRANCH}:${file}" > "$file" 2>/dev/null
+  upstream_show "${file}" > "$file" 2>/dev/null
 }
 
 # ── Backup a file before overwriting ─────────────────────────────────
@@ -334,6 +355,31 @@ backup_file() {
     cp "$file" "$backup"
     echo "$backup"
   fi
+}
+
+# Print vault_path from cog.local.yaml, or "." when unset (vault = repository).
+vault_root() {
+  local line value
+  if [[ ! -f "$LOCAL_CONFIG" ]]; then
+    echo "."
+    return
+  fi
+  line=$(grep -E '^[[:space:]]*vault_path[[:space:]]*:' "$LOCAL_CONFIG" | head -n 1 | tr -d '\r') || true
+  value="${line#*:}"
+  value="${value#"${value%%[![:space:]]*}"}"
+  case "$value" in
+    \"*) value="${value#\"}"; value="${value%%\"*}" ;;
+    \'*) value="${value#\'}"; value="${value%%\'*}" ;;
+    *)   value="${value%%[[:space:]]#*}"; value="${value%"${value##*[![:space:]]}"}" ;;
+  esac
+  echo "${value:-.}"
+}
+
+# Copy one vault seed file from upstream into the external vault.
+seed_vault_file() {
+  local vault="$1" file="$2"
+  mkdir -p "$(dirname "${vault}/${file}")"
+  upstream_show "${file}" > "${vault}/${file}" 2>/dev/null
 }
 
 worktree_is_dirty() {
@@ -422,10 +468,30 @@ main() {
     exit 1
   fi
 
+  # With the vault in the repository, seed files update like framework files.
+  # With an external vault, they are only copied there when missing.
+  local vault files=("${FRAMEWORK_FILES[@]}") seeds=()
+  vault=$(vault_root)
+  if [[ "$vault" == "." ]]; then
+    files+=("${VAULT_SEED_FILES[@]}")
+  else
+    info "Vault: ${BOLD}${vault}${RESET} (from ${LOCAL_CONFIG})"
+    if [[ ! -d "$vault" ]]; then
+      warn "Vault folder not found; People CRM templates will not be copied into it"
+    else
+      for file in "${VAULT_SEED_FILES[@]}"; do
+        if [[ ! -f "${vault}/${file}" ]] && upstream_show "${file}" &>/dev/null; then
+          seeds+=("$file")
+        fi
+      done
+    fi
+    echo ""
+  fi
+
   # Collect changed files
   local changed=()
   local new_files=()
-  for file in "${FRAMEWORK_FILES[@]}"; do
+  for file in "${files[@]}"; do
     if file_has_changes "$file"; then
       if [[ -f "$file" ]]; then
         changed+=("$file")
@@ -437,13 +503,28 @@ main() {
 
   local total=$(( ${#changed[@]} + ${#new_files[@]} ))
 
-  if [[ $total -eq 0 ]]; then
+  if [[ $total -eq 0 && ${#seeds[@]} -eq 0 ]]; then
     ok "Everything is up to date! (v${lv})"
     exit 0
   fi
 
   info "${BOLD}${#changed[@]}${RESET} file(s) changed, ${BOLD}${#new_files[@]}${RESET} new file(s) available"
+  [[ ${#seeds[@]} -gt 0 ]] && info "${BOLD}${#seeds[@]}${RESET} People CRM template(s) missing from the vault"
   echo ""
+
+  # Seed files are only ever created, never overwritten, so every
+  # writing mode copies them without a prompt.
+  if [[ ${#seeds[@]} -gt 0 && "$mode" != "check" && "$mode" != "dry-run" ]]; then
+    for f in "${seeds[@]}"; do
+      seed_vault_file "$vault" "$f"
+      ok "Copied into vault: ${vault}/${f}"
+    done
+    echo ""
+    if [[ $total -eq 0 ]]; then
+      ok "Framework files are up to date! (v${lv})"
+      exit 0
+    fi
+  fi
 
   # ── Check mode ───────────────────────────────────────────────────
   if [[ "$mode" == "check" ]]; then
@@ -454,6 +535,10 @@ main() {
     if [[ ${#new_files[@]} -gt 0 ]]; then
       echo -e "${BOLD}New:${RESET}"
       for f in "${new_files[@]}"; do echo "  + $f"; done
+    fi
+    if [[ ${#seeds[@]} -gt 0 ]]; then
+      echo -e "${BOLD}Missing from vault:${RESET}"
+      for f in "${seeds[@]}"; do echo "  + ${vault}/${f}"; done
     fi
     echo ""
     info "Run ${BOLD}./cog-update.sh${RESET} to update, or ${BOLD}./cog-update.sh --dry-run${RESET} to preview."
@@ -472,6 +557,10 @@ main() {
       echo "Would create:"
       for f in "${new_files[@]}"; do echo "  + $f"; done
     fi
+    if [[ ${#seeds[@]} -gt 0 ]]; then
+      echo "Would copy into vault:"
+      for f in "${seeds[@]}"; do echo "  + ${vault}/${f}"; done
+    fi
     echo ""
     info "Run ${BOLD}./cog-update.sh --force${RESET} to apply all, or ${BOLD}./cog-update.sh${RESET} for interactive mode."
     exit 0
@@ -486,7 +575,7 @@ main() {
       fi
       update_file "$f"
       ok "Updated: $f"
-      ((updated++))
+      updated=$((updated + 1))
     done
     echo ""
     ok "Updated ${updated} file(s) to v${uv}"
@@ -508,10 +597,10 @@ main() {
       if [[ -z "$answer" || "$answer" =~ ^[Yy] ]]; then
         update_file "$f"
         ok "Added: $f"
-        ((updated++))
+        updated=$((updated + 1))
       else
         warn "Skipped: $f"
-        ((skipped++))
+        skipped=$((skipped + 1))
       fi
     done
     echo ""
@@ -525,22 +614,22 @@ main() {
       read -r answer
       case "$answer" in
         d|D|diff)
-          diff --color=auto <(cat "$f") <(git show "${REMOTE_NAME}/${BRANCH}:${f}") || true
+          diff --color=auto <(cat "$f") <(upstream_show "${f}") || true
           echo -ne "  Update this file? [Y/n/b] "
           read -r answer2
           if [[ -z "$answer2" || "$answer2" =~ ^[Yy] ]]; then
             update_file "$f"
             ok "Updated: $f"
-            ((updated++))
+            updated=$((updated + 1))
           elif [[ "$answer2" =~ ^[Bb] ]]; then
             local bk
             bk=$(backup_file "$f")
             update_file "$f"
             ok "Updated: $f (backup: $bk)"
-            ((updated++))
+            updated=$((updated + 1))
           else
             warn "Skipped: $f"
-            ((skipped++))
+            skipped=$((skipped + 1))
           fi
           ;;
         b|B)
@@ -548,16 +637,16 @@ main() {
           bk=$(backup_file "$f")
           update_file "$f"
           ok "Updated: $f (backup: $bk)"
-          ((updated++))
+          updated=$((updated + 1))
           ;;
         n|N)
           warn "Skipped: $f"
-          ((skipped++))
+          skipped=$((skipped + 1))
           ;;
         *)
           update_file "$f"
           ok "Updated: $f"
-          ((updated++))
+          updated=$((updated + 1))
           ;;
       esac
     done

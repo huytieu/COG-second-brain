@@ -29,6 +29,14 @@ Key rules:
 
 ## Process Flow
 
+### 0. Resolve the Vault Location
+
+The notes can live outside the repository (see `CLAUDE.md` § Vault Location). Settle the location before any vault read or write:
+
+1. If `cog.local.yaml` exists at the repository root, use its `vault_path`. Do not ask.
+2. Else, if `00-inbox/MY-PROFILE.md` exists in the repository, the user already keeps the vault in the repository. Do not ask. In update mode, offer the move only if the user brings it up.
+3. Else (new user), add the vault question to the welcome message in Step 1.
+
 ### 1. Welcome Message
 Greet the user warmly and explain what COG is:
 ```
@@ -37,9 +45,33 @@ Welcome to COG - your self-evolving second brain powered by Claude + Obsidian + 
 COG helps you capture thoughts, get daily intelligence briefings, and build knowledge over time - all stored as simple markdown files you own.
 
 Let's get you set up. Tell me a bit about yourself - your name, what you do, and what topics or areas you're most interested in staying sharp on. Feel free to share as much or as little as you'd like.
+
+Your notes go in this folder by default. If you want them somewhere else (for example `D:\Second Brain\vault` or `~/Documents/vault`), tell me the path.
 ```
 
-**This single open-ended prompt replaces the old sequential questions.** The user can naturally mention their name, role, interests, sources, projects, and competitors all at once - or just share a few things.
+Show the last paragraph only in case 3 of Step 0.
+
+**This single open-ended prompt replaces the old sequential questions.** The user can naturally mention their name, role, interests, sources, projects, competitors, and vault path all at once - or just share a few things.
+
+### 1.5. Set Up an External Vault (only if the user gave a path)
+
+Do this before Step 2. Skip it if the user gave no path or gave the repository folder.
+
+1. Normalize the path to an absolute path with forward slashes. Keep spaces.
+2. Write `cog.local.yaml` at the repository root:
+   ```yaml
+   # Local COG settings. Ignored by Git; never overwritten by cog-update.sh.
+   vault_path: "D:/Second Brain/vault"
+   ```
+3. Grant the agent access to the folder:
+   - **Claude Code:** add the path to `permissions.additionalDirectories` in `.claude/settings.local.json`. Merge with existing content; never replace the file. Tell the user to run `/add-dir "<path>"` if writes to the vault are blocked in the current session.
+   - **Codex:** tell the user to start Codex with `codex --add-dir "<path>"`, or to add the path to `writable_roots` under `[sandbox_workspace_write]` in `~/.codex/config.toml`.
+   - **Gemini CLI:** tell the user to start Gemini with `--include-directories "<path>"`.
+4. Create the base folder tree from Step 7 under the path. Create the folder itself if it does not exist.
+5. Copy `05-knowledge/people/README.md` and `06-templates/people-profile-template.md` from the repository into the vault. Skip a file that already exists in the vault.
+6. Confirm in one line: "Your notes will live in `<path>`. Change it anytime in `cog.local.yaml`."
+
+If the folder cannot be created or written, say so, delete `cog.local.yaml`, and continue with the vault in the repository.
 
 ### 2. Check for Existing Profile
 
@@ -253,9 +285,16 @@ You've already completed onboarding! What would you like to update? Just tell me
 
 Then intelligently handle whatever they say - whether it's adding projects, changing interests, updating their role, etc.
 
+**Moving the vault.** If the user asks to keep the notes somewhere else:
+1. Run Step 1.5 with the new path.
+2. Copy every numbered folder (`00-inbox/` … `06-templates/`) from the old vault to the new one. Never overwrite a file that already exists at the destination; list conflicts instead.
+3. Compare file counts between the old and new folders and report them.
+4. Ask before deleting anything from the old location. Deleting is the user's decision.
+
 ## Success Criteria
 
 Onboarding is successful when:
+0. The vault location is settled: `cog.local.yaml` points to an existing, writable folder, or no file exists and the vault is the repository
 1. `MY-PROFILE.md` created in `00-inbox/` with `role_pack` in frontmatter
 2. `MY-INTERESTS.md` created in `00-inbox/`
 3. `MY-INTEGRATIONS.md` created in `00-inbox/` with active/disabled sections
@@ -283,7 +322,7 @@ Onboarding is successful when:
 
 ## Privacy & Data
 
-All configuration data is stored as markdown files in:
+All configuration data is stored as markdown files in the vault (`vault_path` in `cog.local.yaml`, or the repository root by default):
 - `00-inbox/MY-PROFILE.md` - Basic profile with role pack
 - `00-inbox/MY-INTERESTS.md` - Interest areas
 - `00-inbox/MY-INTEGRATIONS.md` - Active/disabled external service integrations

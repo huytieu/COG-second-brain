@@ -49,7 +49,12 @@ Thumbs.db
 # Backup files
 *.bak
 *~
-*.backup.* # created by cog-update.sh
+# cog-update.sh names backups <file>.backup-YYYYMMDD-HHMMSS
+*.backup.*
+*.backup-*
+
+# Local COG settings (vault_path); see cog.local.yaml.example
+cog.local.yaml
 
 # Submission and marketplace tracking (keep private)
 .github/SUBMISSION-CHECKLIST.md

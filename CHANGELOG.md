@@ -2,6 +2,24 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.16.0] - 2026-10-03
+
+### Added
+
+#### Notes can live outside the repository
+The numbered note folders (`00-inbox/` … `06-templates/`) can now live in any folder. The framework stays in the repository, so `git add -A` there no longer reaches the notes.
+
+- `cog.local.yaml` (ignored by Git, never overwritten by updates) holds `vault_path`. Without it, the vault is the repository root, as before. `cog.local.yaml.example` documents the key.
+- `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.cursorrules` and every Kiro power carry one path rule: vault paths resolve against `vault_path`; framework paths stay in the repository; a missing or unreadable vault stops the agent instead of falling back to the repository folders.
+- `/onboarding` asks where the notes should live on first run, writes `cog.local.yaml`, creates the folder tree, copies the People CRM templates, and grants Claude Code access through `permissions.additionalDirectories`. In update mode it can move an existing vault, asking before any delete.
+- `cog-update.sh` reads `vault_path`. With an external vault, the People CRM templates are copied into it only when missing, never overwritten.
+
+### Fixed
+
+- `.gitignore` now ignores `cog-update.sh` backups. The old rule `*.backup.* # created by cog-update.sh` matched nothing: Git does not allow trailing comments, and backups are named `<file>.backup-YYYYMMDD-HHMMSS`.
+- `cog-update.sh --force` and interactive mode stopped after the first updated file. Under `set -e`, `((updated++))` with a zero counter returns status 1 and ends the script. Counters now use `updated=$((updated + 1))`.
+- `cog-update.sh` on Windows (Git Bash, MSYS2) skipped every file whose path starts with a dot, including `.gitignore`, `.claude/skills/*` and `.kiro/*`. MSYS rewrote `cog-upstream/main:.gitignore` into `cog-upstream\main;.gitignore`, so those files looked absent upstream. Upstream reads now go through `upstream_show`, which disables that rewrite for the `git show` call only.
+
 ## [3.15.0] - 2026-10-02
 
 ### Added

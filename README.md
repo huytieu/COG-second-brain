@@ -250,6 +250,57 @@ COG-second-brain/
 └── 06-templates/            # Document templates
 ```
 
+### Choosing the Notes Folder
+
+By default the numbered folders (`00-inbox/` … `06-templates/`) live inside this repository. You can keep them in any other folder, for example an existing Obsidian vault. Skills, agents, and scripts stay in the repository; only the notes move.
+
+**Option 1: during onboarding.** Run `/onboarding`. On the first run it asks where your notes should live. Press Enter to keep them here, or type a path. Onboarding then writes `cog.local.yaml`, creates the folders at that path, and gives Claude Code access to it.
+
+**Option 2: by hand.** Copy `cog.local.yaml.example` to `cog.local.yaml` at the repository root and set the path:
+
+```yaml
+vault_path: "D:/Second Brain/vault"
+```
+
+- Use an absolute path in double quotes, with forward slashes (`/`) also on Windows. Spaces are fine.
+- `"."`, an empty value, or no `cog.local.yaml` at all means the notes stay in this repository.
+- Create the folder before you start the agent. If the folder is missing or unreadable, the agent stops and tells you instead of writing into the repository.
+- To change the location later, edit the line. Run `/onboarding` and ask to move the vault if your existing notes should go with it.
+
+**Give your agent access to the folder.** Agents only read and write inside folders you allow:
+
+| Agent | How |
+|-------|-----|
+| Claude Code | `permissions.additionalDirectories` in `.claude/settings.local.json` (onboarding adds it), or `/add-dir "<path>"` in a session |
+| Codex | `codex --add-dir "<path>"`, or `writable_roots` under `[sandbox_workspace_write]` in `~/.codex/config.toml` |
+| Gemini CLI | `gemini --include-directories "<path>"` |
+| Kiro / Cursor | Add the folder to the workspace |
+
+**Example: Codex.** Start Codex in the repository folder, not in the notes folder. Codex loads `AGENTS.md` only from the folder it starts in, and that file carries the `vault_path` rule. Then add the notes folder:
+
+```powershell
+cd D:\source\repos\COG-second-brain
+codex --add-dir "D:/Second Brain/vault"
+```
+
+To skip the flag on every run, set the folder once in `~/.codex/config.toml`:
+
+```toml
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[sandbox_workspace_write]
+writable_roots = ["D:/Second Brain/vault"]
+network_access = false
+```
+
+- `--add-dir` and `writable_roots` only grant write access in the `workspace-write` sandbox. In `read-only` mode Codex can read the notes but not save them.
+- Use the path as Codex sees it, in both `cog.local.yaml` and the Codex flag or config. Native Windows Codex uses `D:/Second Brain/vault`; Codex inside WSL uses `/mnt/d/Second Brain/vault`.
+- Check that your Codex version lists `--add-dir` in `codex --help`.
+- To test, run `/braindump test`. The file must appear under the notes folder, and `git status` in the repository must show nothing new.
+
+`cog.local.yaml` is ignored by Git and `cog-update.sh` never overwrites it. Notes in an external folder are outside this repository, so a `git add -A` here cannot commit them. For history of the notes, run `git init` in the notes folder. Details: [SETUP.md § Keep Your Notes in Another Folder](SETUP.md#keep-your-notes-in-another-folder).
+
 > **Real-world results:** 120+ braindumps processed, daily briefs with 95%+ source accuracy, 5 major strategic insights discovered — zero maintenance required.
 
 ## Keeping COG Updated

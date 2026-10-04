@@ -9,6 +9,10 @@ keywords: ["url dump", "save this link", "bookmark this", "save for later", "sav
 
 Transform raw URLs into structured, insightful knowledge entries through intelligent content extraction, categorization, and integration with the user's knowledge base.
 
+## Vault Location
+
+Vault paths (`00-inbox/` … `06-templates/`) resolve against `vault_path` in `cog.local.yaml` at the repository root. If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root. Use the absolute vault path in double quotes in shell commands. If the folder does not exist or you cannot access it, stop and tell the user.
+
 ## When This Power Activates
 
 - User shares a URL they want to save

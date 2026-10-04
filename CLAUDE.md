@@ -118,6 +118,25 @@ When the orchestrator dispatches multiple workers in parallel, pass each worker 
 
 ---
 
+## Vault Location (ALWAYS APPLY)
+
+The notes can live outside this repository. The location is set in `cog.local.yaml` at the repository root:
+
+```yaml
+vault_path: "D:/Second Brain/vault"
+```
+
+- Read `cog.local.yaml` once per session, before the first vault read or write.
+- Resolve every path that starts with `00-inbox/`, `01-daily/`, `02-personal/`, `03-professional/`, `04-projects/`, `05-knowledge/` or `06-templates/` against `vault_path`.
+- If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root.
+- Framework paths (`.claude/`, `skills/`, `scripts/`, `.kiro/`, `.gemini/`, `/tmp`) stay relative to the repository.
+- In shell commands, use the absolute vault path in double quotes. The path can contain spaces.
+- If `vault_path` points to a folder that does not exist or that you cannot access, stop and tell the user. Never fall back to the repository folders silently.
+
+`cog.local.yaml` is ignored by Git and is not in the `cog-update.sh` file list. `/onboarding` creates it.
+
+---
+
 ## Brain-First Knowledge Protocol (MUST APPLY)
 
 Before answering any question about people, projects, strategy, decisions, or historical context:
@@ -218,6 +237,8 @@ Role packs live in `.claude/roles/`. New roles can be added by dropping a file f
 
 ## Vault Structure
 
+The numbered folders below live under `vault_path` (see § Vault Location). The framework files live in this repository.
+
 ### User configuration files (`00-inbox/`)
 - `MY-PROFILE.md` — User info, role pack, agent mode, active projects
 - `MY-INTERESTS.md` — Topics for daily briefs
@@ -242,7 +263,7 @@ Role packs live in `.claude/roles/`. New roles can be added by dropping a file f
 - `timeline/` — Thinking evolution
 - `booklets/` — URL bookmarks by category
 
-### Content directories (never touched by updates)
+### Content directories (under `vault_path`, never touched by updates)
 - `00-inbox/` — Profiles, interests, integrations
 - `01-daily/` — Briefs and check-ins
 - `02-personal/` — Personal braindumps (private)

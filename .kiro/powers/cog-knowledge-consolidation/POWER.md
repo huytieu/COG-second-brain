@@ -9,6 +9,10 @@ keywords: ["consolidate knowledge", "build frameworks", "synthesize insights", "
 
 Transform scattered insights from braindumps, daily briefs, and check-ins into coherent frameworks and "single source of truth" knowledge documents through pattern recognition and systematic synthesis.
 
+## Vault Location
+
+Vault paths (`00-inbox/` … `06-templates/`) resolve against `vault_path` in `cog.local.yaml` at the repository root. If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root. Use the absolute vault path in double quotes in shell commands. If the folder does not exist or you cannot access it, stop and tell the user.
+
 ## When This Power Activates
 
 - User wants to consolidate their insights

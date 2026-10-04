@@ -1,6 +1,6 @@
 {
   "name": "cog-second-brain",
-  "version": "3.15.0",
+  "version": "3.16.0",
   "description": "Self-evolving second brain with 36 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
@@ -303,6 +303,7 @@
       ".gemini/commands": "7 Gemini CLI commands (core workflows)",
       ".gemini/skills": "Detailed Gemini command playbooks",
       "AGENTS.md": "Universal command surface for Codex and other agents",
+      "cog.local.yaml": "Local, Git-ignored settings; vault_path moves the numbered note folders outside the repository",
       "00-inbox": "Temporary processing area with profile and interests files",
       "01-daily": "Daily briefs and check-ins",
       "02-personal": "Personal domain (strict privacy)",

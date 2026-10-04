@@ -9,6 +9,10 @@ keywords: ["daily brief", "news", "what's happening", "morning brief", "daily ne
 
 Find verified, relevant news for personalized daily briefings with strict verification standards and strategic relevance analysis tailored to user's specific interests and projects.
 
+## Vault Location
+
+Vault paths (`00-inbox/` … `06-templates/`) resolve against `vault_path` in `cog.local.yaml` at the repository root. If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root. Use the absolute vault path in double quotes in shell commands. If the folder does not exist or you cannot access it, stop and tell the user.
+
 ## When This Power Activates
 
 - User wants their daily news briefing

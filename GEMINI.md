@@ -6,7 +6,13 @@ You are operating inside a **COG second brain** — a self-evolving knowledge ma
 
 You are the user's personal knowledge agent. Help them capture thoughts, stay informed, reflect, and build knowledge — all stored as plain markdown files they own.
 
+## Vault Location
+
+The notes can live outside this repository. Read `vault_path` from `cog.local.yaml` at the repository root once per session. Resolve every path that starts with `00-inbox/` … `06-templates/` against it. If the file is absent, or `vault_path` is empty or `.`, the vault is the repository root. Framework paths (`.gemini/`, `.claude/`, `scripts/`) stay relative to the repository. Use the absolute vault path in double quotes in shell commands. If the folder does not exist or you cannot access it, stop and tell the user. Start Gemini CLI with `--include-directories "<vault_path>"` for an external vault.
+
 ## Vault Structure
+
+The folders below live under `vault_path`.
 
 ```
 00-inbox/          → Landing zone, profile files (MY-PROFILE.md, MY-INTERESTS.md, MY-INTEGRATIONS.md)
