@@ -13,7 +13,7 @@ This document outlines the migration plan to create a generic, company-agnostic 
 ## What's Being Removed/Generalized
 
 ### Personal/Company Information
-- ❌ Scout AI, Katalon, specific company/product names
+- ❌ Specific company or product names
 - ❌ Ghostship, Mabl, specific competitor names
 - ❌ Personal names (Huy, Tom, Thanh, Sarah, Duke, etc.)
 - ❌ Specific URLs, account details, API keys

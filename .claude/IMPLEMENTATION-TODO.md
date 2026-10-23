@@ -115,7 +115,7 @@ REPLACE: [project-name]
 FIND: Scout
 REPLACE: [Your Project]
 
-FIND: Katalon, Ghostship, Mabl (any company names)
+FIND: any company or product names
 REPLACE: [Company], [Competitor A], [Competitor B]
 ```
 
@@ -132,7 +132,7 @@ REPLACE: [Company], [Competitor A], [Competitor B]
 **Changes to Make:**
 - [ ] Keep domain framework exactly as-is (universal)
 - [ ] Replace Scout AI example with generic project example
-- [ ] Remove Katalon, Scout-specific keywords from project detection
+- [ ] Remove company-specific keywords from project detection
 - [ ] Update examples to use generic project names
 - [ ] Keep all confidence triggers and scoring logic
 - [ ] Keep privacy protection rules
@@ -164,7 +164,7 @@ REPLACE: [project-name]/
 - [ ] Keep processing framework (universal)
 - [ ] Remove Scout competitor detection examples
 - [ ] Make competitive intelligence detection generic with user-configurable keywords
-- [ ] Replace Scout/Katalon references with placeholders
+- [ ] Replace company-specific references with placeholders
 - [ ] Keep theme extraction methodology
 - [ ] Keep action item identification
 - [ ] Keep emotional context detection
