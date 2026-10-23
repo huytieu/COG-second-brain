@@ -30,6 +30,7 @@ def _open(p):
     pg.goto(URL)
     pg.wait_for_function("window.ENGINE_READY === true")
     pg.evaluate("document.fonts.ready")
+    pg.evaluate("Promise.all([...document.images].map(i => i.decode().catch(() => null)))")
     return b, pg
 
 

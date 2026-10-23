@@ -28,7 +28,7 @@ Copy `references/session-review-template.md`. Save the working copy in the relev
 **Cockpit (top):**
 1. **Status line** — one line: how many items await review + last-updated timestamp.
 2. **🧭 Progress** — a checklist, one row per item, each with a status glyph; a text progress bar + "X/N done · A awaiting review · B pending". **Make each item a clickable anchor to its review card** — `[N. Title](#n-title)` using GitHub-slug rules (lowercase, spaces→`-`, drop punctuation/emoji). Keep item headings free of `+ # ← → ( )` so slugs stay clean single-hyphen and the links resolve in Obsidian + the Claude side panel.
-3. **📁 Working folder** — table of every artifact produced this session with its `~/vault/...` path or link (meeting note, this doc, evidence dir, external issues/PRs, posted messages).
+3. **📁 Working folder** — table of every artifact produced this session with its vault path or link (meeting note, this doc, evidence dir, external issues/PRs, posted messages).
 4. **🔌 Context** — sources the work is grounded in (recordings, Slack threads, issues), tools/connectors used, related tickets.
 
 **Review items (below):** one card per item:

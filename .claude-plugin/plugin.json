@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
-  "version": "3.15.0",
-  "description": "Self-evolving second brain with 36 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
+  "version": "3.16.0",
+  "description": "Self-evolving second brain with 43 AI agent skills, 10 agents, and people CRM. Closed-loop harness release: a V-model verification lifecycle (spec to evidence, criterion-traced checkpoints), read-only verifier agents that observe artifacts instead of trusting worker summaries, risk lanes, multi-session ultragoals with a north-star acceptance gate, plus craft skills for writing, visual work, and a paired anti-slop design system for marketing and product UI. Inspired by Garry Tan's gstack specialist sessions, gbrain knowledge patterns, and dwarves-kit closed-loop execution. Works with Claude Code, Antigravity, Cursor, Kiro, Gemini CLI, Codex, and any markdown-reading agent.",
   "author": {
     "name": "Huy Tieu",
     "url": "https://github.com/huytieu"
@@ -255,6 +255,41 @@
       "name": "release-video",
       "path": ".claude/skills/release-video/SKILL.md",
       "description": "Turn a product release into a motion recap video and explained per-feature demos: deterministic HTML scenes, sound effects tied to motion, music composed to the timeline"
+    },
+    {
+      "name": "blog-publish",
+      "path": ".claude/skills/blog-publish/SKILL.md",
+      "description": "Write and publish a post to your own static blog: TL;DR, ASCII art, markdown twin for agents, deploy, and social distribution"
+    },
+    {
+      "name": "feature-doc",
+      "path": ".claude/skills/feature-doc/SKILL.md",
+      "description": "Document a shipped feature from the live app: real screenshots and a screen recording, a docs article with how-to and use cases, verified before publish"
+    },
+    {
+      "name": "release-comms",
+      "path": ".claude/skills/release-comms/SKILL.md",
+      "description": "Turn a deployment runsheet and a GitHub milestone into a customer release note with real media, docs updates, and a Slack announcement draft"
+    },
+    {
+      "name": "social-media-kit",
+      "path": ".claude/skills/social-media-kit/SKILL.md",
+      "description": "Attach native media (teaser video, GIF, card images) to every social post, with per-platform upload steps"
+    },
+    {
+      "name": "terminal-replica",
+      "path": ".claude/skills/terminal-replica/SKILL.md",
+      "description": "Reproduce your real terminal and CLI agents (Claude Code, Codex, Gemini CLI) faithfully in graphics and video frames"
+    },
+    {
+      "name": "vector-cover",
+      "path": ".claude/skills/vector-cover/SKILL.md",
+      "description": "Flat vector editorial cover illustrations in HTML and SVG, rendered to a 2400x960 PNG with headless Chrome"
+    },
+    {
+      "name": "youtube-video-kit",
+      "path": ".claude/skills/youtube-video-kit/SKILL.md",
+      "description": "YouTube packaging: thumbnail, animated opening title, ElevenLabs music bed, and the upload metadata bundle"
     }
   ],
   "metadata": {

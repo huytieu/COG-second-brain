@@ -1,7 +1,7 @@
 {
   "name": "cog-second-brain",
   "displayName": "COG: Agentic Second Brain",
-  "version": "3.12.0",
+  "version": "3.16.0",
   "description": "Self-evolving second brain powered by AI agents, Obsidian markdown, and Git. 33 skills, 10 agents (6 workers + 4 read-only verifiers), people CRM with tiered enrichment. Closed-loop harness release: V-model verification lifecycle with criterion-traced evidence, risk lanes, multi-session ultragoals with a north-star acceptance gate, craft skills for writing and visuals, and paired anti-slop design skills for marketing and product UI. Works with Claude Code, Cursor, Kiro, Gemini CLI, and Codex.",
   "author": {
     "name": "Huy Tieu",
@@ -205,6 +205,56 @@
       "name": "product-ui-taste",
       "path": ".claude/skills/product-ui-taste/SKILL.md",
       "description": "Anti-slop skill for dense product surfaces (dashboards, tables, forms, wizards, admin consoles) - frame-first, correct at every edge case real data produces"
+    },
+    {
+      "name": "blog-publish",
+      "path": ".claude/skills/blog-publish/SKILL.md",
+      "description": "Write and publish a post to your own static blog: TL;DR, ASCII art, markdown twin for agents, deploy, and social distribution"
+    },
+    {
+      "name": "feature-doc",
+      "path": ".claude/skills/feature-doc/SKILL.md",
+      "description": "Document a shipped feature from the live app: real screenshots and a screen recording, a docs article with how-to and use cases, verified before publish"
+    },
+    {
+      "name": "release-comms",
+      "path": ".claude/skills/release-comms/SKILL.md",
+      "description": "Turn a deployment runsheet and a GitHub milestone into a customer release note with real media, docs updates, and a Slack announcement draft"
+    },
+    {
+      "name": "release-video",
+      "path": ".claude/skills/release-video/SKILL.md",
+      "description": "Turn a product release (the list of shipped items plus real screen recordings) into a motion recap video and one explained demo per feature, with sound effects tied to on-screen motion and a composed music bed. Deterministic HTML scenes rendered frame by frame, ElevenLabs for sound effects and music, ffmpeg for the mix. Use when asked for a release video, a changelog video, a feature recap reel, or demo clips for release notes and docs."
+    },
+    {
+      "name": "slop-gate",
+      "path": ".claude/skills/slop-gate/SKILL.md",
+      "description": "Deterministic pre-publish scan that refuses AI-slop tells in anything about to be written, published, or sent: files, artifacts, slide titles, table headers, diagram labels, chat messages, commit messages. Use before publishing or sending any deliverable, in CI, or wired as a Claude Code hook so the check runs without being remembered. The editorial counterpart is no-ai-slop, which rewrites; this one blocks."
+    },
+    {
+      "name": "social-media-kit",
+      "path": ".claude/skills/social-media-kit/SKILL.md",
+      "description": "Attach native media (teaser video, GIF, card images) to every social post, with per-platform upload steps"
+    },
+    {
+      "name": "terminal-replica",
+      "path": ".claude/skills/terminal-replica/SKILL.md",
+      "description": "Reproduce your real terminal and CLI agents (Claude Code, Codex, Gemini CLI) faithfully in graphics and video frames"
+    },
+    {
+      "name": "vector-cover",
+      "path": ".claude/skills/vector-cover/SKILL.md",
+      "description": "Flat vector editorial cover illustrations in HTML and SVG, rendered to a 2400x960 PNG with headless Chrome"
+    },
+    {
+      "name": "voice-baseline",
+      "path": ".claude/skills/voice-baseline/SKILL.md",
+      "description": "Measure your own writing corpus for the words and sentence shapes you over-use, so an agent writing in your voice stops amplifying your tics into a style. Produces a counted baseline file and checks any new draft against it. Use when an agent's drafts start sounding like a caricature of you, before publishing anything written in your voice, or every ten new pieces to re-measure."
+    },
+    {
+      "name": "youtube-video-kit",
+      "path": ".claude/skills/youtube-video-kit/SKILL.md",
+      "description": "YouTube packaging: thumbnail, animated opening title, ElevenLabs music bed, and the upload metadata bundle"
     }
   ],
   "agents": [

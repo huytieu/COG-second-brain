@@ -30,7 +30,7 @@ If the goal is unclear, ask what the reader should think, feel, or do after read
 - **Keep the user's meaning.** Don't invent claims, examples, stats, or opinions. If something is unclear, ask.
 - **Open it up, don't dumb it down.** Keep the substance, nuance, and precision. Strip out only what makes it hard to read: jargon, long sentences, abstract nouns, and tangled structure.
 - **Use active voice.** "The team shipped it Tuesday" beats "the decision emerged." Never let inanimate things do human verbs.
-- **Make every sentence earn its place.** Cut empty qualifiers and throat-clearing. Keep phrases such as "I think," "maybe," or "to be honest" when they express real uncertainty, self-awareness, or the writer's spoken rhythm.
+- **Make every sentence earn its place.** Cut empty qualifiers and throat-clearing. Keep phrases such as "I think" or "maybe" when they express real uncertainty, self-awareness, or the writer's spoken rhythm. Honesty framing is the exception: cut it (see Patterns to cut).
 - **Untangle sentences without flattening the cadence.** Split sentences and paragraphs when they are genuinely hard to follow. Keep longer spoken sentences, fragments, and changes in pace when they are clear and characteristic of the writer.
 - **Be concrete and specific.** Abstraction is where writing goes to die. "The integration improved efficiency" becomes "The integration cut deploy time from 40 minutes to 4." Names, numbers, dates, mechanisms, and examples beat abstractions.
 - **Protect the specific fact.** Don't smooth a useful detail into generic importance. "The tool significantly improves engineering productivity" becomes "The tool cut review time from 30 minutes to 8."
@@ -81,7 +81,9 @@ Often-empty phrases: it's worth noting, it's important to note, at the end of th
 
 **Binary contrasts.** "This is not X. It's Y." / "The question isn't X, it's Y." / "It's not just X but Y." State Y directly. "The question isn't the model. It's the eval." becomes "The eval matters more than the model."
 
-**Throat-clearing openers.** "Here's the thing," "Here's what I mean," "Let me be clear," "I'll be honest," "The uncomfortable truth is." Cut them and state the point.
+**Throat-clearing openers.** "Here's the thing," "Here's what I mean," "Let me be clear," "The uncomfortable truth is." Cut them and state the point.
+
+**Honesty framing.** "The honest part:", "The honest reason is," "the honest truth," "if I'm being honest," "I'll be honest," "to be honest," "honestly." Never use these in anything outward-facing. Announcing candour implies the rest of the piece was managed, and the sentence reads the same without it. Say the thing plainly: "The honest part: I did not get to delete anything" becomes "I did not get to delete anything."
 
 **Faux-insight setups.** "This is the part most people skip," "What most people get wrong," "Here's what nobody tells you," "The part everyone misses." These flatter the writer as the lone expert. Cut the setup and make the claim stand on its own. "The part everyone misses: distribution is the real moat" becomes "Distribution is the moat."
 
@@ -111,7 +113,7 @@ Often-empty phrases: it's worth noting, it's important to note, at the end of th
 
 **Formatting slop.** Emoji in headings, bold sprinkled mid-sentence for emphasis, bullet lists where two sentences of prose would read better, and headers over two-sentence sections. Format should follow the content, not decorate it.
 
-**Em dashes.** Do not use them as a default rhythm crutch. In short copy, use none. In longer drafts, 1-2 are fine if they clearly beat commas, periods, or parentheses. Remove clusters and decorative dashes.
+**Em dashes.** None, in any length (house rule). When editing a human draft that has them, replace each with a period, comma, or colon, and do not swap in a semicolon or parenthesis by reflex (see Model-era tells).
 
 ## Scope: every medium, not only prose
 

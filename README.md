@@ -11,7 +11,7 @@
 ```mermaid
 graph LR
     A[You] -- natural language --> B[AI Agent]
-    B -- runs --> C[33 Skills]
+    B -- runs --> C[43 Skills]
     C -- delegates to --> W[6 Workers]
     C -- verified by --> V[4 Read-Only Verifiers]
     C -- reads & writes --> D[.md Files]
@@ -56,8 +56,8 @@ COG ships a **full Claude Code surface**, a **full Antigravity surface**, plus *
 | Surface | Current support | Notes |
 |---|---|---|
 | Claude Code | 33 native skills + 10 agents (6 workers + 4 verifiers) | Full first-class surface |
-| Antigravity | 33 skills + 10 agents (pointer-stub format) | Full surface — thin stubs in `.agents/` delegate to the `.claude/` playbooks, which stay authoritative |
-| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + `skills/` (33 skills) | Spec 1.0.0 conformant; any standard-aware client loads COG as a plugin |
+| Antigravity | 43 skills + 10 agents (pointer-stub format) | Full surface — thin stubs in `.agents/` delegate to the `.claude/` playbooks, which stay authoritative |
+| [Agent Plugins](https://agent-plugins.org) standard | Root `plugin.json` + `skills/` (43 skills) | Spec 1.0.0 conformant; any standard-aware client loads COG as a plugin |
 | Cursor | Plugin manifest + rules | `.cursor-plugin/plugin.json` + `.cursorrules` |
 | Kiro | 7 native powers | Core workflows today |
 | Gemini CLI | 7 native commands | Core workflows today |
@@ -98,6 +98,8 @@ Before publishing or updating framework files, run `./scripts/validate-agent-sur
 | **export-open-issues** | Audit and export open issues from any tracker into a structured vault summary | "Export open issues" |
 | **publish-to-confluence** | Publish any vault markdown file to Confluence | "Publish this to Confluence" |
 | **update-knowledge-base** | Maintain product knowledge base from releases, features, and project changes | "Update the knowledge base with v2.1 changes" |
+| **release-comms** | Turn a runsheet and a milestone into a release note with real media, docs updates, and a Slack draft | "Cover today's release" |
+| **feature-doc** | Drive the live app, capture screenshots and a recording, and write the docs article | "Write the doc for issue #123" |
 
 > **PM Workflow:** These skills form a complete product management lifecycle: **Research** (`/auto-research`) → **PRD** (`/generate-prd`) → **Stories** (`/create-user-story`) → Development → **Release Notes** (`/generate-release-notes`) → **Knowledge Base** (`/update-knowledge-base`). Use `/export-open-issues` for audits and `/publish-to-confluence` to share externally.
 
@@ -112,6 +114,9 @@ Before publishing or updating framework files, run `./scripts/validate-agent-sur
 | Skill | What it does | Try saying... |
 |---|---|---|
 | **content-factory** | Autonomous content pipeline — scout announcements, triage by trend momentum + your unique angle, publish with ledger dedup, hard volume caps, and screenshot-verified posting | "Run the content factory" |
+| **blog-publish** | Write and publish a post to your own blog, with a markdown twin and social distribution | "Publish this to my blog" |
+| **social-media-kit** | Teaser video, GIF, and card images for every social post | "Make the social kit for this post" |
+| **youtube-video-kit** | Thumbnail, opening title, music bed, and upload metadata | "Make a thumbnail and intro for this video" |
 
 ### Verification Harness
 
@@ -133,6 +138,8 @@ Opt-in. Ask for one of these and work walks a **V**: decompose left into falsifi
 | **slop-gate** | Refuse slop tells in anything about to be written, published, or sent; runs in CI or as a hook | "Scan this before I publish" |
 | **voice-baseline** | Measure the words and shapes you over-use so an agent stops amplifying your tics | "Why do my drafts all sound the same?" |
 | **release-video** | Turn a release into a motion recap and explained per-feature demos, with sound tied to motion | "Make a video for this release" |
+| **terminal-replica** | Draw your real terminal and CLI agents in graphics and video frames | "Draw a Claude Code terminal for this post" |
+| **vector-cover** | Flat vector cover illustrations rendered to PNG | "Make a cover image for this article" |
 | **editorial-illustrations** | Claim → geometry: derive the *right* figure from what the text argues, render it as self-contained theme-aware HTML/SVG | "Make a diagram for this argument" |
 | **data-forms** | 20+ chart and diagram forms with when-to-use, failure modes, and the encoding discipline that makes any of them readable | "The bar chart is burying the point" |
 | **museum-art** | Real public-domain artwork from museum open-access APIs instead of AI-generated or stock imagery | "Find a hero image for this post" |

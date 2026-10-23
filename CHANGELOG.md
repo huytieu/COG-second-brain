@@ -2,6 +2,34 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.16.0] - 2026-10-23
+
+### Added
+
+#### PM release and content skills
+Seven skills that cover what happens after code ships: the release note, the docs article, the demo media, and the posts that announce it. Each one came from a real release cycle and was generalized; product names, channels, repos, and brand values now come from config.
+
+- `release-comms` turns a deployment runsheet and a GitHub milestone into a customer release note with real screenshots and videos from the issues and PRs, docs updates (including older articles the release makes stale), and a Slack announcement draft. Nothing posts without your approval.
+- `feature-doc` drives the live app, captures screenshots and a screen recording, and writes a docs article with how-to steps and use cases. A read-only verifier checks it against acceptance criteria before it is done.
+- `blog-publish` runs a post from draft to live: bulleted TL;DR, embedded links, ASCII art, a markdown twin for agents, your deploy command, a fetch of the live URL, then social distribution.
+- `social-media-kit` makes card images, a terminal banner, and a teaser video or GIF for every post, with upload steps per platform and a screenshot check of the live post.
+- `youtube-video-kit` renders a thumbnail and an animated opening title from your brand settings, composes a music bed with ElevenLabs, and writes the upload metadata.
+- `terminal-replica` captures your real terminal theme, font, prompt, and statusline before drawing any terminal in a graphic, so agent screenshots look like the real tool.
+- `vector-cover` renders flat vector cover illustrations from an HTML and SVG template to a 2400x960 PNG with headless Chrome.
+
+### Changed
+
+- `release-video` gains `plain_demo.py` for demos without a window frame and `human_input.py` for a visible cursor, typing, and corrections, so recorded demos read as a person using the product. `compose_demo.py`, `engine.js`, and `render.py` carry matching fixes.
+- `product-ui-taste` gains `references/house-ui-rules.md` (rules for status indicators, external objects rendered in their source's anatomy, controls that never wrap, no hidden overflow menus) and `references/semantic-zoom.md` (management views where zooming in shows richer detail per level).
+- `editorial-illustrations` gains a blog figure kit (`assets/blog-figure-kit.html`, `references/blog-figure-kit.md`).
+- `no-ai-slop` syncs its eval and source notes with the maintainer's copy.
+
+### Fixed
+
+- `cog-update.sh` now registers files that had never shipped to installed users: `editorial-illustrations/assets/gallery.html` and the `no-ai-slop` `LICENSE`, `SOURCE.md`, and `eval.md`.
+- `.cursor-plugin/plugin.json` was three releases behind (3.12.0, 33 skills); it now lists all 43 skills.
+- Skill count in README, CLAUDE.md, and AGENT-SUPPORT.md updated from 33 to 43.
+
 ## [3.15.0] - 2026-10-02
 
 ### Added

@@ -25,7 +25,7 @@ Inspired by Karpathy's autoresearch — but for strategic thinking instead of ML
 
 ## Input
 The user provides a strategic question or topic as the command argument. Examples:
-- "If foundation models commoditize, what happens to LLM wrapper companies like Katalon/Scout?"
+- "If foundation models commoditize, what happens to LLM wrapper companies?"
 - "Future of the testing industry as AI capabilities expand"
 - "Should we build vs buy vs partner for our AI layer?"
 - "What are the strategic options for Scout if OpenAI launches a testing product?"
@@ -201,7 +201,7 @@ Consolidated, deduplicated list of all sources across threads.
 
 ## Example Decomposition
 
-**Question:** "If generic LLM models get better over time, what's the future for LLM wrapper companies like Katalon or Scout?"
+**Question:** "If generic LLM models get better over time, what's the future for LLM wrapper companies?"
 
 **Threads:**
 1. **Foundation model trajectory** — How fast are GPT/Claude/Gemini improving at code understanding, test generation, bug detection? What's the capability curve?

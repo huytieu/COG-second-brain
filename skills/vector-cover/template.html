@@ -1,0 +1,92 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:#141413}
+  /* Render at 1200x480 logical; use --force-device-scale-factor=2 for a 2400x960 png. */
+  svg{display:block}
+  /* Serif stack close to an editorial display face. Swap in a webfont via @font-face if you want an exact match. */
+  .eyebrow{font-family:"Charter","Iowan Old Style","Palatino Linotype",Georgia,serif;font-style:italic;font-weight:500}
+  .display{font-family:"Charter","Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:700}
+</style>
+
+<!-- ============================================================
+     TOKENS (default palette, swap to your own brand):
+       ink   #141413   background
+       ivory #FAF9F5   blob + primary text
+       clay  #D97757   accent (eyebrow, rule, "unknown" motifs)
+       grid  rgba(20,20,19,.09) faint lines inside the ivory blob
+     CANVAS: 1200 x 480 (2.5:1). Left ~40% = type. Right ~60% = blob + motif.
+     ============================================================ -->
+
+<svg width="1200" height="480" viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- background -->
+  <rect width="1200" height="480" fill="#141413"/>
+
+  <!-- decorative motifs scattered on the dark field (keep sparse: 3-5 max) -->
+  <g fill="none" stroke-linecap="round">
+    <circle cx="330" cy="118" r="17" stroke="rgba(250,249,245,.14)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    <circle cx="300" cy="300" r="9"  stroke="rgba(250,249,245,.12)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    <text x="392" y="438" class="display" font-size="30" fill="rgba(250,249,245,.10)">?</text>
+  </g>
+
+  <!-- ============ ORGANIC BLOB (the signature shape) ============ -->
+  <defs>
+    <path id="blob" d="M 700 92
+      C 552 86 466 188 498 270
+      C 520 340 500 398 602 412
+      C 716 426 800 404 884 416
+      C 986 430 1074 414 1096 330
+      C 1112 262 1096 168 1010 118
+      C 924 80 812 82 700 92 Z"/>
+    <clipPath id="blobClip"><use href="#blob"/></clipPath>
+  </defs>
+  <use href="#blob" fill="#FAF9F5"/>
+
+  <!-- everything drawn on the cream is clipped to the blob -->
+  <g clip-path="url(#blobClip)">
+    <!-- faint grid -->
+    <g stroke="rgba(20,20,19,.09)" stroke-width="1">
+      <line x1="530" y1="60" x2="530" y2="440"/><line x1="600" y1="60" x2="600" y2="440"/>
+      <line x1="670" y1="60" x2="670" y2="440"/><line x1="740" y1="60" x2="740" y2="440"/>
+      <line x1="810" y1="60" x2="810" y2="440"/><line x1="880" y1="60" x2="880" y2="440"/>
+      <line x1="950" y1="60" x2="950" y2="440"/><line x1="1020" y1="60" x2="1020" y2="440"/>
+      <line x1="1090" y1="60" x2="1090" y2="440"/>
+      <line x1="470" y1="130" x2="1200" y2="130"/><line x1="470" y1="200" x2="1200" y2="200"/>
+      <line x1="470" y1="270" x2="1200" y2="270"/><line x1="470" y1="340" x2="1200" y2="340"/>
+    </g>
+    <!-- faint warm undercurves near the base -->
+    <g fill="none" stroke="#E7D9C4" stroke-width="1.5" opacity=".7">
+      <path d="M 500 410 C 640 356 820 356 1160 392"/>
+      <path d="M 500 442 C 660 392 860 396 1160 428"/>
+    </g>
+  </g>
+
+  <!-- ============ CONCEPT MOTIF: known path -> unknown ============ -->
+  <!-- solid rise (the mapped, known work) -->
+  <path d="M 560 382 C 656 356 730 332 806 306 C 892 276 958 244 1010 214"
+        fill="none" stroke="#141413" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- dashed continuation leaving the blob (the unknown) -->
+  <path d="M 1010 214 C 1070 190 1116 176 1158 158"
+        fill="none" stroke="#141413" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="2 8" opacity=".85"/>
+
+  <!-- nodes -->
+  <circle cx="560"  cy="382" r="6"  fill="#141413"/>                                   <!-- start (filled) -->
+  <circle cx="806"  cy="306" r="8"  fill="#FAF9F5" stroke="#141413" stroke-width="2.4"/><!-- mid (hollow) -->
+  <circle cx="1010" cy="214" r="8"  fill="#141413"/>                                   <!-- last known (filled) -->
+  <circle cx="1176" cy="150" r="11" fill="none"    stroke="#D97757" stroke-width="2" stroke-dasharray="3 4"/><!-- the unknown -->
+  <text x="1162" y="112" class="display" font-size="30" fill="#D97757">?</text>
+
+  <!-- mountains near the frontier (outline) -->
+  <g fill="none" stroke="#141413" stroke-width="2" stroke-linejoin="round" opacity=".8">
+    <path d="M 900 268 l 22 -40 l 22 40 Z"/>
+    <path d="M 940 268 l 20 -34 l 20 34 Z"/>
+  </g>
+
+  <!-- ============ TYPE (left column) ============ -->
+  <text x="64" y="150" class="eyebrow" font-size="27" fill="#D97757" letter-spacing=".2">A Field Guide:</text>
+  <text x="62" y="230" class="display" font-size="72" fill="#FAF9F5">Finding Your</text>
+  <text x="62" y="306" class="display" font-size="72" fill="#FAF9F5">Unknowns</text>
+  <rect x="66" y="342" width="84" height="4" rx="2" fill="#D97757"/>
+
+</svg>

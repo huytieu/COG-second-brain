@@ -405,6 +405,10 @@ When the Product Read matches one of these, scaffold the whole skeleton, not a f
 - **Dashboard/overview**: KPI tile row (Cards) + widget grid + one or two drill-in Tables (rows).
 - **Admin console with bulk actions**: table + selection persistence + bulk action bar (capped at 5 + overflow) + confirmation dialogs.
 
+**Semantic zoom for hierarchical overviews** (portfolio, roadmap, org chart): zooming into a box swaps in a richer representation, while the breadcrumb, minimap and stats panel re-scope to the focus. Levels, inputs, a11y and a DOM recipe: `references/semantic-zoom.md`.
+
+**House UI rules** (two layers, plain user words, no disabled controls, no `…` menus, no wrapped controls, no ellipsis, lists without stripes, status icons with labels, three-part errors, external objects rendered natively): `references/house-ui-rules.md`. Load it for any product UI under review; where it conflicts with a recipe above, it wins.
+
 Full component implementations live in the host system, not duplicated here: reach them via your host system's template/skeleton command or its docs (`references/canonical-sources.md`). Three high-value skeletons are worked in `references/block-skeletons.md` because they encode the contracts most often gotten wrong; treat them as the canonical shape, adapt to the host system.
 
 ---
@@ -422,7 +426,51 @@ Token-driven, one theme locked per app (same discipline as taste-skill Section 8
 
 ---
 
-## 15. PRODUCT-UI AI TELLS (Forbidden Patterns)
+## 15. INVISIBLE DETAILS (Micro-Craft Floor)
+
+The compound rule: **no single one of these ruins a surface, and all of them together are the whole difference between polished and sloppy.** Users rarely name the specific miss - they register "if this got missed, others probably did too." Everything here is cheap to fix and expensive to notice late, so treat the list as a floor, not a stretch goal. [invisible-details craft notes]
+
+### 15.A Geometry and optical correction
+- **Nested border radius formula**: `inner radius = outer radius - gap`. When the gap is **>=** the outer radius, the inner element needs no rounding at all. Identical inner and outer radii always read as too round.
+- **Optical over mathematical alignment**: mathematically equal padding can look wrong. Glyphs with directional mass need nudging - a play triangle shifts right of true center, a checkmark shifts down. Trust the eye over the number; centre the *visual* mass, not the bounding box.
+- **Icon-to-text alignment**: wrap the icon in a `height: 1lh` box and align it to the top of the line box, rather than vertically centering it against a multi-line text block. Centering breaks the moment the label wraps to two lines.
+- **Vertical rhythm**: every sidebar icon, control, and row affordance sits on a consistent baseline. A single item off by 1-2px is the classic "something's off" signal.
+- **Submenu alignment**: a dropdown's first item aligns exactly with its trigger's height, so opening the menu does not visually shift the anchor.
+
+### 15.B Typography and text flow
+- **`text-wrap: pretty`** on body copy to kill orphaned last words; **`text-wrap: balance`** on headings and short labels to even out line lengths. For paragraphs, a `max-width` in `ch` usually beats `balance`, which can produce a ragged block.
+- **Truncation strategy is per content type** (extends Section 5): wrap for prose, **end**-truncate labels, **middle**-truncate filenames, paths, and URLs where the tail carries the distinguishing information (`report-final-v3....xlsx` is useless; `report-fi...v3.xlsx` is not).
+- **Glued terms never break across lines.** Use a non-breaking space between a value and its unit (`20&nbsp;ms`, `4&nbsp;GB`), inside keyboard shortcuts (`Cmd&nbsp;+&nbsp;K`), and in compound product nouns. A value stranded on one line with its unit on the next is a Tell.
+
+### 15.C Numbers (extends Section 5.F)
+- **Show only meaningful digits, and let consequence decide how many.** `52.4%` is right for a dashboard; `10.30` is required for billing, because `10.3` reads as a different amount of money. Pick precision from CONSEQUENCE, then hold it consistently down the column.
+
+### 15.D Hit targets (extends Section 10.E)
+- **Expand the target, not the visual.** A 20x20px control can carry a ~26x36px hit area via a pseudo-element with negative `inset` - the pixels stay small, the tappable region does not.
+- **Growth stops at the gap.** Expand freely on the axis with no competing targets; on the axis where siblings sit, stop the expansion at the gap so two targets never claim overlapping space.
+- **Keep 4-8px of gap between adjacent clickable elements.** Zero-gap neighbours produce misclicks even at a compliant target size.
+- **The label and the gap are part of the control**: a checkbox's descriptive text and the space between box and text are both tappable, never just the 16px box.
+
+### 15.E Invisible defaults (cheap, always on)
+- `user-select: none` on decorative graphics, icons, and chrome so drag-select does not produce a mess of highlighted furniture. Never on real content the user might copy.
+- **Correct `type=` on every input** so mobile gets the right keyboard: `type="tel"`, `type="email"`, `type="url"`, `inputmode="numeric"`.
+- **iOS inputs need `font-size >= 16px`** or Safari zooms the viewport on focus. This is a layout bug that only appears on a real device.
+- **`playsinline` on every `<video>`**, or Safari hijacks it into fullscreen on play.
+
+### 15.F Communicate overflow (extends Section 5)
+- **Cut the last visible item.** A partially visible row or card is the strongest signal that a region scrolls. A container that ends flush on a clean boundary reads as complete.
+- **Match `overscroll-behavior` / overscroll background to the page background** so rubber-band scrolling never reveals a foreign colour.
+- **Edge fade gradients** on horizontal scrollers where the scrollbar is hidden - the gradient is the only remaining affordance.
+
+### 15.G Motion suppression (extends Section 13)
+- **`prefers-reduced-motion` disables all of it**: slides, label crossfades, colour transitions, hover effects. Content still changes instantly; nothing becomes unreachable.
+- **Suppress animation when state changes faster than the animation.** If a user drives a stepper, tab set, or filter faster than ~120ms per change, transitions stack and stutter. Detect the rapid-change case and switch to instant swaps - a stuttering animation is worse than none.
+- **Direction encodes depth.** In any sequential flow, forward and backward move on opposite vectors (content and title slide up going forward, down going back). That single consistency answers "where am I going" without a tooltip. Tooltips are a mouse-only crutch; prefer motion, `aria-current`, and labels.
+
+---
+
+
+## 16. PRODUCT-UI AI TELLS (Forbidden Patterns)
 
 Distinct from taste-skill's landing-page tells. These are the signatures of a model faking a product screen. Hard bans unless the brief genuinely demands one.
 
@@ -440,18 +488,24 @@ Distinct from taste-skill's landing-page tells. These are the signatures of a mo
 - **Fixed-width badges/labels/tabs** that clip under German/Finnish expansion. (Sections 4, 10.B)
 - **Native `disabled` on menu/tab items** that should stay keyboard-reachable (use `aria-disabled`). (Section 9.C)
 - **Badge as decoration** and **status dots spammed on every row** (status only, sparingly).
+- **Identical inner and outer border radius** on a nested element (always reads too round). (Section 15.A)
+- **A value split from its unit** across a line break, or a shortcut broken mid-chord. (Section 15.B)
+- **A 20px icon button with a 20px hit area**, or two clickable elements flush against each other. (Section 15.D)
+- **Tooltip carrying information a keyboard or touch user needs** (mouse-only crutch). (Section 15.G)
+- **A scrollable region that ends flush** with no cut item, fade, or affordance. (Section 15.F)
+- **Stuttering stacked transitions** under rapid clicking (no fast-change suppression). (Section 15.G)
 - **Motion for show** in a work tool (decorative scroll/hover animation). (Section 13)
 - **Fake step labels** ("Stage 1 / Stage 2"), fake precise numbers, "Jane Doe"/"Acme" placeholder data in a shipped screen.
 - **Em-dash (`—`) anywhere visible.** Banned in headers, cells, labels, empty/error copy, tooltips, and as the "not set" cell placeholder. Use a hyphen (`-`). This is the single most-violated Tell; zero tolerance. (taste-skill Section 9.G, house rule)
 
 ---
 
-## 16. REFERENCE VOCABULARY (Names the Agent Should Know)
+## 17. REFERENCE VOCABULARY (Names the Agent Should Know)
 App shell / PageLayout (Header / Content / Pane / Sidebar / Footer) · canonical layouts (list-detail / supporting-pane / feed) · master-detail + inspector · IndexTable / Resource List / DataGrid / Table · frozen (pinned) columns · virtualization · roving tabindex · stacking context · container query · skeleton screen (shape-mirroring) · Blankslate / EmptyState / ErrorState · Overflow / priority-plus · applied-filter chips / faceted search · alertdialog · optimistic vs. pessimistic update · density mode · pseudo-localization · command palette · workspace switcher · job/status tray.
 
 ---
 
-## 17. REDESIGN PROTOCOL (Auditing an Existing Dense Screen)
+## 18. REDESIGN PROTOCOL (Auditing an Existing Dense Screen)
 Before touching visual style, audit for the correctness bugs that matter more than aesthetics:
 1. **Scroll ownership** violations (page scrolls sideways; nested double-scroll).
 2. **Truncation on primary content**; hover-only fallbacks.
@@ -460,18 +514,52 @@ Before touching visual style, audit for the correctness bugs that matter more th
 5. **z-index ad-hockery**; layering bugs from nested stacking contexts.
 6. **No i18n buffer**; fixed-width text containers.
 7. **Keyboard/a11y gaps**: no roving tabindex, bare `:focus`, icon buttons without labels, disabled submit as only signal.
+8. **Micro-craft floor** (Section 15): nested radii, optical alignment, glued units, hit-target expansion, invisible defaults, overflow signalling.
 Fix these first. Only then apply the density/token/visual polish. Preserve the host design system; do not swap Carbon for shadcn as a "redesign."
+
+### 18.A The hesitation test (how to find problems, not just fix them)
+**The hard part is noticing, not fixing.** Most of these cost minutes to repair once seen, so spend the effort on perception. Drive the surface yourself and treat every pause as a defect report. Four tells, each with a fixed diagnosis: [invisible-details craft notes]
+
+| Observed | What it means |
+|---|---|
+| **Second click** on the same button | No loading state or no feedback - the user believes the first click missed |
+| **Cursor drift** (moves without landing) | Hit target too small, or the option is not recognizable as the one they want |
+| **Reflexive undo** (Cmd+Z right after acting) | The action gave no confirmation of what it actually did |
+| **Re-reading a label** | The wording is wrong, not the layout |
+
+Study interfaces you admire the same way - slowly, looking rather than using. Friction is the lesson.
+
+### 18.B Stress matrix (introduce friction deliberately)
+An interface tested on fast wifi with short English strings and populated data is untested. Run every row before calling a surface done:
+- Throttle to 3G, or inject ~800ms of API latency, and watch what the screen does in the gap.
+- Real content lengths, plus a long-expansion locale (DE/FI) and a non-Latin script.
+- Genuinely empty data - all three empty states (Section 6.C), not just one.
+- Forced API failure and a partial failure (one widget of six).
+- Keyboard only, no mouse, all the way through the primary task.
+- Resize the window across all size classes, including the awkward in-between widths.
+- A physical device, not just DevTools emulation (iOS input zoom and `playsinline` only show up there - Section 15.E).
+- Paste into every field: multiline into single-line, formatted text, a value with leading/trailing whitespace.
+
+### 18.C Record findings as Break / Expectation / Direction
+Every observation gets three lines, no more - enough to act on, cheap enough to actually write down:
+- **Break** - precisely what failed, on which surface, under which condition.
+- **Expectation** - what should have happened instead.
+- **Direction** - the one-line general fix, not a patch for this instance alone.
+
+Promote recurring findings into rules keyed on *function*, not appearance: "the colour input accepts any format and normalizes to hex" is reusable; "the colour input looks like Linear's" is not.
 
 ---
 
-## 18. RELATIONSHIP TO taste-skill + OUT OF SCOPE
+---
+
+## 19. RELATIONSHIP TO taste-skill + OUT OF SCOPE
 - **Hand off to `taste-skill`**: marketing hero sections, landing pages, portfolios, editorial, illustration-heavy brand surfaces. If a screen is half product, half marketing, split it: taste-skill for the marketing sections, this skill for the product surface. Never run both on one component.
 - **Hand off to `dataviz`**: chart/graph authoring (color, encoding, axes). This skill covers the table and the dashboard frame around the charts, not the chart internals.
 - **Out of scope**: native mobile (iOS/Android) app chrome beyond responsive web (tab bars, native nav) - a different skill's job; flag it, do not silently approximate. Realtime collab primitives (presence, cursors, OT) - different problem class.
 
 ---
 
-## 19. FINAL PRE-FLIGHT CHECK
+## 20. FINAL PRE-FLIGHT CHECK
 
 **Run every box. If any fails, the surface is not done.**
 
@@ -504,8 +592,13 @@ Fix these first. Only then apply the density/token/visual polish. Preserve the h
 - [ ] **Keyboard/a11y**: roving tabindex on custom grids, `:focus-visible`, icon buttons labelled, `aria-disabled` not `disabled` on keyboard-reachable menu items, 44px/24px targets?
 - [ ] **Density switch** offered where DENSITY calls for it (mode swap, not zoom)?
 - [ ] **Dark mode** one theme locked, frozen-column background is a theme token, tested in both modes?
+- [ ] **Micro-craft floor** (Section 15): nested radii = outer minus gap; optical (not mathematical) centring on directional glyphs; `text-wrap: pretty`/`balance`; middle-truncation on paths and filenames; units and shortcuts glued with nbsp; hit targets expanded via negative-`inset` pseudo-element with 4-8px gaps between neighbours; label + gap clickable?
+- [ ] **Invisible defaults** (Section 15.E): `user-select:none` on decorative only; correct input `type=`/`inputmode`; iOS input font-size >= 16px; `playsinline` on video?
+- [ ] **Overflow is communicated** (Section 15.F): last item cut off, overscroll background matches, edge fades where scrollbars are hidden?
+- [ ] **Motion suppressed correctly** (Section 15.G): `prefers-reduced-motion` kills everything; rapid state changes (<~120ms) fall back to instant; forward/back move on opposite vectors?
+- [ ] **Hesitation test run** (Section 18.A) and the **stress matrix** walked (Section 18.B: throttled network, long/non-Latin text, empty, failure, keyboard-only, resize, real device, paste)?
 - [ ] **House system**: props discovered from real docs (nothing invented), no `<div>` for layout, tokens only, Badge for counts only, status via a status indicator?
-- [ ] **No product-UI Tells** from Section 15; **zero em-dashes** anywhere visible?
+- [ ] **No product-UI Tells** from Section 16; **zero em-dashes** anywhere visible?
 - [ ] **One design system** per app (no Carbon + Fluent mixed)?
 
 If a single box cannot be honestly ticked, fix it before delivering.
@@ -513,6 +606,8 @@ If a single box cannot be honestly ticked, fix it before delivering.
 ---
 
 ## References
+- `references/house-ui-rules.md` - house rules for product UI: two layers, plain words, controls, lists, text overflow, chat answer blocks, external objects, setup, errors.
+- `references/semantic-zoom.md` - detail that changes with zoom level for hierarchical overviews.
 - `references/block-skeletons.md` - worked reference implementations for the three block contracts most often gotten wrong (index + detail-drawer frame, table scroll/sticky-header/frozen-column CSS contract, truncation contract).
 - `references/install-commands.md` - Appendix A: package-manager install commands per host design system.
 - `references/canonical-sources.md` - Appendix B: gsearch-verified primary-source URLs backing this skill's rules, grouped by topic.

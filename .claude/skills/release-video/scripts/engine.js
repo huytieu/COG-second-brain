@@ -53,7 +53,7 @@
   function init() {
     scenes = [...document.querySelectorAll('.scene')].map(el => ({
       el, start: +el.dataset.start, dur: +el.dataset.dur, enter: el.dataset.enter || 'cut',
-      nodes: [...el.querySelectorAll('[data-draw],[data-fade],[data-rise],[data-pop],[data-count],[data-type],[data-rot],[data-wipe],[data-unwipe],[data-zoom],[data-pulse],[data-out],[data-float],[data-blink],[data-grow],[data-slide],canvas[data-burst]')],
+      nodes: [...el.querySelectorAll('[data-draw],[data-fade],[data-rise],[data-pop],[data-count],[data-type],[data-rot],[data-wipe],[data-unwipe],[data-zoom],[data-pulse],[data-out],[data-float],[data-blink],[data-grow],[data-slide],[data-seq],canvas[data-burst]')],
     }));
     document.querySelectorAll('[data-type]').forEach(n => { n.dataset.full = n.textContent; });
     document.querySelectorAll('[data-draw]').forEach(n => {
@@ -112,6 +112,13 @@
     }
     if (n.tagName === 'CANVAS' && d.burst != null) {
       burst(n, lt, JSON.parse(d.burst || '{}'));
+    }
+    // Recorded frame sequence: data-seq="start,fps"; children are the frames in order.
+    if (d.seq) {
+      const [s, fps] = nums(d.seq);
+      const kids = n.children;
+      const i = Math.max(0, Math.min(kids.length - 1, Math.floor((lt - s) * fps)));
+      for (let k = 0; k < kids.length; k++) kids[k].style.visibility = k === i ? 'visible' : 'hidden';
     }
     if (d.rise || d.pop || d.slide || d.float) {
       const isSvg = n instanceof SVGElement;

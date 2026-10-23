@@ -12,6 +12,8 @@ makes one from any .mp4/.mov. Theme (colors, fonts) comes from spec["theme"].
 
 Intro/outro title, body and kicker are inserted as HTML so <em> works; escape & < > yourself.
 
+Optional per-segment "blur": [[x0,y0,x1,y1], ...] in source pixels masks regions (history rails, customer names).
+
 usage: compose_demo.py <spec.json>   (see templates/demo-spec.example.json)
 """
 import json, math, pathlib, subprocess, sys, html, os
@@ -131,6 +133,11 @@ def main():
                 sp = seg.get("speed", 1)
                 st = seg["src"][0] + lt * sp
                 img = src_frame(st)
+                if seg.get("blur"):
+                    img = img.copy()
+                    for bx in seg["blur"]:
+                        bx = tuple(int(v) for v in bx)
+                        img.paste(img.crop(bx).filter(ImageFilter.GaussianBlur(16)), bx[:2])
                 z = seg.get("zoom")
                 box = full
                 if z:

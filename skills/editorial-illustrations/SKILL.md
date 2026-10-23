@@ -161,3 +161,7 @@ Per the Visual Verification rule, a DOM check is not enough. **Render it and loo
 - [ ] Gridlines present only if the figure is genuinely quantitative.
 - [ ] Motion (if any) demonstrates the claim and dies under reduced-motion.
 - [ ] Renders correctly in both dark and light, and stacks cleanly on mobile.
+
+## Blog figure kit
+
+For blog posts, start from the kit before inventing new chrome: `references/blog-figure-kit.md` (six patterns, screenshot and tweet frames, gotchas) and `assets/blog-figure-kit.html` (live figures plus the full stylesheet). Body diagrams use these figures; ASCII stays in an animated header only.

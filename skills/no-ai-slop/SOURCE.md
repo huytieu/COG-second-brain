@@ -10,3 +10,5 @@ restraint. It is stricter than Tom on binary contrasts / colon reveals (Tom uses
 them sparingly for genuine reframes — the skill itself allows this as voice) and
 on em dashes (Tom uses them freely; this vault's house rule bans them entirely, which
 wins). Use as the final editing pass for blog posts and social copy.
+
+Local modifications: house em-dash ban, honesty-framing rule, voice-mode and reader-cited tells, structural slop, and measured model-era output tells.

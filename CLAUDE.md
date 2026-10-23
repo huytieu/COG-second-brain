@@ -227,7 +227,7 @@ Role packs live in `.claude/roles/`. New roles can be added by dropping a file f
 - `COMPETITIVE-WATCHLIST.md` — Companies/people being tracked
 
 ### Framework files (updated via `cog-update.sh` or `/update-cog`)
-- `.claude/skills/`: Claude Code skills (33 skills)
+- `.claude/skills/`: Claude Code skills (43 skills)
 - `.claude/agents/` - Worker and verifier agent definitions (10 agents)
 - `.claude/roles/` — Role packs for personalized recommendations
 - `.claude/lib/` - Harness helper scripts (`checkpoint.sh`, `lane-classify.sh`)

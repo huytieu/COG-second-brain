@@ -693,6 +693,128 @@ The following 7 skills raise output quality on writing and visual work. They enc
 
 ---
 
+### /release-comms
+
+**Description:** Turn a deployment runsheet and a GitHub milestone into a customer release note, docs updates, and a Slack announcement draft.
+
+**Triggers:**
+- "cover today's release"
+- A deployment just finished and the milestone is closed
+
+**Purpose:** Release communication drifts from what shipped when it is written from memory. This skill reads the milestone and the runsheet, pulls real screenshots and videos from the issues and PRs, and drafts every outward message for your review.
+
+**What it does:**
+1. Collects shipped items from the milestone and the runsheet
+2. Writes a benefit-led release note with real media
+3. Updates docs, including older articles the release makes stale
+4. Drafts the Slack announcement; nothing posts without your yes
+
+---
+
+### /feature-doc
+
+**Description:** Document a shipped feature from the live app: screenshots, a screen recording, and a docs article with how-to and use cases.
+
+**Triggers:**
+- "write the doc for issue #123"
+- A feature shipped without user documentation
+
+**Purpose:** Docs written from a spec show a product that does not exist. This skill drives the real app to capture evidence, so every screenshot and step matches what users see.
+
+**What it does:**
+1. Reads the issue and its PRs for scope
+2. Drives the live app and captures screenshots plus a screen recording
+3. Writes the article: how-to steps, use cases, sample workflows
+4. Verifies the article against acceptance criteria with a read-only verifier
+
+---
+
+### /blog-publish
+
+**Description:** Write and publish a post to your own static blog, with social distribution.
+
+**Triggers:**
+- "publish this to my blog"
+- A draft is ready to go live
+
+**Purpose:** A post needs more than text: a TL;DR, embedded links, a figure, an agent-readable copy, and a deploy that you check afterwards. This skill runs that checklist end to end.
+
+**What it does:**
+1. Applies the content checklist (bulleted TL;DR, embedded links, ASCII art)
+2. Writes a markdown twin for agents
+3. Builds and deploys with your deploy command, then fetches the live URL
+4. Hands off to social-media-kit for distribution
+
+---
+
+### /social-media-kit
+
+**Description:** Attach native media (teaser video, GIF, card images) to every social post.
+
+**Triggers:**
+- "make the social kit for this post"
+- Any post to X, LinkedIn, or Reddit
+
+**Purpose:** Text-only posts get less reach. This skill makes the media from the post itself and covers the upload steps per platform, with a screenshot check after each post.
+
+**What it does:**
+1. Builds card images and a terminal banner from templates
+2. Cuts a short teaser video or GIF
+3. Attaches media per platform and screenshot-verifies the live post
+
+---
+
+### /youtube-video-kit
+
+**Description:** YouTube packaging: thumbnail, animated opening title, music bed, and upload metadata.
+
+**Triggers:**
+- "make a thumbnail and intro for this video"
+- A video is ready to publish
+
+**Purpose:** Consistent packaging makes a channel recognizable. This skill renders the thumbnail and opening title from your brand settings and composes music to the video length.
+
+**What it does:**
+1. Renders a branded thumbnail
+2. Renders an animated opening title
+3. Generates a music bed with ElevenLabs
+4. Writes the title, description, chapters, and tags
+
+---
+
+### /terminal-replica
+
+**Description:** Reproduce your real terminal and CLI agents faithfully in graphics and video frames.
+
+**Triggers:**
+- "draw a Claude Code terminal for this post"
+- Any asset that shows a terminal or agent transcript
+
+**Purpose:** A generic hacker terminal reads as fake to anyone who uses the tool. This skill captures your real theme, font, prompt, and statusline first, then renders from those values.
+
+**What it does:**
+1. Captures a reference screenshot of your terminal
+2. Extracts colors, font, prompt, and statusline
+3. Renders frames that match the reference
+
+---
+
+### /vector-cover
+
+**Description:** Flat vector editorial cover illustrations rendered to PNG.
+
+**Triggers:**
+- "make a cover image for this article"
+
+**Purpose:** A cover built from code is editable and stays on-style. This skill composes HTML and inline SVG from a template and renders a 2400x960 PNG with headless Chrome.
+
+**What it does:**
+1. Picks concept motifs for the article
+2. Fills the HTML template
+3. Renders the PNG and checks it visually
+
+---
+
 ### /voice-baseline
 
 **Description:** Measure your own writing corpus for the words and sentence shapes you over-use, so an agent writing in your voice stops amplifying your tics into a style.
