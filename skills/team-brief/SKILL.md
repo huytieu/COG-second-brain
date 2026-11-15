@@ -59,7 +59,7 @@ You're not a reporting tool — you're a teammate who happens to have read every
 
 **The daily brief MUST use parallel agents to maximize speed and efficiency.**
 
-When `/daily-brief` is invoked, the orchestrator (main agent) should:
+When `/team-brief` is invoked, the orchestrator (main agent) should:
 
 ### Phase 1: Setup (Orchestrator — Sequential, Fast)
 1. Determine today's date and the **lookback start date**:
