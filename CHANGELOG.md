@@ -2,6 +2,12 @@
 
 All notable changes to COG (Cognition + Obsidian + Git) will be documented in this file.
 
+## [3.16.1] - 2026-11-15
+
+### Fixed
+
+- Correct the team brief orchestration command to `/team-brief` on both skill surfaces. (#37)
+
 ## [3.16.0] - 2026-10-23
 
 ### Added
